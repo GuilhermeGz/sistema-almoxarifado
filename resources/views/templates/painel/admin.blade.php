@@ -117,6 +117,11 @@
                    href="{{route('consult.nota')}}">
                     <li>Notas Fiscais</li>
                 </a>
+                <a data-target="#collapseThree" class="menuEffect selectedMenu" class="selectedMenu"
+                   style="padding: 10px 10px 10px 35px; color: white; text-decoration: none; display: grid"
+                   href="{{route('index.unidade')}}">
+                    <li>Unidades Basicas</li>
+                </a>
             </div>
         </div>
     </div>
@@ -155,6 +160,11 @@
                    style="padding: 10px 10px 10px 35px; color: white; text-decoration: none; display: grid"
                    href="{{ route('cadastrar.nota') }}">
                     <li>Notas Fiscais</li>
+                </a>
+                <a data-target="#collapseFour" class="menuEffect selectedMenu"
+                   style="padding: 10px 10px 10px 35px; color: white; text-decoration: none; display: grid"
+                   href="{{ route('cadastrar.unidade') }}">
+                    <li>Unidade Basica</li>
                 </a>
             </div>
         </div>

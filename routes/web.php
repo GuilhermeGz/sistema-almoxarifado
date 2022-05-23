@@ -41,18 +41,20 @@ Route::middleware(['auth', 'verified', 'CheckCargoAdministrador'])->group(functi
     Route::get('cadastrar_nota', 'NotasController@cadastrar')->name('cadastrar.nota');
     Route::get('configurar_notas', 'NotasController@configurar')->name('config.nota');
     Route::post('alterar_config_notas', 'NotasController@alterarConfig')->name('alterar_config.nota');
-    Route::post('criar_nota', 'NotasController@create')->name('criar.nota');
     Route::get('nota_materiais_edit', 'NotasController@notaMateriaisEdit')->name('materiais_edit.nota');
     Route::get('remover_material_nota/{id}', 'NotasController@removerNotaMaterial')->name('remover_material.nota');
     Route::post('adicionar_material_nota', 'NotasController@adicionarMaterial')->name('adicionar_material.nota');
 
+    Route::post('criar_nota', 'NotasController@create')->name('criar.nota');
     Route::get('nota', 'NotasController@indexEdit')->name('index.nota');
     Route::get('nota/edit/{id}', 'NotasController@edit')->name('edit.nota');
     Route::post('nota/update', 'NotasController@update')->name('update.nota');
     Route::get('nota/consulta', 'NotasController@consultar')->name('consult.nota');
     Route::get('nota/remover/{id}', 'NotasController@remover')->name('remover.nota');
 
-    Route::post('ajaxAdicionarEmitente', 'NotasController@adicionarEmitente')->name('adicionar_emitente.nota');
+    Route::get('cadastrar_unidade', 'UnidadeController@cadastrar')->name('cadastrar.unidade');
+    Route::get('unidades', 'UnidadeController@index')->name('index.unidade');
+    Route::post('criar_unidade', 'UnidadeController@criar')->name('criar.unidade');
 
     Route::get('solicitar_material', 'SolicitacaoController@show')->name('solicitar.material');
 });
@@ -95,7 +97,9 @@ Route::middleware('auth', 'verified')->group(function () {
 
     Route::get('observacao_solicitacao/{id}', 'SolicitacaoController@getObservacaoSolicitacao')->name('observacao.solicitacao');
     Route::get('itens_solicitacao_admin/{id}', 'SolicitacaoController@getItemSolicitacaoAdmin')->name('itens.solicitacao.admin');
+
     Route::get('notas_material/{id}', 'NotasController@getNotasList')->name('nota.material');
+    Route::post('ajaxAdicionarEmitente', 'NotasController@adicionarEmitente')->name('adicionar_emitente.nota');
 });
 
 Auth::routes(['verify' => true]);
