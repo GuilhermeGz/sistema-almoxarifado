@@ -57,25 +57,23 @@
                 <label for="quantMaterial" style="color: #151631; font-family: 'Segoe UI'; font-weight: 700">Quantidade</label>
                 <input type="text" min="1" class="form-control" id="quantMaterial" name="quantidade" value="{{ old('quantidade') }}">
             </div>
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-4">
                 <label for="selectUnidadeBasica" style="color: #151631; font-family: 'Segoe UI'; font-weight: 700">Unidade Básica:</label>
-                <select class="form-control" name="selectUnidadeBasica" id="selectUnidadeBasica">
-                    <option selected hidden disabled>Escolher Unidade Básica</option>
-                    <option value="1">UNIDADE TESTE</option>
-                    <option value="2">UNIDADE FRAME</option>
-                       {{-- @foreach($unidades as $unidade)
+                <select class="form-control" name="selectUnidadeBasica" id="selectUnidadeBasica" style="width: 100%">
+                    <option></option>
+                       @foreach($unidades as $unidade)
                             <option data-value="{{$unidade->id}}">{{ $unidade->nome }} </option>
-                        @endforeach --}}
+                        @endforeach
                 </select>
             </div>
 
-            <div class="form-group">
-                <button id="addTable" style="margin-top: 30px; margin-left: 10px" class="btn btn-primary" onclick="addTable()">Adicionar</button>
+            <div class="form-group col-md-2">
+                <button id="addTable" style="margin-top: 30px;" class="btn btn-primary" onclick="addTable()">Adicionar</button>
             </div>
         </div>
     </div>
 
-    <form method="POST" id="formSolicitacao" name="formSolicitacao" action="{{ route('solicita.store') }}">
+    <form method="POST" id="formSolicitacao" name="formSolicitacao" action="{{ route('add.material') }}">
         @csrf
         <table id="tableMaterial" class="table table-hover table-responsive-md" style="margin-top: 10px">
             <thead style="background-color: #151631; color: white; border-radius: 15px">
@@ -92,6 +90,7 @@
 
         <input type="hidden" id="dataTableMaterial" name="dataTableMaterial" value="">
         <input type="hidden" id="dataTableQuantidade" name="dataTableQuantidade" value="">
+        <input type="hidden" id="dataTableUnidade" name="dataTableUnidade" value="">
 
         <Button class="btn btn-secondary" type="button" onclick="location.href = '../' "> Cancelar</Button>
         <button id="solicita" class="btn btn-success" disabled onclick="return setValuesRowInput()">Solicitar</button>
@@ -135,8 +134,9 @@
     </div>
 
     <script>
+        var cont = 0;
         $('#selectUnidadeBasica').select2({
-            placeholder: "Selecione a Unidade Básoca.",
+            placeholder: "Selecione a Unidade Básica.",
             language: { noResults: () => "Nenhum resultado encontrado.",},
         });
     </script>

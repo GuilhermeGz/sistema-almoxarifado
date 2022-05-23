@@ -57,6 +57,7 @@ Route::middleware(['auth', 'verified', 'CheckCargoAdministrador'])->group(functi
     Route::post('criar_unidade', 'UnidadeController@criar')->name('criar.unidade');
 
     Route::get('solicitar_material', 'SolicitacaoController@show')->name('solicitar.material');
+    Route::post('adicionar_material', 'SolicitacaoController@store')->name('add.material');
 });
 
 Route::middleware(['auth', 'verified', 'CheckCargoRequerente'])->group(function () {
