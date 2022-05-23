@@ -57,6 +57,18 @@
                 <label for="quantMaterial" style="color: #151631; font-family: 'Segoe UI'; font-weight: 700">Quantidade</label>
                 <input type="text" min="1" class="form-control" id="quantMaterial" name="quantidade" value="{{ old('quantidade') }}">
             </div>
+            <div class="form-group col-md-3">
+                <label for="selectUnidadeBasica" style="color: #151631; font-family: 'Segoe UI'; font-weight: 700">Unidade Básica:</label>
+                <select class="form-control" name="selectUnidadeBasica" id="selectUnidadeBasica">
+                    <option selected hidden disabled>Escolher Unidade Básica</option>
+                    <option value="1">UNIDADE TESTE</option>
+                    <option value="2">UNIDADE FRAME</option>
+                       {{-- @foreach($unidades as $unidade)
+                            <option data-value="{{$unidade->id}}">{{ $unidade->nome }} </option>
+                        @endforeach --}}
+                </select>
+            </div>
+
             <div class="form-group">
                 <button id="addTable" style="margin-top: 30px; margin-left: 10px" class="btn btn-primary" onclick="addTable()">Adicionar</button>
             </div>
@@ -69,6 +81,7 @@
             <thead style="background-color: #151631; color: white; border-radius: 15px">
             <tr>
                 <th scope="col">Material</th>
+                <th scope="col" style="text-align: center">Unidade Básica</th>
                 <th scope="col" style="text-align: center">Quantidade</th>
                 <th scope="col" style="text-align: center">Unidade</th>
                 <th scope="col" style="text-align: center">Ações</th>
@@ -76,38 +89,6 @@
             </thead>
             <tbody></tbody>
         </table>
-        <label style="margin-top: 10px"><strong>Receptor</strong></label>
-        <div class="form-check" style="margin-bottom: 10px">
-            <input type="checkbox" class="form-check-input" id="checkReceptor" name="checkReceptor" checked>
-            <label class="form-check-label" for="checkReceptor">Eu sou o receptor</label>
-        </div>
-        <div class="form-row" style="padding: 0 0 0 0;">
-            <div class="form-group col-md-4">
-                <div class="form-group">
-                    <label for="inputNomeReceptor">Nome</label>
-                    <input type="hidden" id="nomeReceptor" name="nomeReceptor" value="{{Auth::user()->nome}}">
-                    <input type="text" class="form-control" id="inputNomeReceptor" onkeypress="return onlyLetters(event,this);" maxlength="100" name="nomeReceptor" value="{{Auth::user()->nome}}"
-                           disabled="true">
-                </div>
-            </div>
-            <div class="form-group col-md-3">
-                <label for="inputRgReceptor">RG</label>
-                <input type="hidden" id="rgReceptor" name="rgReceptor" value="{{Auth::user()->rg}}">
-                <input type="text" min="1" maxlength="11" class="form-control" id="inputRgReceptor" name="rgReceptor" value="{{Auth::user()->rg}}" disabled="true">
-            </div>
-            <div class="form-group col-md-3">
-                <label for="inputRgReceptor">Tipo</label>
-                <select class="form-control" id="inputTipoReceptor" name="tipoReceptor" disabled="true">
-                    <option id="tipoServidor" value="Servidor" selected>Servidor</option>
-                    <option id="tipoAluno" value="Aluno">Aluno</option>
-                    <option id="tipoTerceirizado" value="Terceirizado">Terceirizado</option>
-                </select>
-            </div>
-        </div>
-        <div class="form-group col-md-12" class="form-row" style="border-bottom: #cfc5c5 1px solid; padding: 0 0 20px 0;">
-            <label for="inputObservacao"><strong>Observações:</strong></label>
-            <textarea class="form-control" name="observacao" id="inputObservacao" cols="30" rows="3">{{ old('observacao') }}</textarea>
-        </div>
 
         <input type="hidden" id="dataTableMaterial" name="dataTableMaterial" value="">
         <input type="hidden" id="dataTableQuantidade" name="dataTableQuantidade" value="">
@@ -152,6 +133,13 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $('#selectUnidadeBasica').select2({
+            placeholder: "Selecione a Unidade Básoca.",
+            language: { noResults: () => "Nenhum resultado encontrado.",},
+        });
+    </script>
 @endsection
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

@@ -142,7 +142,8 @@ function addTable() {
     if ($("#selectMaterial option:selected").index() > 0 && $("#quantMaterial").val() != '') {
         $("#tableMaterial tbody").append("<tr data-id=" + $("#selectMaterial option:selected").data('value') + ">" +
             "<td data-id=" + $("#selectMaterial option:selected").data('value') + " class=\"materialRow\">" + $("#selectMaterial option:selected").text() + "</td>" +
-            construirTable($("#quantMaterial").val(), $("#unidade_selected").val()));
+            "<td style=\"text-align: center\" data-id=" + $("#selectUnidadeBasica option:selected").data('value') + " class=\"materialRow\">" + $("#selectUnidadeBasica option:selected").text() + "</td>" +
+        construirTable($("#quantMaterial").val(), $("#unidade_selected").val()));
     } else {
         $('#error').slideDown();
         setTimeout(function () {

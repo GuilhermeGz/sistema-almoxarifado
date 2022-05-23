@@ -54,6 +54,7 @@ Route::middleware(['auth', 'verified', 'CheckCargoAdministrador'])->group(functi
 
     Route::post('ajaxAdicionarEmitente', 'NotasController@adicionarEmitente')->name('adicionar_emitente.nota');
 
+    Route::get('solicitar_material', 'SolicitacaoController@show')->name('solicitar.material');
 });
 
 Route::middleware(['auth', 'verified', 'CheckCargoRequerente'])->group(function () {
