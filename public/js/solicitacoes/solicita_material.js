@@ -66,7 +66,16 @@ function removerMaterial(ctl) {
     var escolha = confirm("Tem certeza que deseja remover o(s) material(is)?");
     if (escolha) {
         deleteRow(ctl);
+        cont -=1;
+        console.log(cont);
         $('#remocaoSuccess').slideDown();
+
+        if(cont == 0){
+            $('#selectUnidadeBasica').prop('disabled', false);
+        }else{
+            $('#selectUnidadeBasica').disable(true);
+        }
+
         setTimeout(function () {
             $('#remocaoSuccess').slideUp();
         }, 4000);
@@ -106,22 +115,9 @@ function deleteRow(ctl) {
 function setValuesRowInput() {
     var materiais = [];
     var quantidades = [];
+    var unidades = [];
 
     var escolha = confirm("Tem certeza que deseja fazer uma solicitação?");
-    if (escolha) {
-        if (!$('#checkReceptor').prop('checked')) {
-            var rg = $("#inputRgReceptor").val().length;
-            if (rg < 7 || rg > 11) {
-                alert('O RG não pode ter menos de 7 dígitos e mais de 11');
-                return false;
-            } else if ($("#inputNomeReceptor").val().length < 5) {
-                alert('O nome deve ter pelo menos 5 letras');
-                return false;
-            }
-        }
-    } else {
-        return false;
-    }
 
     $("#tableMaterial > tbody > tr").children('.materialRow').each(function () {
         materiais.push($(this).data('id'));
@@ -131,18 +127,26 @@ function setValuesRowInput() {
         quantidades.push($(this).text());
     });
 
+    $("#tableMaterial > tbody > tr").children('.unidadeRow').each(function () {
+        unidades.push($(this).data('id'));
+    });
+
     $('#dataTableMaterial').val([materiais]);
     $('#dataTableQuantidade').val([quantidades]);
+    $('#dataTableUnidade').val([unidades]);
 }
 
 function addTable() {
     var materialId;
     materialId = $("#selectMaterial option:selected").data('value');
+
     $("#unidade_selected").val($("#unidade_" + materialId).val())
     if ($("#selectMaterial option:selected").index() > 0 && $("#quantMaterial").val() != '') {
         $("#tableMaterial tbody").append("<tr data-id=" + $("#selectMaterial option:selected").data('value') + ">" +
             "<td data-id=" + $("#selectMaterial option:selected").data('value') + " class=\"materialRow\">" + $("#selectMaterial option:selected").text() + "</td>" +
-            construirTable($("#quantMaterial").val(), $("#unidade_selected").val()));
+            "<td style=\"text-align: center\" data-id=" + $("#selectUnidadeBasica option:selected").data('value') + " class=\"unidadeRow\">" + $("#selectUnidadeBasica option:selected").text() + "</td>" +
+        construirTable($("#quantMaterial").val(), $("#unidade_selected").val()));
+        document.getElementById("selectUnidadeBasica").disabled = true;
     } else {
         $('#error').slideDown();
         setTimeout(function () {
@@ -154,6 +158,8 @@ function addTable() {
     if ($("#tableMaterial >tbody >tr").length > 0) {
         $("#solicita").attr("disabled", false);
     }
+    cont+=1;
+    console.log(cont);
 }
 
 function rgLength() {

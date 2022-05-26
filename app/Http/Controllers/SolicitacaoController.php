@@ -8,6 +8,7 @@ use App\ItemSolicitacao;
 use App\Material;
 use App\Notificacao;
 use App\Solicitacao;
+use App\Unidade;
 use App\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,18 +21,20 @@ class SolicitacaoController extends Controller
     {
         $estoques = Estoque::where('deposito_id', 1)->get();
         $materiais = [];
+        $unidades = Unidade::all();
         foreach ($estoques as $estoque)
         {
             array_push($materiais, Material::find($estoque->material_id));
         }
 
-        return view('solicitacao.solicita_material', ['materiais' => $materiais]);
+        return view('solicitacao.solicita_material', ['materiais' => $materiais,'unidades'=>$unidades]);
     }
 
     public function store(Request $request)
     {
         $materiais = explode(',', $request->dataTableMaterial);
         $quantidades = explode(',', $request->dataTableQuantidade);
+        $unidades = explode(',', $request->dataTableUnidade);
 
         $materiaisCheck = true;
 
@@ -54,26 +57,10 @@ class SolicitacaoController extends Controller
             return redirect()->back()->withErrors('Informe valores validos para o(s) material(is) e sua(s) quantidade(s)');
         }
 
-        if (is_null($request->checkReceptor) && strlen($request->nomeReceptor) > 100 || strlen($request->nomeReceptor) < 5
-                || strpos($request->rgReceptor, '.') || strpos($request->rgReceptor, ',') || (is_numeric($request->rgReceptor) && intval($request->rgReceptor) < 0)
-                || strlen($request->rgReceptor) < 7 || strlen($request->rgReceptor) > 11) {
-            return redirect()->back()->withErrors('O nome do receptor deve ter no máximo 100 dígitos e o RG 11 dígitos');
-        }
-
         $solicitacao = new Solicitacao();
         $solicitacao->usuario_id = Auth::user()->id;
-        $solicitacao->observacao_requerente = $request->observacao;
+        $solicitacao->unidade_id = $unidades[0];
         $usuario = Usuario::find(Auth::user()->id);
-        if (is_null($request->checkReceptor)) {
-            $solicitacao->receptor = $request->nomeReceptor;
-            $solicitacao->receptor_rg = $request->rgReceptor;
-            $solicitacao->receptor_tipo = $request->tipoReceptor;
-        } else {
-            $solicitacao->receptor = $usuario->nome;
-            $solicitacao->receptor_rg = $usuario->rg;
-            $solicitacao->receptor_tipo = 'Servidor';
-        }
-        $solicitacao->setor_usuario = $usuario->setor;
 
         $solicitacao->save();
 
