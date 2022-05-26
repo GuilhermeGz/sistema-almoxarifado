@@ -41,10 +41,9 @@ Route::middleware(['auth', 'verified', 'CheckCargoAdministrador'])->group(functi
     Route::get('cadastrar_nota', 'NotasController@cadastrar')->name('cadastrar.nota');
     Route::get('configurar_notas', 'NotasController@configurar')->name('config.nota');
     Route::post('alterar_config_notas', 'NotasController@alterarConfig')->name('alterar_config.nota');
-    Route::get('nota_materiais_edit', 'NotasController@notaMateriaisEdit')->name('materiais_edit.nota');
     Route::get('remover_material_nota/{id}', 'NotasController@removerNotaMaterial')->name('remover_material.nota');
     Route::post('adicionar_material_nota', 'NotasController@adicionarMaterial')->name('adicionar_material.nota');
-
+    Route::get('nota_materiais_edit', 'NotasController@notaMateriaisEdit')->name('materiais_edit.nota');
     Route::post('criar_nota', 'NotasController@create')->name('criar.nota');
     Route::get('nota', 'NotasController@indexEdit')->name('index.nota');
     Route::get('nota/edit/{id}', 'NotasController@edit')->name('edit.nota');
@@ -54,7 +53,11 @@ Route::middleware(['auth', 'verified', 'CheckCargoAdministrador'])->group(functi
 
     Route::get('cadastrar_unidade', 'UnidadeController@cadastrar')->name('cadastrar.unidade');
     Route::get('unidades', 'UnidadeController@index')->name('index.unidade');
+    Route::get('unidades/edit', 'UnidadeController@editar')->name('index_edit.unidade');
+    Route::get('unidade_edit/{id}', 'UnidadeController@edit')->name('edit.unidade');
+    Route::get('unidade_remove/{id}', 'UnidadeController@remover')->name('remover.unidade');
     Route::post('criar_unidade', 'UnidadeController@criar')->name('criar.unidade');
+    Route::post('alterar_unidade', 'UnidadeController@alterar')->name('alterar.unidade');
 
 });
 

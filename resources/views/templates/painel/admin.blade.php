@@ -187,6 +187,12 @@
                    href="{{route('index.nota')}}">
                     <li>Editar Nota Fiscal</li>
                 </a>
+
+                <a data-target="#collapseFive" class="menuEffect selectedMenu"
+                   style="padding: 10px 10px 10px 35px; color: white; text-decoration: none; display: grid"
+                   href="{{route('index_edit.unidade')}}">
+                    <li>Editar Unidade Basica</li>
+                </a>
             </div>
         </div>
         <div>

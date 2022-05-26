@@ -29,6 +29,7 @@
             <th class="align-middle" scope="col" style="text-align: center">CEP</th>
             <th class="align-middle" scope="col" style="text-align: center">Endereco</th>
             <th class="align-middle" scope="col" style="text-align: center; width: 3%">Bairro</th>
+            <th class="align-middle" scope="col" style="text-align: center; width: 3%">Ações</th>
         </tr>
         </thead>
         <tbody>
@@ -39,6 +40,18 @@
                 <td style="text-align: center"> {{ $unidade->cep }} </td>
                 <td style="text-align: center"> {{ $unidade->endereco }}</td>
                 <td style="text-align: center"> {{ $unidade->bairro }}</td>
+                <td style="text-align: center">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown" type="button" id="dropdownMenuButton"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            ⋮
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a type="button" class="dropdown-item" onclick="location.href = '{{ route('edit.unidade', ['id' => $unidade->id]) }}'">Editar</a>
+                           <a type="button" class="dropdown-item" onclick="if(confirm('Tem certeza que deseja Remover a Unidade?')) location.href='{{route('remover.unidade', ['id' => $unidade->id])}}'">Remover</a>
+                        </div>
+                    </div>
+                </td>
             </tr>
         @empty
             <td colspan="2">Sem unidades basicas cadastradas ainda</td>
