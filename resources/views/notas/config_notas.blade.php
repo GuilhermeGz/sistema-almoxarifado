@@ -12,9 +12,9 @@
 
     <form id="formUsuario" action="{{ route('alterar_config.nota') }}" method="POST" enctype="multipart/form-data">
         @csrf
-        @if(session()->has('sucess'))
+        @if(session()->has('success'))
             <div class="alert alert-success alert-dismissible fade show">
-                <strong>{{session('sucess')}}</strong>
+                <strong>{{session('success')}}</strong>
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
             </div>
         @endif

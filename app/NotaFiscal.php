@@ -17,7 +17,17 @@ class NotaFiscal extends Model
     }
 
     public function emitente(){
-        $this->belongsTo('App\Emitente');
+        $this->hasOne('App\Emitente');
     }
+
+    public static $rules = [
+
+        'numero' => 'unique:nota_fiscals',
+
+    ];
+
+    public static $messages = [
+        'numero.unique' => 'O numero da nota fiscal já está sendo utilizado!',
+    ];
 
 }

@@ -20,6 +20,10 @@ class UnidadeController extends Controller
         $unidade->cep = $request->cep;
         $unidade->endereco = $request->endereco;
         $unidade->bairro = $request->bairro;
+        $unidade->nome_coordenador = $request->nome_coordenador;
+        $unidade->numero_coordenador = $request->numero_coordenador;
+        $unidade->nome_enfermeira = $request->nome_enfermeira;
+        $unidade->numero_enfermeira = $request->numero_enfermeira;
         $unidade->save();
 
         return redirect(route('index.unidade'))->with('success', 'Unidade Cadastrada com Sucesso!');
@@ -51,6 +55,10 @@ class UnidadeController extends Controller
         $unidade->cep = $request->cep;
         $unidade->endereco = $request->endereco;
         $unidade->bairro = $request->bairro;
+        $unidade->nome_coordenador = $request->nome_coordenador;
+        $unidade->numero_coordenador = $request->numero_coordenador;
+        $unidade->nome_enfermeira = $request->nome_enfermeira;
+        $unidade->numero_enfermeira = $request->numero_enfermeira;
         $unidade->update();
         return redirect(route('index_edit.unidade'))->with('success', 'Unidade Alterada com Sucesso!');
     }

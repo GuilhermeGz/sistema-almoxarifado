@@ -19,7 +19,7 @@ class CreateEmitentesTable extends Migration
 
             $table->string('inscricao_estadual')->nullable();
             $table->string('razao_social');
-            $table->string('cnpj');
+            $table->string('cnpj')->unique();
         });
     }
 

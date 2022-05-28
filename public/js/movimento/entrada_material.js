@@ -18,7 +18,7 @@ $(function () {
                 $('#selectNotas').empty();
                 var optionsHtml = "";
                 data.forEach(function (nota) {
-                    $('#selectNotas').append("<option value='" + nota[0] + "'>" + nota[1] + "</option>")
+                    $('#selectNotas').append("<option value='" + nota[0] + "'>" + nota[2] + ' - ' + nota[1] + "</option>")
                 });
             }
         });

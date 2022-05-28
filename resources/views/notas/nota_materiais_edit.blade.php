@@ -51,7 +51,7 @@
                     </td>
                     <td>{{$material->quantidade_atual}}</td>
                     <td>{{$material->quantidade_total}}</td>
-                    <td>{{$material->valor}} R$</td>
+                    <td>R$ {{$material->valor}}</td>
                     <td>@if($material->status == false)
                             <strong class="alert-danger">
                                 Pendente

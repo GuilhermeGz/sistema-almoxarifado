@@ -10,4 +10,15 @@ class Emitente extends Model
     {
         $this->hasMany('App\NotaFiscal');
     }
+
+    public static $rules = [
+
+        'cnpj' => 'unique:emitentes|min:18|max:18',
+
+    ];
+
+    public static $messages = [
+        'cnpj.unique' => 'O cnpj já foi utilizado!',
+        'cnpj.*' => 'O cnpj deve possuir exatamente 14 caracteres',
+    ];
 }

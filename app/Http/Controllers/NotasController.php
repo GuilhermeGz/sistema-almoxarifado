@@ -122,6 +122,10 @@ class NotasController extends Controller
     public function create(Request $request)
     {
 
+        $rules = array_slice(NotaFiscal::$rules, 0, 4);
+        $messages = array_slice(NotaFiscal::$messages, 0, 10);
+        $validator = Validator::make($request->all(), $rules, $messages)->validate();
+
         $nota = new NotaFiscal();
 
         $nota->numero = $request->numero;
@@ -137,12 +141,12 @@ class NotasController extends Controller
 
     public function adicionarEmitente(Request $request)
     {
-        $emitente = new Emitente();
+                $emitente = new Emitente();
         $emitente->inscricao_estadual = $request->inscricao_estadual;
         $emitente->cnpj = $request->cnpj;
         $emitente->razao_social = $request->razao_social;
         $emitente->save();
-        return response()->json(['success'=> 'Emitente Cadastrado com Sucesso!', 'id' => $emitente->id, 'cnpj' => $emitente->cnpj]);
+        return response()->json(['success'=> 'Emitente Cadastrado com Sucesso!', 'id' => $emitente->id, 'cnpj' => $emitente->cnpj, 'razao_social' => $emitente->razao_social]);
 
     }
 
@@ -155,7 +159,8 @@ class NotasController extends Controller
         foreach ($notasMaterial as $notaM) {
             $nota = NotaFiscal::find($notaM->nota_fiscal_id);
             if (!in_array([$nota->id, $nota->cnpj], $notas) && $notaM->status == false) {
-                array_push($notas, [$nota->id, $nota->numero]);
+                $emitente = Emitente::find($nota->emitente_id);
+                array_push($notas, [$nota->id, $nota->numero, $emitente->razao_social]);
             }
         }
 

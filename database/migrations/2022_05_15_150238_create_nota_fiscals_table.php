@@ -16,7 +16,7 @@ class CreateNotaFiscalsTable extends Migration
         Schema::create('nota_fiscals', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('numero');
+            $table->string('numero')->unique();
             $table->string('serie');
             $table->date('data_emissao');
             $table->string('natureza_operacao');

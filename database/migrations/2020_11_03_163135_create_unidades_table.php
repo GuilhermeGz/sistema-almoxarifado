@@ -21,6 +21,11 @@ class CreateUnidadesTable extends Migration
             $table->string('cep');
             $table->string('endereco');
             $table->string('bairro');
+
+            $table->string('nome_coordenador');
+            $table->string('numero_coordenador');
+            $table->string('nome_enfermeira');
+            $table->string('numero_enfermeira');
         });
     }
 

@@ -37,7 +37,7 @@
             <tr>
                 <td class="text-left" style="text-align: center"> {{ $nota->numero }} </td>
                 <td style="text-align: center"> {{ $nota->serie }} </td>
-                <td style="text-align: center"> {{ $nota->valor_nota }} R$</td>
+                <td style="text-align: center"> R$ {{ number_format((float)$nota->valor_nota, 2, ',', '')  }}</td>
                 <td style="text-align: center">
                     <button class="btn btn-primary" data-toggle="modal" data-target="#notaFiscal{{$nota->id}}">
                         Detalhes
@@ -87,7 +87,7 @@
                                             </td>
                                             <td>{{$material->quantidade_atual}}</td>
                                             <td>{{$material->quantidade_total}}</td>
-                                            <td>{{$material->valor}} R$</td>
+                                            <td>R$ {{$material->valor}}</td>
                                             <td>@if($material->status == false)
                                                     <strong class="alert-danger">
                                                         Pendente

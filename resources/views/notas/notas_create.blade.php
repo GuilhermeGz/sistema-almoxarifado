@@ -49,7 +49,12 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="cnpj">CNPJ<span style="color: red">*</span></label>
-                                <input class="form-control" id="cnpj_emitente" name="cnpj" value="" placeholder="Digite o CNPJ do emitente">
+                                <input class="form-control @error('cnpj') is-invalid @enderror"" id="cnpj_emitente" name="cnpj" value="" placeholder="Digite o CNPJ do emitente">
+                                @error('cnpj')
+                                <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                                @enderror
                             </div>
                         </div>
 
@@ -86,8 +91,13 @@
                         data: {'razao_social': razao_social, 'cnpj': cnpj, 'inscricao_estadual': inscricao_estadual},
                         success: function (data) {
                             alert(data.success);
-                            $('#emitente').append("<option value='" + data.id + "'>" + data.cnpj + "</option>")
+                            $('#emitente').append("<option value='" + data.id + "'>" + data.razao_social +' - ' + data.cnpj + "</option>")
+                        },
+                        error: function ()
+                        {
+                            alert('O cnpj já está sendo usado!');
                         }
+
                     });
                 }
             });
