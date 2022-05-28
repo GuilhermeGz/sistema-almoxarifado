@@ -70,6 +70,7 @@ Route::middleware(['auth', 'verified', 'CheckCargoAdminDiretoria'])->group(funct
 Route::middleware(['auth', 'verified', 'CheckCargoAdminTerceirizado'])->group(function () {
     Route::get('entrega_materiais', 'SolicitacaoController@listSolicitacoesAprovadas')->name('entrega.materiais');
     Route::POST('entrega_materiais', 'SolicitacaoController@checkEntregarMateriais')->name('entrega.materiais');
+    Route::get('entregar_todos_materiais', 'SolicitacaoController@entregarTodosMateriais')->name('entrega.todos.materiais');
     Route::get('consultarDeposito', 'DepositoController@consultarDepositoView')->name('deposito.consultarDeposito');
     Route::resource('material', 'MaterialController')->except(['show']);
     Route::get('solicitacoes_admin', 'SolicitacaoController@listTodasSolicitacoes')->name('solicitacoe.admin');

@@ -130,6 +130,70 @@ class SolicitacaoController extends Controller
         }
     }
 
+    public function entregarTodosMateriais()
+    {
+        $historicos = HistoricoStatus::where('status', 'Aprovado')->get();
+        $flag = 0;
+
+        foreach ($historicos as $historico){
+            $itens = ItemSolicitacao::where('solicitacao_id', '=', $historico->solicitacao_id)->where('quantidade_aprovada', '!=', null)->get();
+            $materiaisID = array_column($itens->toArray(), 'material_id');
+            $materiaisNome = Material::select('nome')->whereIn('id', $materiaisID)->get();
+            $quantAprovadas = array_column($itens->toArray(), 'quantidade_aprovada');
+
+            $estoque = Estoque::wherein('material_id', $materiaisID)->where('deposito_id', 1)->orderBy('material_id', 'asc')->get();
+
+            $checkQuant = true;
+            $errorMessage = [];
+
+            for ($i = 0; $i < count($materiaisID); ++$i) {
+                if (($estoque[$i]->quantidade - $quantAprovadas[$i]) < 0) {
+                    $checkQuant = false;
+                    $message = $materiaisNome[$i]->nome.' Disponível('.$estoque[$i]->quantidade.')';
+                    array_push($errorMessage, $message);
+                }
+            }
+
+            if ($checkQuant) {
+                $materiais = Material::all();
+                $usuarios = Usuario::all();
+                $flag = 1;
+
+                for ($i = 0; $i < count($materiaisID); ++$i) {
+                    DB::update('update estoques set quantidade = quantidade - ? where material_id = ? and deposito_id = 1', [$quantAprovadas[$i], $materiaisID[$i]]);
+
+                    $material = $materiais->find($materiaisID[$i]);
+                    $estoque = DB::table('estoques')->where('material_id', '=', $materiaisID[$i])->first();
+                    if (($estoque->quantidade - $quantAprovadas[$i]) <= $material->quantidade_minima) {
+                        foreach ($usuarios as $usuario){
+                            if ($usuario->cargo_id == 2) {
+                                \App\Jobs\emailMaterialEsgotando::dispatch($usuario, $material);
+
+                                $mensagem = $material->nome.' em estado critico.';
+                                $notificacao = new Notificacao();
+                                $notificacao->mensagem = $mensagem;
+                                $notificacao->usuario_id = $usuario->id;
+                                $notificacao->material_id = $material->id;
+                                $notificacao->material_quant = $estoque->quantidade;
+                                $notificacao->visto = false;
+                                $notificacao->save();
+                            }
+                        }
+                    }
+                }
+
+                DB::update(
+                    'update historico_statuses set status = ?, data_finalizado = now() where solicitacao_id = ?',
+                    ['Entregue', $historico->solicitacao_id]
+                );
+            }
+        }
+        if($flag ==0){
+            return redirect()->back();
+        }
+        return redirect()->back()->with(['success'=> 'Material(is) entregue(s) com sucesso!']);
+    }
+
     public function entregarMateriais($id)
     {
         $itens = ItemSolicitacao::where('solicitacao_id', '=', $id)->where('quantidade_aprovada', '!=', null)->get();

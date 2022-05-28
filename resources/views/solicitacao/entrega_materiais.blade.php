@@ -4,7 +4,7 @@
 
 @section('content')
     <div style="border-bottom: #949494 2px solid; padding-bottom: 5px; margin-bottom: 10px">
-        <h2>ENTREGAR MATERIAIS</h2>
+        <h2>ENTREGAR MATERIAIS <a type="button" href="{{route('entrega.todos.materiais')}}" class="btn-success btn" style="float: right"> Entregar Todos</a></h2>
     </div>
 
     @if(session()->has('success'))
@@ -130,6 +130,12 @@
             </div>
         </div>
     </form>
+    <style>
+        .relative {
+            position: relative;
+            top: 35px;
+        }
+    </style>
 @endsection
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
