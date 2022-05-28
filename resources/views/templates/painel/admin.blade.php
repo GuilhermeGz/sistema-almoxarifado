@@ -33,11 +33,6 @@
             <div>
                 <a data-target="#collapseOne" class="menuEffect selectedMenu" class="selectedMenu"
                     style="padding: 10px 10px 10px 35px; color: white; text-decoration: none; display: grid"
-                    href="{{ route('analise.solicitacoes') }}">
-                    <li>Analisar</li>
-                </a>
-                <a data-target="#collapseOne" class="menuEffect selectedMenu" class="selectedMenu"
-                    style="padding: 10px 10px 10px 35px; color: white; text-decoration: none; display: grid"
                     href="{{ route('entrega.materiais') }}">
                     <li>Entregar</li>
                 </a>

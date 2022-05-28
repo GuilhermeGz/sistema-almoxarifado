@@ -140,7 +140,7 @@
                     </select>
                 </div>
 
-                @if(Auth::user()->cargo_id == 2)
+                @if(Auth::user()->cargo_id == 1)
                     <div class="form-group col-md-4">
                         <label for="cargo"> Perfil </label>
                         <select class="custom-select" name="cargo" id="cargo">

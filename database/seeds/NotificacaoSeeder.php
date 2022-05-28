@@ -13,8 +13,8 @@ class NotificacaoSeeder extends Seeder
     {
         $usuarios = \App\Usuario::all();
         for ($i = 1; $i <= count($usuarios); $i++) {
-            if ($usuarios->find($i)->cargo_id == 2) {
-                factory(\App\Notificacao::class, 2)->create(['usuario_id' => $i]);
+            if ($usuarios->find($i)->cargo_id == 1) {
+                factory(\App\Notificacao::class, 1)->create(['usuario_id' => $i]);
             }
         }
     }

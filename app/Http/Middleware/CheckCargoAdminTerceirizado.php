@@ -16,7 +16,7 @@ class CheckCargoAdminTerceirizado
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::user()->cargo_id == 2 || Auth::user()->cargo_id == 4) {
+        if (Auth::user()->cargo_id == 1 || Auth::user()->cargo_id == 3) {
             return $next($request);
         } else {
             return redirect()->back();

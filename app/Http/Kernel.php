@@ -64,7 +64,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'CheckCargoAdministrador' => \App\Http\Middleware\CheckCargoAdministrador::class,
-        'CheckCargoRequerente' => \App\Http\Middleware\CheckCargoRequerente::class,
         'CheckCargoDiretoria' => \App\Http\Middleware\CheckCargoDiretoria::class,
         'CheckCargoAdminDiretoria' => \App\Http\Middleware\CheckCargoAdminDiretoria::class,
         'CheckCargoAdminTerceirizado' => \App\Http\Middleware\CheckCargoAdminTerceirizado::class,

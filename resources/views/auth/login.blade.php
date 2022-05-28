@@ -91,11 +91,7 @@
                         </div>
                     @endif
                 </form>
-                <div class="form-group col-md-11">
-                    <a type="button" href="{{ route('register') }}" class="btn btn-primary btn-block">
-                        {{ __('Cadastre-se') }}
-                    </a>
-                </div>
+
             </div>
         </div>
     </div>

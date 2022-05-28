@@ -36,7 +36,7 @@
                         </li>
                     </a>
 
-                    @if(!empty(Auth::user()->id) and Auth::user()->cargo_id == 2)
+                    @if(!empty(Auth::user()->id) and Auth::user()->cargo_id == 1)
                         @php
                             $notificacoes = Illuminate\Support\Facades\DB::table('notificacaos')->where('usuario_id', '=', Auth::user()->id)->paginate(5);
                             $notNaoVistas = false;

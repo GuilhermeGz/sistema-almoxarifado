@@ -48,19 +48,4 @@ class RegisterController extends Controller
         return Validator::make($data, \App\Usuario::$rules, \App\Usuario::$messages);
     }
 
-    protected function create(array $data)
-    {
-        return Usuario::create([
-            'nome' => $data['nome'],
-            'email' => $data['email'],
-            'numTel' => $data['numTel'],
-            'cpf' => $data['cpf'],
-            'rg' => $data['rg'],
-            'data_nascimento' => $data['data_nascimento'],
-            'matricula' => $data['matricula'],
-            'senha' => Hash::make($data['password']),
-            'cargo_id' => 1,
-            'setor' => $data['setor'],
-        ]);
-    }
 }
