@@ -3,15 +3,12 @@ function showItens(id) {
 
     $("#detalhesSolicitacao").modal('show');
 
-    $('#numSolicitacao').text(id);
-
     $.ajax({
-        url: '/observacao_solicitacao/' + id,
+        url: '/solicitante_solicitacao/' + id,
         type: 'GET',
         dataType: 'json',
         success: function (data) {
-            $('#textObservacaoRequerente').text(data[0]['observacao_requerente']);
-            $('#textObservacaoAdmin').text(data[0]['observacao_admin']);;
+            $('#solicitanteSolicitacao').text(data[0]['nome']);
         }
     });
 
@@ -26,7 +23,6 @@ function showItens(id) {
                 ret += "<td>" + data[item]['nome'] + "</td>";
                 ret += "<td>" + data[item]['descricao'] + "</td>";
                 ret += "<td style=\"text-align: center\">" + data[item]['quantidade_solicitada'] + "</td>";
-                ret += "<td style=\"text-align: center\">" + (data[item]['quantidade_aprovada'] == null ? '' : data[item]['quantidade_aprovada']) + "</td>";
                 ret += "</tr>";
             }
 
@@ -90,7 +86,7 @@ $(function () {
                         ret += "<tr data-id=" + id + " onclick=\"showItens( " + id + "  )\" style=\"cursor: pointer;\">";
                         ret += "<td>" + data[item]['nome'] + "</td>";
                         ret += "<td>" + data[item]['descricao'] + "</td>";
-                        ret += "<td style=\"text-align: center\">" + (data[item]['quantidade_aprovada'] == null ? '' : data[item]['quantidade_aprovada']) + "</td>";
+                        ret += "<td style=\"text-align: center\">" + data[item]['quantidade_solicitada'] + "</td>";
                         ret += "</tr>";
                     }
                     row.child(ret).show();

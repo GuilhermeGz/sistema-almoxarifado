@@ -99,7 +99,7 @@ Route::middleware('auth', 'verified')->group(function () {
         return view('home');
     })->name('home');
 
-    Route::get('observacao_solicitacao/{id}', 'SolicitacaoController@getObservacaoSolicitacao')->name('observacao.solicitacao');
+    Route::get('solicitante_solicitacao/{id}', 'SolicitacaoController@getSolicitanteSolicitacao')->name('solicitante.solicitacao');
     Route::get('itens_solicitacao_admin/{id}', 'SolicitacaoController@getItemSolicitacaoAdmin')->name('itens.solicitacao.admin');
 
     Route::get('notas_material/{id}', 'NotasController@getNotasList')->name('nota.material');

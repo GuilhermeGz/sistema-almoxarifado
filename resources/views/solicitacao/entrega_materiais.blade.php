@@ -87,7 +87,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="modalLabel" style="color:#151631">Solicitação - <span
-                                id="numSolicitacao"></span></h5>
+                                id="solicitanteSolicitacao"></span></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -109,41 +109,11 @@
                                     <th scope="col" class="text-center align-middle">Localização</th>
                                     <th scope="col" class="align-middle" style="text-align: center; width: 5%">Unidade</th>
                                     <th scope="col" style="text-align: center; width: 10%">Qtd. Solicitada</th>
-                                    <th scope="col" style="text-align: center; width: 10%">Qtd. Aprovada</th>
                                 </tr>
                                 </thead>
                                 <tbody id="listaItens"></tbody>
                             </table>
-                            <div id="observacaoRequerente">
-                                <label for="textObservacaoRequerente"><strong>Observações do
-                                        Requerente:</strong></label>
-                                <textarea class="form-control" name="observacaoRequerente" id="textObservacaoRequerente"
-                                          cols="30" rows="3" readonly></textarea>
-                            </div>
-                            <div id="observacaoAdmin" style="margin-top: 10px; margin-bottom: 10px">
-                                <label for="textObservacaoAdmin"><strong>Observações do Administrador:</strong></label>
-                                <textarea class="form-control" name="observacaoAdmin" id="textObservacaoAdmin" cols="30"
-                                          rows="3" readonly></textarea>
-                            </div>
-                            <strong style="margin-top: 10px">Dados do Solicitante:</strong>
-                            <div class="form-row" style="margin-top: 5px">
-                                <div class="form-group col-md-4">
-                                    <div class="form-group">
-                                        <label for="inputNomeReceptor">Nome</label>
-                                        <input type="text" class="form-control" id="inputNomeReceptor" value=""
-                                               readonly>
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label for="inputRgReceptor">RG</label>
-                                    <input type="text" class="form-control" value="" id="inputRgReceptor" readonly>
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label for="inputRgReceptor">Tipo</label>
-                                    <input type="text" class="form-control" id="inputTipoReceptor" name="tipoReceptor" value=""
-                                           readonly>
-                                </div>
-                            </div>
+
                         </div>
                     </div>
                     <div class="modal-footer">

@@ -3,18 +3,12 @@ function showItens(id) {
 
     $("#detalhesSolicitacao").modal('show');
 
-    $('#numSolicitacao').text(id);
-
     $.ajax({
-        url: '/observacao_solicitacao/' + id,
+        url: '/solicitante_solicitacao/' + id,
         type: 'GET',
         dataType: 'json',
         success: function (data) {
-            $('#textObservacaoRequerente').text(data[0]['observacao_requerente']);
-            $('#textObservacaoAdmin').text(data[0]['observacao_admin']);
-            $('#inputNomeReceptor').val(data[0]['receptor']);
-            $('#inputRgReceptor').val(data[0]['receptor_rg']);
-            $('#inputTipoReceptor').val(data[0]['receptor_tipo']);
+            $('#solicitanteSolicitacao').text(data[0]['nome']);
         }
     });
 
@@ -31,7 +25,6 @@ function showItens(id) {
                 ret += "<td style=\"width: 12%; text-align: center\">" + data[item]['corredor'] + "-" + data[item]['prateleira'].toUpperCase() + "-" + data[item]['coluna'] + "</td>";
                 ret += "<td style=\"text-align: center\">" + data[item]['unidade'] + "</td>";
                 ret += "<td style=\"text-align: center\">" + data[item]['quantidade_solicitada'] + "</td>";
-                ret += "<td style=\"text-align: center\">" + (data[item]['quantidade_aprovada'] == null ? '' : data[item]['quantidade_aprovada']) + "</td>";
                 ret += "</tr>";
             }
 

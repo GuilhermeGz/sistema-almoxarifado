@@ -68,7 +68,7 @@
         <div class="modal-dialog modal-xl" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="modalLabel" style="color:#151631">Solicitação - <span id="numSolicitacao"></span></h5>
+              <h5 class="modal-title" id="modalLabel" style="color:#151631">Solicitação - <span id="solicitanteSolicitacao"></span></h5>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -86,19 +86,10 @@
                                 <th scope="col" class="align-middle">Material</th>
                                 <th scope="col" class="align-middle">Descrição</th>
                                 <th scope="col" style="text-align: center; width: 10%">Qtd. Solicitada</th>
-                                <th scope="col" style="text-align: center; width: 10%">Qtd. Aprovada</th>
                             </tr>
                         </thead>
                         <tbody id="listaItens"></tbody>
                     </table>
-                    <div id="observacaoRequerente">
-                        <label for="textObservacaoRequerente"><strong>Observações do Requerente:</strong></label>
-                        <textarea class="form-control" name="observacaoRequerente" id="textObservacaoRequerente" cols="30" rows="3" readonly></textarea>
-                    </div>
-                    <div id="observacaoAdmin" style="margin-top: 10px">
-                        <label for="textObservacaoAdmin"><strong>Observações do Administrador:</strong></label>
-                        <textarea class="form-control" name="observacaoAdmin" id="textObservacaoAdmin" cols="30" rows="3" readonly></textarea>
-                    </div>
                 </div>
             </div>
           </div>
