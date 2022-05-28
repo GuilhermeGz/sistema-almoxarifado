@@ -54,22 +54,17 @@
             @auth
                 @if(Auth::user()->hasVerifiedEmail())
                     @auth
-                        @if (Auth::user()->cargo_id == 1)
-                            @include('templates.painel.requerente')
-                        @endif
-                    @endauth
-                    @auth
-                        @if(Auth::user()->cargo_id == 2)
+                        @if(Auth::user()->cargo_id == 1)
                             @include('templates.painel.admin')
                         @endif
                     @endauth
                     @auth
-                        @if (Auth::user()->cargo_id == 3)
+                        @if (Auth::user()->cargo_id == 2)
                             @include('templates.painel.diretoria')
                         @endif
                     @endauth
                         @auth
-                        @if (Auth::user()->cargo_id == 4)
+                        @if (Auth::user()->cargo_id == 3)
                             @include('templates.painel.terceirizado')
                         @endif
                     @endauth

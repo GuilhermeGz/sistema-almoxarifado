@@ -27,7 +27,7 @@
 
             <div class="form-group">
                 <label for="nome"> Nome Completo </label>
-                <input class="form-control  @error('nome') is-invalid @enderror" type="text" name="nome" id="nome" maxlength="100" value="{{ old('nome', $usuario->nome) }}" 
+                <input class="form-control  @error('nome') is-invalid @enderror" type="text" name="nome" id="nome" maxlength="100" value="{{ old('nome', $usuario->nome) }}"
                         autocomplete="nome" autofocus placeHolder="Nome Completo">
                 @error('nome')
                     <span class="invalid-feedback" role="alert">
@@ -39,7 +39,7 @@
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label for="cpf"> CPF </label>
-                    <input class="form-control @error('cpf') is-invalid @enderror" value="{{ old('cpf', $usuario->cpf) }}" type="text" name="cpf" id="cpf" autocomplete="cpf" 
+                    <input class="form-control @error('cpf') is-invalid @enderror" value="{{ old('cpf', $usuario->cpf) }}" type="text" name="cpf" id="cpf" autocomplete="cpf"
                             autofocus placeHolder="000.000.000-00">
                     @error('cpf')
                         <span class="invalid-feedback" role="alert">
@@ -50,7 +50,7 @@
 
                 <div class="form-group col-md-4">
                     <label for="rg"> RG </label>
-                    <input class="form-control @error('rg') is-invalid @enderror" value="{{ old('rg', $usuario->rg) }}" type="text" name="rg" id="rg" autocomplete="rg" 
+                    <input class="form-control @error('rg') is-invalid @enderror" value="{{ old('rg', $usuario->rg) }}" type="text" name="rg" id="rg" autocomplete="rg"
                             maxlength="11" autofocus placeHolder="00000000000">
                     @error('rg')
                         <span class="invalid-feedback" role="alert">
@@ -61,7 +61,7 @@
 
                 <div class="form-group col-md-4">
                     <label for="data_nascimento"> Data de Nascimento </label>
-                    <input class="form-control @error('data_nascimento') is-invalid @enderror" autofocus value="{{ old('data_nascimento', $usuario->data_nascimento) }}" 
+                    <input class="form-control @error('data_nascimento') is-invalid @enderror" autofocus value="{{ old('data_nascimento', $usuario->data_nascimento) }}"
                             type="date" name="data_nascimento" id="data_nascimento" min="1910-01-01">
                     @error('data_nascimento')
                         <span class="invalid-feedback" role="alert">
@@ -76,7 +76,7 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="email"> E-mail </label>
-                    <input class="form-control @error('email') is-invalid @enderror" value="{{ old('email', $usuario->email) }}" autocomplete="email" autofocus type="email" 
+                    <input class="form-control @error('email') is-invalid @enderror" value="{{ old('email', $usuario->email) }}" autocomplete="email" autofocus type="email"
                                 name="email" id="email" placeHolder="exemplodeemail@upe.br">
                     @error('email')
                         <span class="invalid-feedback" role="alert">
@@ -87,7 +87,7 @@
 
                 <div class="form-group col-md-6">
                     <label for="numTel"> Número de Celular </label>
-                    <input class="form-control @error('numTel') is-invalid @enderror" type="text" name="numTel" 
+                    <input class="form-control @error('numTel') is-invalid @enderror" type="text" name="numTel"
                             id="numTel" placeHolder="(00)00000-0000" value="{{ $usuario->numTel }}">
 
                     @error('numTel')
@@ -103,7 +103,7 @@
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label for="matricula"> Matrícula </label>
-                    <input class="form-control @error('matricula') is-invalid @enderror" value="{{ old('matricula', $usuario->matricula) }}" type="text" name="matricula" 
+                    <input class="form-control @error('matricula') is-invalid @enderror" value="{{ old('matricula', $usuario->matricula) }}" type="text" name="matricula"
                             maxlength="11" id="matricula" autocomplete="matricula" autofocus placeHolder="00000000000">
                     @error('matricula')
                         <span class="invalid-feedback" role="alert">
@@ -131,7 +131,7 @@
                     </select>
                 </div>
 
-                @if(Auth::user()->cargo_id == 2)
+                @if(Auth::user()->cargo_id == 1)
                 <div class="form-group col-md-4">
                     <label for="cargo"> Perfil </label>
                     <select class="custom-select @error('cargo') is-invalid @enderror" autofocus name="cargo" id="cargo">

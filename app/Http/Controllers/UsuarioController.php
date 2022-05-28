@@ -30,6 +30,7 @@ class UsuarioController extends Controller
 
     public function store(Request $request)
     {
+
         $request['cpf'] = str_replace(['.', '-'], '', $request['cpf']);
         $request['numTel'] = str_replace(['(', ')', '-'], '', $request['numTel']);
 
@@ -50,9 +51,9 @@ class UsuarioController extends Controller
 
         Usuario::create($data);
 
+
         $credentials = ['email' => $request['email']];
         Password::sendResetLink($credentials);
-
         return redirect(route('usuario.index'));
     }
 

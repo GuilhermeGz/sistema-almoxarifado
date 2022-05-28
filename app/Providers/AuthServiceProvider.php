@@ -27,11 +27,11 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
         Gate::define('update-usuario', function ($user, $usuario) {
-            return ($user->id == $usuario) || 2 == $user->cargo_id;
+            return ($user->id == $usuario) || 1 == $user->cargo_id;
         });
 
         Gate::define('read-usuario', function ($user) {
-            return 2 == $user->cargo_id;
+            return 1 == $user->cargo_id;
         });
 
         VerifyEmail::toMailUsing(function (Usuario $user, string $verificationUrl) {
