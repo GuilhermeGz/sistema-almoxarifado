@@ -16,6 +16,7 @@ class CreateItemSolicitacaos extends Migration
         Schema::create('item_solicitacaos', function (Blueprint $table) {
             $table->id();
             $table->integer('quantidade_solicitada');
+            $table->integer('quantidade_aprovada');
             $table->unsignedInteger('material_id')->index();
             $table->foreign('material_id')->references('id')->on('materials');
             $table->unsignedInteger('solicitacao_id')->index();

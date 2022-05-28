@@ -27,7 +27,7 @@ class SolicitacaoController extends Controller
             array_push($materiais, Material::find($estoque->material_id));
         }
 
-        return view('solicitacao.solicita_material', ['materiais' => $materiais,'unidades'=>$unidades]);
+        return view('solicitacao.solicita_material', ['materiais' => $materiais,'unidades'=>$unidades, 'estoques' => $estoques]);
     }
 
     public function store(Request $request)
@@ -72,6 +72,7 @@ class SolicitacaoController extends Controller
         for ($i = 0; $i < count($materiais); ++$i) {
             $itemSolicitacao = new ItemSolicitacao();
             $itemSolicitacao->quantidade_solicitada = $quantidades[$i];
+            $itemSolicitacao->quantidade_aprovada = $quantidades[$i];
             $itemSolicitacao->material_id = $materiais[$i];
             $itemSolicitacao->solicitacao_id = $solicitacao->id;
             $itemSolicitacao->save();

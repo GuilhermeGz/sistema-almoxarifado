@@ -53,6 +53,10 @@
             @foreach($materiais as $material)
                 <input type="hidden" id="unidade_{{$material->id}}" value="{{$material->unidade}}">
             @endforeach
+
+            @foreach($estoques as $estoque)
+                <input type="hidden" id="estoque_{{$estoque->material_id}}" value="{{$estoque->quantidade}}">
+            @endforeach
             <div class="form-group col-md-2">
                 <label for="quantMaterial" style="color: #151631; font-family: 'Segoe UI'; font-weight: 700">Quantidade</label>
                 <input type="text" min="1" class="form-control" id="quantMaterial" name="quantidade" value="{{ old('quantidade') }}">
@@ -81,6 +85,7 @@
                 <th scope="col">Material</th>
                 <th scope="col" style="text-align: center">Unidade Básica</th>
                 <th scope="col" style="text-align: center">Quantidade</th>
+                <th scope="col" style="text-align: center">Estoque</th>
                 <th scope="col" style="text-align: center">Unidade</th>
                 <th scope="col" style="text-align: center">Ações</th>
             </tr>
