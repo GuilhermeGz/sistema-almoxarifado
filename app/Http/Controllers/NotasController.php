@@ -160,7 +160,7 @@ class NotasController extends Controller
             $nota = NotaFiscal::find($notaM->nota_fiscal_id);
             if (!in_array([$nota->id, $nota->cnpj], $notas) && $notaM->status == false) {
                 $emitente = Emitente::find($nota->emitente_id);
-                array_push($notas, [$nota->id, $nota->numero, $emitente->razao_social]);
+                array_push($notas, [$nota->id, $nota->numero, $emitente->razao_social, ($notaM->quantidade_total - $notaM->quantidade_atual)]);
             }
         }
 
