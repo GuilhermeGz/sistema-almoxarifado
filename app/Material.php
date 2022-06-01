@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Estoque;
 
 class Material extends Model
 {
@@ -34,6 +35,11 @@ class Material extends Model
 
     public function notas_fiscais()
     {
-        $this->belongsToMany('App\nota_fiscals', 'material_notas', 'nota_fiscal_id', 'material_id');
+        return $this->belongsToMany('App\nota_fiscals', 'material_notas', 'nota_fiscal_id', 'material_id');
+    }
+
+    public function estoque()
+    {
+        return $this->hasOne(Estoque::class);
     }
 }

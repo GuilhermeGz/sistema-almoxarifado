@@ -45,8 +45,9 @@
                 <label for="selectMaterial" style="color: #151631; font-family: 'Segoe UI'; font-weight: 700">Material</label>
                 <select id="selectMaterial" class="selectMaterial" class="form-control" style="width: 95%;">
                     <option></option>
+                    <option data-value="" disabled>Material[Codigo - Estoque]</option>
                     @foreach($materiais as $material)
-                        <option data-value="{{$material->id}}">{{$material->codigo}} - {{ $material->nome }} </option>
+                        <option data-value="{{$material->id}}">{{ $material->nome }}[{{$material->codigo}} - {{$material->estoque->quantidade}}] </option>
                     @endforeach
                 </select>
             </div>

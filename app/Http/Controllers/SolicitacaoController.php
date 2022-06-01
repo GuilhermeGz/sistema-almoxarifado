@@ -47,13 +47,19 @@ class SolicitacaoController extends Controller
             if ((is_numeric($materiais[$i]) && intval($materiais[$i]) < 0 || strpos($materiais[$i], '.') || strpos($materiais[$i], ','))
                     || (is_numeric($quantidades[$i]) && intval($quantidades[$i]) < 0 || strpos($quantidades[$i], '.') || strpos($quantidades[$i], ','))) {
                 $materiaisCheck = false;
-
                 break;
+            }
+            $estoque = Estoque::where('material_id', '=', $materiais[$i])->first();
+            if($quantidades[$i] > $estoque->quantidade)
+            {
+                $material = Material::find($materiais[$i]);
+                return redirect()->back()->withErrors('Você solicitou uma quantidade do material ' . $material->nome
+                    . ' que não possui em estoque. Quantidade em Estoque: ' . $estoque->quantidade . ' Quantidade Solicitada: ' . $quantidades[$i]);
             }
         }
 
         if (!$materiaisCheck) {
-            return redirect()->back()->withErrors('Informe valores validos para o(s) material(is) e sua(s) quantidade(s)');
+            return redirect()->back()->withErrors('Informe valores válidos para o(s) material(is) e sua(s) quantidade(s)');
         }
 
         $solicitacao = new Solicitacao();
