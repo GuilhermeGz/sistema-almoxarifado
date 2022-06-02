@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Barryvdh\DomPDF\Facade as PDF;
 
 class SolicitacaoController extends Controller
 {
@@ -134,6 +135,13 @@ class SolicitacaoController extends Controller
         if ('cancelar_entrega' == $request->action) {
             return $this->cancelarEntregaMataeriais($request->solicitacaoID);
         }
+    }
+
+    public function gerarRecibo()
+    {
+        $pdf = PDF::loadView('solicitacao.recibo');
+        $nomePDF = 'Relatório_Materiais_Mais_Movimentados_Solicitação_Semana.pdf';
+        return $pdf->setPaper('a4')->stream($nomePDF);
     }
 
     public function entregarTodosMateriais()
