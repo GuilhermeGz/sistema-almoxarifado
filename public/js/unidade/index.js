@@ -13,6 +13,8 @@ $(function () {
             }
         },
         "columnDefs": [{
+            "targets": [8],
+            "orderable": false
         }]
     });
 

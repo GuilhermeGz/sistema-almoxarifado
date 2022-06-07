@@ -27,7 +27,8 @@
             background-repeat: no-repeat;
             height: 550px;
         }
-        footer.fixar-rodape{
+
+        footer.fixar-rodape {
             bottom: 0;
             left: 0;
             height: 40px;
@@ -35,7 +36,7 @@
             width: 100%;
         }
 
-        h4{
+        h4 {
             text-align: left;
             margin-left: 75px;
             margin-top: 0px;
@@ -97,10 +98,12 @@
 
 <!-- Wrap the content of your PDF inside a main tag -->
 <main>
-    <div class="background"  style="text-align: center;">
+    <div class="background" style="text-align: center;">
 
         @foreach($itens as $item)
-            <h4>{{$item}}.</h4>
+            @if($item != '')
+                <h4>{{$item}}.</h4>
+            @endif
         @endforeach
 
         <footer class="fixar-rodape">
@@ -109,7 +112,7 @@
             </div>
             <div class="col-sm-1"></div>
             <div class="col-sm-5" style="float: left">
-                 _________________________
+                _________________________
                 <br>
                 SECRETARIA DA SAÚDE
                 <br>

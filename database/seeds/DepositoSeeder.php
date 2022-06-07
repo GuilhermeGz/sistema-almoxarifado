@@ -12,6 +12,5 @@ class DepositoSeeder extends Seeder
     public function run()
     {
         factory(\App\Deposito::class, 1)->create(['nome' => 'Atendimento']);
-        factory(\App\Deposito::class, 1)->create(['nome' => 'Armazenamento']);
     }
 }

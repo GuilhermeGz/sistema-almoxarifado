@@ -142,7 +142,7 @@ class SolicitacaoController extends Controller
     {
         $recibo = Recibo::find($id);
         $string = '09 UNID Canetas#09 UNID Lapis';
-        $itens = explode('#', $string);
+        $itens = explode('#', $recibo->itens);
 
         $dia = $recibo->created_at->format('d');
         $ano = $recibo->created_at->format('Y');
@@ -200,7 +200,8 @@ class SolicitacaoController extends Controller
             foreach ($itens as $item)
             {
                 $material = Material::find($item->material_id);
-                $lista += $item->quantidade_aprovada . ' UNID ' . $material->nome . '#';
+                $lista = $lista . $item->quantidade_aprovada . ' UNID ' . $material->nome . '#';
+
             }
             $recibo = new Recibo();
             $recibo->unidade_id = $solicitacao->unidade_id;
