@@ -22,8 +22,22 @@
 
         .background {
             background-image: url('{{public_path('imagens/logo_prefeitura_back.png')}}');
-            background-size: 100% 500px;
+            background-position: center top;
+            background-size: 80% 400px;
             background-repeat: no-repeat;
+            height: 550px;
+        }
+        footer.fixar-rodape{
+            bottom: 0;
+            left: 0;
+            height: 40px;
+            position: fixed;
+            width: 100%;
+        }
+
+        h4{
+            float: left;
+            margin-left: 75px;
         }
     </style>
 </head>
@@ -80,78 +94,32 @@
 
 <!-- Wrap the content of your PDF inside a main tag -->
 <main>
-    <div style="text-align: center; ">
-        <table class="background" style="width: 90%; height: 100% ">
-            <tr>
-                <td>09 UNID GARRAFÕES DE ÁGUA MINERAL 20L</td>
-            </tr>
-            <tr>
-                <td>09 UNID GARRAFÕES DE ÁGUA MINERAL 20L</td>
-            </tr>
-            <tr>
-                <td>09 UNID GARRAFÕES DE ÁGUA MINERAL 20L</td>
-            </tr>
-            <tr>
-                <td>09 UNID GARRAFÕES DE ÁGUA MINERAL 20L</td>
-            </tr>
-            <tr>
-                <td>09 UNID GARRAFÕES DE ÁGUA MINERAL 20L</td>
-            </tr>
-            <tr>
-                <td>09 UNID GARRAFÕES DE ÁGUA MINERAL 20L</td>
-            </tr>
-            <tr>
-                <td>09 UNID GARRAFÕES DE ÁGUA MINERAL 20L</td>
-            </tr>
-            <tr>
-                <td>09 UNID GARRAFÕES DE ÁGUA MINERAL 20L</td>
-            </tr>
-            <tr>
-                <td>09 UNID GARRAFÕES DE ÁGUA MINERAL 20L</td>
-            </tr>
-            <tr>
-                <td>09 UNID GARRAFÕES DE ÁGUA MINERAL 20L</td>
-            </tr>
-            <tr>
-                <td>09 UNID GARRAFÕES DE ÁGUA MINERAL 20L</td>
-            </tr>
-            <tr>
-                <td>09 UNID GARRAFÕES DE ÁGUA MINERAL 20L</td>
-            </tr>
-            <tr>
-                <td>09 UNID GARRAFÕES DE ÁGUA MINERAL 20L</td>
-            </tr>
-            <tr>
-                <td>09 UNID GARRAFÕES DE ÁGUA MINERAL 20L</td>
-            </tr>
-            <tr>
-                <td>09 UNID GARRAFÕES DE ÁGUA MINERAL 20L</td>
-            </tr>
-            <tr>
-                <td>09 UNID GARRAFÕES DE ÁGUA MINERAL 20L</td>
-            </tr>
-            <tr>
-                <td>09 UNID GARRAFÕES DE ÁGUA MINERAL 20L</td>
-            </tr>
-            <tr>
-                <td>09 UNID GARRAFÕES DE ÁGUA MINERAL 20L</td>
-            </tr>
-            <tr>
-                <td>09 UNID GARRAFÕES DE ÁGUA MINERAL 20L</td>
-            </tr>
-            <tr>
-                <td>09 UNID GARRAFÕES DE ÁGUA MINERAL 20L</td>
-            </tr>
-            <tr>
-                <td>09 UNID GARRAFÕES DE ÁGUA MINERAL 20L</td>
-            </tr>
-            <tr>
-                <td>09 UNID GARRAFÕES DE ÁGUA MINERAL 20L</td>
-            </tr>
-            <tr>
-                <td>09 UNID GARRAFÕES DE ÁGUA MINERAL 20L</td>
-            </tr>
-        </table>
+    <div class="background"  style="text-align: center;">
+
+
+
+        <footer class="fixar-rodape">
+            <div class="col-sm-1" style="float: left">
+                Recebido Por:
+            </div>
+            <div class="col-sm-1"></div>
+            <div class="col-sm-5" style="float: left">
+                 _________________________
+                <br>
+                SECRETARIA DA SAÚDE
+                <br>
+                Garanhuns 02 de Maio de 2022
+
+            </div>
+            <div class="col-sm-5" style="float: right">
+                _________________________
+                <br>
+                MARCONI SILVA
+                <br>
+                GER. DO ALMOXARIFADO DA SAÚDE
+
+            </div>
+        </footer>
     </div>
 </main>
 </body>
