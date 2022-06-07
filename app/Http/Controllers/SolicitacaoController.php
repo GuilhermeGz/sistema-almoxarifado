@@ -7,6 +7,7 @@ use App\HistoricoStatus;
 use App\ItemSolicitacao;
 use App\Material;
 use App\Notificacao;
+use App\Recibo;
 use App\Solicitacao;
 use App\Unidade;
 use App\Usuario;
@@ -139,7 +140,10 @@ class SolicitacaoController extends Controller
 
     public function gerarRecibo()
     {
-        $pdf = PDF::loadView('solicitacao.recibo');
+        $string = '09 UNID Canetas#09 UNID Lapis';
+        $itens = explode('#', $string);
+
+        $pdf = PDF::loadView('solicitacao.recibo', compact($itens));
         $nomePDF = 'Relatório_Materiais_Mais_Movimentados_Solicitação_Semana.pdf';
         return $pdf->setPaper('a4')->stream($nomePDF);
     }
@@ -147,6 +151,21 @@ class SolicitacaoController extends Controller
     public function entregarTodosMateriais()
     {
         $historicos = HistoricoStatus::where('status', 'Aprovado')->get();
+        foreach ($historicos as $h){
+            $lista = '';
+            $solicitacao = Solicitacao::find($h->solicitacao_id);
+            $itens = ItemSolicitacao::where('solicitacao_id',$h->solicitacao_id)->get();
+            foreach ($itens as $item)
+            {
+                $material = Material::find($item->material_id);
+                $lista = $item->quantidade_aprovada . ' UNID ' . $material->nome . '#';
+            }
+            $recibo = new Recibo();
+            $recibo->unidade_id = $solicitacao->unidade_id;
+            $recibo->itens = $lista;
+            $recibo->save();
+        }
+
         $flag = 0;
 
         foreach ($historicos as $historico){
