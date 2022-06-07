@@ -138,12 +138,54 @@ class SolicitacaoController extends Controller
         }
     }
 
-    public function gerarRecibo()
+    public function gerarRecibo($id)
     {
+        $recibo = Recibo::find($id);
         $string = '09 UNID Canetas#09 UNID Lapis';
         $itens = explode('#', $string);
 
-        $pdf = PDF::loadView('solicitacao.recibo', compact($itens));
+        $dia = $recibo->created_at->format('d');
+        $ano = $recibo->created_at->format('Y');
+
+        if($recibo->created_at->format('m') == '01')
+        {
+            $mes = 'Janeiro';
+        } elseif($recibo->created_at->format('m') == '02')
+        {
+            $mes = 'Fevereiro';
+        } elseif($recibo->created_at->format('m') == '03')
+        {
+            $mes = 'Março';
+        } elseif($recibo->created_at->format('m') == '04')
+        {
+            $mes = 'Abril';
+        } elseif($recibo->created_at->format('m') == '05')
+        {
+            $mes = 'Maio';
+        } elseif($recibo->created_at->format('m') == '06')
+        {
+            $mes = 'Junho';
+        } elseif($recibo->created_at->format('m') == '07')
+        {
+            $mes = 'Julho';
+        } elseif($recibo->created_at->format('m') == '08')
+        {
+            $mes = 'Agosto';
+        } elseif($recibo->created_at->format('m') == '09')
+        {
+            $mes = 'Setembro';
+        } elseif($recibo->created_at->format('m') == '10')
+        {
+            $mes = 'Outubro';
+        } elseif($recibo->created_at->format('m') == '11')
+        {
+            $mes = 'Novembro';
+        } elseif($recibo->created_at->format('m') == '12')
+        {
+            $mes = 'Dezembro';
+        }
+
+        $pdf = PDF::loadView('solicitacao.recibo', compact('itens','dia','mes','ano'));
         $nomePDF = 'Relatório_Materiais_Mais_Movimentados_Solicitação_Semana.pdf';
         return $pdf->setPaper('a4')->stream($nomePDF);
     }
@@ -158,7 +200,7 @@ class SolicitacaoController extends Controller
             foreach ($itens as $item)
             {
                 $material = Material::find($item->material_id);
-                $lista = $item->quantidade_aprovada . ' UNID ' . $material->nome . '#';
+                $lista += $item->quantidade_aprovada . ' UNID ' . $material->nome . '#';
             }
             $recibo = new Recibo();
             $recibo->unidade_id = $solicitacao->unidade_id;

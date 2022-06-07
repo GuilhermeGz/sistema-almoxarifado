@@ -19,7 +19,10 @@ Route::middleware(['auth', 'verified', 'CheckCargoAdministrador'])->group(functi
     Route::get('notificacoes', 'NotificacaoController@index')->name('notificacao.index');
 
     Route::get('material/index_edit', 'MaterialController@indexEdit')->name('material.indexEdit');
-    Route::get('material/{id}/remover', 'MaterialController@destroy')->name('material.destroy');
+    Route::get('material/{id}/remover', 'MaterialController@destroy')->name('material.deletar');
+
+    Route::get('recibo/{id}', 'UnidadeController@listarRecibos')->name('unidade.recibos');
+    Route::get('recibo/{id}/download', 'SolicitacaoController@gerarRecibo')->name('unidade.recibo.baixar');
 
     Route::get('nova_entrada_form', 'MovimentoController@createEntrada')->name('movimento.entradaCreate');
     Route::get('nova_saida_form', 'MovimentoController@createSaida')->name('movimento.saidaCreate');

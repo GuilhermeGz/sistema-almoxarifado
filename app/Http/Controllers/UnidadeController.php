@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Recibo;
 use App\Solicitacao;
 use App\Unidade;
 use Illuminate\Http\Request;
@@ -11,6 +12,11 @@ class UnidadeController extends Controller
     public function cadastrar()
     {
         return view('unidade.unidade_create');
+    }
+
+    public function listarRecibos($id){
+        $recibos = Recibo::where('unidade_id',$id)->get();
+        return view('recibo.index', ['recibos' => $recibos]);
     }
 
     public function criar(Request $request)

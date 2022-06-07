@@ -33,6 +33,7 @@
             <th class="align-middle" scope="col" style="text-align: center;">Numero do Coordenador</th>
             <th class="align-middle" scope="col" style="text-align: center; ">Nome da Enfermeira</th>
             <th class="align-middle" scope="col" style="text-align: center; ">Numero da Enfermeira</th>
+            <th class="align-middle" scope="col" style="text-align: center; ">Recibos</th>
         </tr>
         </thead>
         <tbody>
@@ -47,6 +48,9 @@
                 <td style="text-align: center"> {{ $unidade->numero_coordenador }}</td>
                 <td style="text-align: center"> {{ $unidade->nome_enfermeira }}</td>
                 <td style="text-align: center"> {{ $unidade->numero_enfermeira }}</td>
+                <td style="text-align: center">
+                    <a href="{{route('unidade.recibos', ['id' => $unidade->id])}}" type="button" class="btn btn-primary">Recibos</a>
+                </td>
             </tr>
         @empty
             <td colspan="9">Sem unidades basicas cadastradas ainda</td>

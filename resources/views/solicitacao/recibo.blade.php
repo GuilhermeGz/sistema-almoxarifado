@@ -36,8 +36,11 @@
         }
 
         h4{
-            float: left;
+            text-align: left;
             margin-left: 75px;
+            margin-top: 0px;
+            margin-bottom: 0px;
+            font-weight: normal;
         }
     </style>
 </head>
@@ -96,7 +99,9 @@
 <main>
     <div class="background"  style="text-align: center;">
 
-
+        @foreach($itens as $item)
+            <h4>{{$item}}.</h4>
+        @endforeach
 
         <footer class="fixar-rodape">
             <div class="col-sm-1" style="float: left">
@@ -108,7 +113,7 @@
                 <br>
                 SECRETARIA DA SAÚDE
                 <br>
-                Garanhuns 02 de Maio de 2022
+                Garanhuns {{$dia}} de {{$mes}} de {{$ano}}
 
             </div>
             <div class="col-sm-5" style="float: right">
