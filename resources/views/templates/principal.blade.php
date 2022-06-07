@@ -27,6 +27,12 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <style>
+        .min-h-screen {
+            min-height: 70vh;
+        }
+    </style>
+
 </head>
 
 <body style="background-color: #151631">
@@ -44,7 +50,7 @@
 
 @include('templates.navbar')
 
-<div class="container-fluid">
+<div class="container-fluid min-h-screen">
     <div class="row">
         <div class="col-sm-2" style="background-color: #151631; color: white; height: 550px;">
             <a class="navbar-brand" href="{{ url('/') }}">
