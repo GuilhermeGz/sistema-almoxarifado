@@ -25,8 +25,8 @@ var _row = null;
 
 function construirTable(quantidade, unidade, estoque) {
     return "<td class=\"quantidadeRow\" style=\"text-align: center\">" + quantidade + "</td>" +
-        "<td class=\"quantidadeRow\" style=\"text-align: center\">" + estoque + "</td>" +
-        "<td class=\"quantidadeRow\" style=\"text-align: center\">" + unidade + "</td>" +
+        "<td class=\"estoqueRow\" style=\"text-align: center\">" + estoque + "</td>" +
+        "<td class=\"unidadeRow\" style=\"text-align: center\">" + unidade + "</td>" +
         "<td style=\"text-align: center\">" +
         "<div class=\"dropdown\">" +
         "<button class=\"btn btn-secondary dropdown\" type=\"button\" id=\"dropdownMenuButton\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"false\">" +
