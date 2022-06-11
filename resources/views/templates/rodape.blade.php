@@ -1,4 +1,4 @@
-<footer class="container-fluid pt-1 pb-4" style="background-color: white">
+<footer class="container-fluid pt-1 pb-4 secundaria-bg">
     <div class="container-fluid px-lg-5">
         <div class="row justify-content-between align-items-center my-2">
             <div class="col-md-4 text-center py-1">
@@ -10,7 +10,7 @@
             <div class="col-md-4 text-center py-1">
                 <div class="form-row">
                     <div class="col-md-12">
-                        <h6 style="color: #909090;">Desenvolvido por:</h6>
+                        <h6>Desenvolvido por:</h6>
                     </div>
                 </div>
                 <div class="form-row">

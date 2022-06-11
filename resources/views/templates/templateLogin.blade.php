@@ -36,7 +36,7 @@
         </form>
     @endauth
     <div class="row">
-        <div class="col-md"  style="background-color: #1b1c42; ">
+        <div class="col-md primaria-bg" >
                 @yield('content')
                 @yield('post-script')
         </div>
