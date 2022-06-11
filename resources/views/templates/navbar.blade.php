@@ -2,39 +2,40 @@
     <nav class="navbar navbar-expand-md navbar-light shadow-sm" style="background-color: #3E3767;">
         <div class="container">
 
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" aria-expanded="false"
-                    aria-label="{{ __('Toggle navigation') }}">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                </ul>
+                <a class="navbar-nav" href="{{ url('/') }}">
+                    <img src="{{asset('imagens/logo.png')}}" width="170px" style="float: left">
+                </a>
+
                 <ul class="navbar-nav ml-auto">
-                    <a class="nav-link menuSupEInf" style="color: white; font-weight: bold" href="{{ route('home') }}">
-                        <li class="nav-item " style="padding: 0px 15px">
-                            {{ __('Início') }}
-                        </li>
-                    </a>
-                    <a class="nav-link menuSupEInf" style="color: white; font-weight: bold"
-                       href="{{ route('sistema') }}">
-                        <li class="nav-item " style="padding: 0px 15px">
-                            {{ __('O Sistema') }}
-                        </li>
-                    </a>
-                    <a class="nav-link menuSupEInf" style="color: white; font-weight: bold"
-                       href="{{ route('parceria') }}">
-                        <li class="nav-item " style="padding: 0px 15px">
-                            {{ __('A Parceria') }}
-                        </li>
-                    </a>
-                    <a class="nav-link menuSupEInf" style="color: white; font-weight: bold"
-                       href="{{ route('contato') }}">
-                        <li class="nav-item " style="padding: 0px 15px">
-                            {{ __('Contato') }}
-                        </li>
-                    </a>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="textdropdown">Material</span>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ route('material.create') }}">Cadastrar</a>
+                            <a class="dropdown-item" href="{{ route('material.indexEdit') }}">Editar</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{{ route('material.index') }}">Consultar</a>
+
+                        </div>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="textdropdown">Nota Fiscal</span>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{ route('cadastrar.nota') }}">Cadastrar</a>
+                            <a class="dropdown-item" href="{{route('index.nota')}}">Editar</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{{route('consult.nota')}}">Consultar</a>
+
+                        </div>
+                    </li>
 
                     @if(!empty(Auth::user()->id) and Auth::user()->cargo_id == 1)
                         @php
@@ -80,7 +81,7 @@
                         <div class="dropdown" onselectstart="return false" style="margin-left: 10px">
                             <a id="dropdown_perfil" name="dropdown_perfil" class="dropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                               <img src="{{asset('imagens/logo_pega_pequeno.png')}}" style="width:35px"/>
+                                <img src="{{asset('imagens/logo_pega_pequeno.png')}}" style="width:35px"/>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown_perfil">
                                 <a class="dropdown-item"
