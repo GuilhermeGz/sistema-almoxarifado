@@ -47,7 +47,7 @@
                     <option></option>
                     <option data-value="" disabled>Material[Codigo - Estoque]</option>
                     @foreach($materiais as $material)
-                        <option data-value="{{$material->id}}">{{ $material->nome }}[{{$material->codigo}} - {{$material->estoque->quantidade}}] </option>
+                        <option data-value="{{$material->id}}" id="Material{{$material->id}}">{{ $material->nome }}[{{$material->codigo}} - {{$material->estoque->quantidade}}] </option>
                     @endforeach
                 </select>
             </div>
@@ -102,6 +102,7 @@
         <button id="solicita" class="btn btn-success" disabled onclick="return setValuesRowInput()">Solicitar</button>
     </form>
 
+    <input id="flag" value="xx" hidden>
     <div class="modal fade" id="detalhesSolicitacao" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
@@ -119,7 +120,7 @@
                                 <select id="selectMaterialEdit" style="width: 110%;" class="selectMaterial" class="form-control" name="selectMaterialEdit">
                                     <option></option>
                                     @foreach($materiais as $material)
-                                        <option value="{{$material->id}}"> {{$material->codigo}} - {{ $material->nome }} </option>
+                                        <option value="{{$material->id}}" id="MaterialEdit{{$material->id}}">{{ $material->nome }}[{{$material->codigo}} - {{$material->estoque->quantidade}}]</option>
                                     @endforeach
                                 </select>
                             </div>
