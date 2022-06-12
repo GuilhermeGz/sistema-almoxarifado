@@ -12,7 +12,7 @@
     </div>
 
     <table id="tableCargos" class="table table-hover table-responsive-md">
-        <thead style="background-color: #151631; color: white; border-radius: 15px">
+        <thead class="terciaria-bg" style="color: white; border-radius: 15px">
             <th> Nome </th>
         </thead>
 

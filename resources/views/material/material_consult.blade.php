@@ -8,7 +8,7 @@
     </div>
 
     <table id="tableMateriais" class="table table-hover table-responsive-md">
-        <thead style="background-color: #151631; color: white; border-radius: 15px">
+        <thead class="terciaria-bg" style="color: white; border-radius: 15px">
         <tr>
             <th class="align-middle" scope="col" style="padding: 0px"></th>
             <th class="align-middle" scope="col" style="padding-left: 10px">Imagem</th>

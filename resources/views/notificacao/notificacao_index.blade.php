@@ -7,7 +7,7 @@
         <h2>TODAS AS NOTIFICAÇÕES</h2>
     </div>
     <table id="tableNotificacoes" class="table table-hover table-responsive-md">
-        <thead style="background-color: #151631; color: white; border-radius: 15px">
+        <thead class="terciaria-bg" style="color: white; border-radius: 15px">
             <tr>
                 <th class="align-middle" scope="col">Mensagem</th>
                 <th class="align-middle" scope="col" style="text-align: center">Quantidade Total</th>

@@ -52,7 +52,7 @@
 
 <div class="container-fluid min-h-screen">
     <div class="primaria-bg">
-        <div class="container mb-4" style="background-color: white;margin-top: 30px; padding: 20px;border-radius: 15px">
+        <div class="container mb-4 secundaria-bg" style="margin-top: 30px; padding: 20px;border-radius: 15px">
             @yield('content')
             @yield('post-script')
         </div>

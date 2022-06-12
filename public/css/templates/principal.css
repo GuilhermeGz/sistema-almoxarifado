@@ -17,15 +17,15 @@ table.dataTable thead th {
 
 .notificacao
 {
-    background-color: #b91d19;
 }
 
 .primaria {
-    color: #FA4850;
+    color: #C48154;
 }
 
+
 .primaria-bg {
-    background-color: #FA4850;
+    background-color: #C48154;
 }
 
 .secundaria {
@@ -36,12 +36,12 @@ table.dataTable thead th {
     background-color: #F9F2FA;
 }
 
-.terciaria {
-    color: #FC9027;
+.terciaria, h2, .textdropdown {
+    color: #E14856 !important;
 }
 
-.terciaria-bg {
-    background-color: #FC9027;
+.terciaria-bg, thead {
+    background-color: #E14856 !important;
 }
 
 .textdropdown
