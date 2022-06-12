@@ -6,6 +6,9 @@
     <title>Almoxarifado - @yield('title')</title>
 
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet"/>
+    <link href="{{asset('css/templates/principal.css')}}" rel="stylesheet"/>
 
     <script defer="defer" src="//barra.brasil.gov.br/barra.js" type="text/javascript"></script>
 
@@ -14,7 +17,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
     <script type="text/javascript" src="{{asset('js/templates/principal.js')}}"></script>
 </head>
-<body style="background-color: #151631">
+<body class="primaria-bg">
 
 <div id="barra-brasil" style="background:#7F7F7F; height: 20px; padding:0 0 0 10px;display:block;">
     <ul id="menu-barra-temp" style="list-style:none;">
@@ -27,7 +30,7 @@
     </ul>
 </div>
 
-@include('templates.navbar')
+@include('templates.navbar2')
 
 <div class="container-fluid">
     @auth

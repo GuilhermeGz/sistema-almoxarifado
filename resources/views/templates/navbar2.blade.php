@@ -2,6 +2,7 @@
     <a class="navbar-nav" href="{{ url('/') }}">
         <img src="{{asset('imagens/logo.png')}}" width="170px" style="float: left">
     </a>
+    @auth()
 
     <ul class="navbar-nav ml-auto" >
         <li class="nav-item dropdown">
@@ -295,5 +296,6 @@
             </div>
         @endif
     </ul>
+    @endauth
 </nav>
 
