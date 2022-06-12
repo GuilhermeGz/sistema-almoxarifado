@@ -290,9 +290,12 @@
                         Senha </a>
                     <a class="dropdown-item" href="{{ route('logout') }}"
                        onclick="event.preventDefault(); sessionStorage.clear(); document.getElementById('logout-form').submit();">
-                        Sair </a>
+                        Sair</a>
                 </div>
             </div>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                @csrf
+            </form>
         @endif
     </ul>
 </nav>
