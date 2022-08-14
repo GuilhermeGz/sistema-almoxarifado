@@ -30,7 +30,6 @@ class UsuarioController extends Controller
 
     public function store(Request $request)
     {
-
         $request['cpf'] = str_replace(['.', '-'], '', $request['cpf']);
         $request['numTel'] = str_replace(['(', ')', '-'], '', $request['numTel']);
 
@@ -46,7 +45,6 @@ class UsuarioController extends Controller
             'cargo_id' => $request['cargo'],
             'numTel' => $request['numTel'],
             'senha' => Hash::make($request->password),
-            'setor' => $request['setor'],
         ];
 
         Usuario::create($data);
@@ -127,7 +125,6 @@ class UsuarioController extends Controller
             'data_nascimento' => $request['data_nascimento'],
             'matricula' => $request['matricula'],
             'numTel' => $request['numTel'],
-            'setor' => $request['setor'],
         ];
 
         $usuario->fill($data)->Update();
@@ -199,7 +196,6 @@ class UsuarioController extends Controller
             'matricula' => $request['matricula'],
             'cargo_id' => $request['cargo'],
             'numTel' => $request['numTel'],
-            'setor' => $request['setor'],
         ];
 
         $usuario->fill($data)->Update();

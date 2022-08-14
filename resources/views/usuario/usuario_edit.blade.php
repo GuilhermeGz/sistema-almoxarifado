@@ -101,7 +101,7 @@
             <p style="font-weight: bold; font-size: 15px">Informações institucionais</p>
 
             <div class="form-row">
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-6">
                     <label for="matricula"> Matrícula </label>
                     <input class="form-control @error('matricula') is-invalid @enderror" value="{{ old('matricula', $usuario->matricula) }}" type="text" name="matricula"
                             maxlength="11" id="matricula" autocomplete="matricula" autofocus placeHolder="00000000000">
@@ -112,27 +112,9 @@
                     @enderror
                 </div>
 
-                <div class="form-group col-md-4">
-                    <label for="setor"> Setor </label>
-                    <select id="setor" class="form-control" name="setor">
-                        @if($usuario->setor == 'Administrativo')
-                            <option selected value="Administrativo">Administrativo</option>
-                            <option value="Academico">Acadêmico</option>
-                            <option value="Administrativo/Academico">Administrativo/Acadêmico</option>
-                        @elseif($usuario->setor == 'Academico')
-                            <option value="Administrativo">Administrativo</option>
-                            <option selected value="Academico">Acadêmico</option>
-                            <option value="Administrativo/Academico">Administrativo/Acadêmico</option>
-                        @else
-                            <option value="Administrativo">Administrativo</option>
-                            <option value="Academico">Acadêmico</option>
-                            <option selected value="Administrativo/Academico">Administrativo/Acadêmico</option>
-                        @endif
-                    </select>
-                </div>
 
                 @if(Auth::user()->cargo_id == 1)
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-6">
                     <label for="cargo"> Perfil </label>
                     <select class="custom-select @error('cargo') is-invalid @enderror" autofocus name="cargo" id="cargo">
                         <option value="{{ $usuario->cargo_id }}"

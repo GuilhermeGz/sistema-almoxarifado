@@ -22,7 +22,6 @@ class CreateUsuariosTable extends Migration
             $table->foreignId('cargo_id');
             $table->string('email')->unique();
             $table->string('senha');
-            $table->enum('setor', ['Administrativo', 'Academico', 'Administrativo/Academico']);
             $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();

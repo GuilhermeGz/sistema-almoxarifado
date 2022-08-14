@@ -75,7 +75,7 @@
             </div>
 
             <div class="form-row">
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-6">
                     <label for="matricula"> Matrícula </label>
                     <input class="form-control @error('matricula') is-invalid @enderror" value="{{ old('matricula') }}"
                            type="text"
@@ -87,15 +87,7 @@
                         </span>
                     @enderror
                 </div>
-                <div class="form-group col-md-4">
-                    <label for="setor"> Setor </label>
-                    <select id="setor" class="form-control" name="setor">
-                        <option value="Administrativo">Administrativo</option>
-                        <option value="Academico">Acadêmico</option>
-                        <option value="Administrativo/Academico">Administrativo/Acadêmico</option>
-                    </select>
-                </div>
-                <div class="form-group col-md-4">
+                <div class="form-group col-md-6">
                     <label for="cargo"> Perfil </label>
                     <select class="custom-select @error('cargo') is-invalid @enderror" autofocus name="cargo"
                             id="cargo">
