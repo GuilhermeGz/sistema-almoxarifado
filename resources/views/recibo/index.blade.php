@@ -37,7 +37,7 @@
                 <td class="text-left"> {{ $recibo->id }} </td>
                 <td style="text-align: center"> {{ $recibo->unidade->nome }} </td>
                 <td style="text-align: center"> {{ $recibo->created_at->format('d/m/Y - h:m') }} </td>
-                <td style="text-align: center"><a href="{{route('unidade.recibo.baixar', ['id' => $recibo->id])}}" class="btn-success btn" type="button">Baixar</a></td>
+                <td style="text-align: center"><a class="btn btn-group border-dark" href="{{route('unidade.recibo.baixar', ['id' => $recibo->id])}}" title="Baixar Recibo"><i class="fa-solid fa-download"></i></a></td>
             </tr>
         @endforeach
 
