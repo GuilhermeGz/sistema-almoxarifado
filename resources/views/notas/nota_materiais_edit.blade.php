@@ -66,9 +66,15 @@
         </table>
     @endif
 
-    <!-- Large modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Adicionar Material</button>
-
+    <div class="row">
+        <div class="form-group col-md-2">
+            <a type="button" class="btn btn-danger" style="width: 100%" href="{{route('index.nota')}}">Voltar</a>
+        </div>
+        <!-- Large modal -->
+        <div class="form-group col-md-2">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Adicionar Material</button>
+        </div>
+    </div>
     <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">

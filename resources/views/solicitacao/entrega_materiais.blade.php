@@ -14,10 +14,10 @@
         </div>
     @endif
 
-    @if($errors->any())
+    @if(session()->has('error'))
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <ul>
-                @foreach($errors->all() as $erro)
+                @foreach(session('error') as $erro)
                     <li>{{ $erro }}</li>
                 @endforeach
             </ul>
