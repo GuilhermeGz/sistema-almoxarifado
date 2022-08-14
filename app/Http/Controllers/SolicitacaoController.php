@@ -193,24 +193,9 @@ class SolicitacaoController extends Controller
     public function entregarTodosMateriais()
     {
         $historicos = HistoricoStatus::where('status', 'Aprovado')->get();
-        foreach ($historicos as $h){
-            $lista = '';
-            $solicitacao = Solicitacao::find($h->solicitacao_id);
-            $itens = ItemSolicitacao::where('solicitacao_id',$h->solicitacao_id)->get();
-            foreach ($itens as $item)
-            {
-                $material = Material::find($item->material_id);
-                $lista = $lista . $item->quantidade_aprovada . ' UNID ' . $material->nome . '#';
-
-            }
-            $recibo = new Recibo();
-            $recibo->unidade_id = $solicitacao->unidade_id;
-            $recibo->itens = $lista;
-            $recibo->save();
-        }
 
         $flag = 0;
-
+        $errorMessage = [];
         foreach ($historicos as $historico){
             $itens = ItemSolicitacao::where('solicitacao_id', '=', $historico->solicitacao_id)->where('quantidade_aprovada', '!=', null)->get();
             $materiaisID = array_column($itens->toArray(), 'material_id');
@@ -220,7 +205,6 @@ class SolicitacaoController extends Controller
             $estoque = Estoque::wherein('material_id', $materiaisID)->where('deposito_id', 1)->orderBy('material_id', 'asc')->get();
 
             $checkQuant = true;
-            $errorMessage = [];
 
             for ($i = 0; $i < count($materiaisID); ++$i) {
                 if (($estoque[$i]->quantidade - $quantAprovadas[$i]) < 0) {
@@ -258,6 +242,22 @@ class SolicitacaoController extends Controller
                     }
                 }
 
+                //Criação do recibo
+                $lista = '';
+                $solicitacao = Solicitacao::find($historico->solicitacao_id);
+                $itens = ItemSolicitacao::where('solicitacao_id',$historico->solicitacao_id)->get();
+                foreach ($itens as $item)
+                {
+                    $material = Material::find($item->material_id);
+                    $lista = $lista . $item->quantidade_aprovada . ' UNID ' . $material->nome . '#';
+
+                }
+                $recibo = new Recibo();
+                $recibo->unidade_id = $solicitacao->unidade_id;
+                $recibo->itens = $lista;
+                $recibo->save();
+                // Fim
+
                 DB::update(
                     'update historico_statuses set status = ?, data_finalizado = now() where solicitacao_id = ?',
                     ['Entregue', $historico->solicitacao_id]
@@ -265,7 +265,7 @@ class SolicitacaoController extends Controller
             }
         }
         if($flag ==0){
-            return redirect()->back();
+            return redirect()->back()->with('error', $errorMessage);
         }
         return redirect()->back()->with(['success'=> 'Material(is) entregue(s) com sucesso!']);
     }
@@ -317,6 +317,22 @@ class SolicitacaoController extends Controller
                 }
             }
 
+            //Criação do recibo
+            $lista = '';
+            $solicitacao = Solicitacao::find($id);
+            $itens = ItemSolicitacao::where('solicitacao_id',$id)->get();
+            foreach ($itens as $item)
+            {
+                $material = Material::find($item->material_id);
+                $lista = $lista . $item->quantidade_aprovada . ' UNID ' . $material->nome . '#';
+
+            }
+            $recibo = new Recibo();
+            $recibo->unidade_id = $solicitacao->unidade_id;
+            $recibo->itens = $lista;
+            $recibo->save();
+            // Fim
+
             DB::update(
                 'update historico_statuses set status = ?, data_finalizado = now() where solicitacao_id = ?',
                 ['Entregue', $id]
@@ -324,8 +340,6 @@ class SolicitacaoController extends Controller
 
             return redirect()->back()->with('success', 'Material(is) entregue(s) com sucesso!');
         }
-        array_push($errorMessage, 'Faça transferências para o depósito de atendimento');
-
         return redirect()->back()->with('error', $errorMessage);
     }
 
