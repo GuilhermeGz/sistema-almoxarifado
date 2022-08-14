@@ -76,7 +76,7 @@
                     <label for="cep"> CEP<span style="color: red">*</span></label>
                     <input name="cep" id="cep" class="form-control @error('cep') is-invalid @enderror" maxlength="8"
                            @if(isset($config->cep)) value="{{$config->cep}}"
-                           @else value="{{ old('cep') }}" @endif type="text" autocomplete="cep" autofocus placeHolder="00000000" required>
+                           @else value="{{ old('cep') }}" @endif type="text" autocomplete="cep" autofocus placeHolder="00000000" required onblur="pesquisacep(this.value)">
                     @error('cep')
                     <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -165,7 +165,7 @@
 
             <Button class="btn btn-secondary" type="button"
                     onclick="if(confirm('Tem certeza que deseja Cancelar a configuração da notas fiscais?')) location.href = '../' ">
-                Cancelar
+                Cancelars
             </Button>
             <Button class="btn btn-success" type="submit"> Salvar</Button>
         </div>
@@ -174,3 +174,4 @@
 @endsection
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript" src="{{asset('js/usuario/CheckFields.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/nota/config.js')}}"></script>

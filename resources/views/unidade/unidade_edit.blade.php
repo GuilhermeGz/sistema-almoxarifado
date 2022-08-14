@@ -51,7 +51,7 @@
         <div class="form-group row">
             <div class="col-md-4">
                 <label for="cep">CEP<span style="color: red">*</span></label>
-                <input class="form-control" type="text" id="cep" name="cep" placeholder="Digite o cep da unidade básica" value="{{$unidade->cep}}" required>
+                <input class="form-control" type="text" id="cep" name="cep"  onblur="pesquisacep(this.value)" placeholder="Digite o cep da unidade básica" value="{{$unidade->cep}}" required>
             </div>
 
             <div class="col-md-4">
@@ -79,3 +79,5 @@
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript" src="{{asset('js/material/CheckFields.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/unidade/busca.js')}}"></script>
+
