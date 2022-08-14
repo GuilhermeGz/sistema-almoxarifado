@@ -26,6 +26,7 @@
         <thead style="background-color: #151631; color: white; border-radius: 15px">
         <tr>
             <th class="align-middle" scope="col" style="padding-left: 10px; width: 5%">Identificador</th>
+            <th class="align-middle" scope="col" style="text-align: center">Unidade</th>
             <th class="align-middle" scope="col" style="text-align: center; ">Data</th>
             <th class="align-middle" scope="col" style="text-align: center; width: 5%">Ações</th>
         </thead>
@@ -33,8 +34,9 @@
 
         @foreach($recibos as $recibo)
             <tr>
-                <td class="text-left" style="text-align: center"> {{ $recibo->id }} </td>
-                <td style="text-align: center"> {{ $recibo->created_at->format('d/m/Y') }} </td>
+                <td class="text-left"> {{ $recibo->id }} </td>
+                <td style="text-align: center"> {{ $recibo->unidade->nome }} </td>
+                <td style="text-align: center"> {{ $recibo->created_at->format('d/m/Y - h:m') }} </td>
                 <td style="text-align: center"><a href="{{route('unidade.recibo.baixar', ['id' => $recibo->id])}}" class="btn-success btn" type="button">Baixar</a></td>
             </tr>
         @endforeach
@@ -61,7 +63,7 @@
                 }
             },
             "columnDefs": [{
-                "targets": [2],
+                "targets": [3],
                 "orderable": false
             }]
         });

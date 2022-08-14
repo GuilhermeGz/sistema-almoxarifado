@@ -47,7 +47,7 @@ class SolicitacaoController extends Controller
             }
 
             if ((is_numeric($materiais[$i]) && intval($materiais[$i]) < 0 || strpos($materiais[$i], '.') || strpos($materiais[$i], ','))
-                    || (is_numeric($quantidades[$i]) && intval($quantidades[$i]) < 0 || strpos($quantidades[$i], '.') || strpos($quantidades[$i], ','))) {
+                || (is_numeric($quantidades[$i]) && intval($quantidades[$i]) < 0 || strpos($quantidades[$i], '.') || strpos($quantidades[$i], ','))) {
                 $materiaisCheck = false;
                 break;
             }
@@ -222,10 +222,13 @@ class SolicitacaoController extends Controller
             $checkQuant = true;
             $errorMessage = [];
 
-            for ($i = 0; $i < count($materiaisID); ++$i) {
-                if (($estoque[$i]->quantidade - $quantAprovadas[$i]) < 0) {
+            foreach($itens as $item){
+                $estoqueItem = Estoque::where('material_id', $item->material_id)->where('deposito_id', 1)->first();
+                $materialNome = Material::where('id', $item->material_id)->first();
+
+                if(($estoqueItem->quantidade - $item->quantidade_aprovada) < 0){
                     $checkQuant = false;
-                    $message = $materiaisNome[$i]->nome.' Disponível('.$estoque[$i]->quantidade.')';
+                    $message = $materialNome->nome.' quantidade disponível('.$estoqueItem->quantidade.')'. ' - quantidade aprovada('.$item->quantidade_aprovada.')';
                     array_push($errorMessage, $message);
                 }
             }
@@ -282,10 +285,13 @@ class SolicitacaoController extends Controller
         $checkQuant = true;
         $errorMessage = [];
 
-        for ($i = 0; $i < count($materiaisID); ++$i) {
-            if (($estoque[$i]->quantidade - $quantAprovadas[$i]) < 0) {
+        foreach($itens as $item){
+            $estoqueItem = Estoque::where('material_id', $item->material_id)->where('deposito_id', 1)->first();
+            $materialNome = Material::where('id', $item->material_id)->first();
+
+            if(($estoqueItem->quantidade - $item->quantidade_aprovada) < 0){
                 $checkQuant = false;
-                $message = $materiaisNome[$i]->nome.' Disponível('.$estoque[$i]->quantidade.')';
+                $message = $materialNome->nome.' quantidade disponível('.$estoqueItem->quantidade.')'. ' - quantidade aprovada('.$item->quantidade_aprovada.')';
                 array_push($errorMessage, $message);
             }
         }
