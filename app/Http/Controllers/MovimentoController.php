@@ -130,7 +130,7 @@ class MovimentoController extends Controller
 
         $itemMovimento->save();
 
-        return redirect()->route('deposito.consultarDeposito');
+        return redirect()->route('movimento.entradaCreate')->with('success', 'Material adicionado no deposito com sucesso!');
     }
 
     public function saidaStore(Request $request)

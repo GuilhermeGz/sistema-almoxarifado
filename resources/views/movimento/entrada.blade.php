@@ -12,6 +12,11 @@
             <strong>{{session('fail')}}</strong>
             <button type="button" class="close" data-dismiss="alert">&times;</button>
         </div>
+    @elseif(session()->has('success'))
+        <div class="alert alert-success alert-dismissible fade show">
+            <strong>{{session('success')}}</strong>
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
     @endif
 
     <form method="POST" action="{{ route('movimento.entradaStore') }}">
@@ -72,10 +77,10 @@
 
         <div class="form-row" style="border-bottom: #cfc5c5 1px solid; padding: 0 0 20px 0; margin-bottom: 20px">
             <div class="col-md-4">
-            <label for="selectNotas">Nota Fiscal</label>
-            <select class="form-control selectMaterial2" id="selectNotas" name="nota_fiscal_id" style="width: 95%;">
-                <option></option>
-            </select>
+                <label for="selectNotas">Nota Fiscal</label>
+                <select class="form-control selectMaterial2" id="selectNotas" name="nota_fiscal_id" style="width: 95%;">
+                    <option></option>
+                </select>
             </div>
         </div>
 
