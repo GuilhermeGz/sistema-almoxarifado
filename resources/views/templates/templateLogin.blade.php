@@ -39,7 +39,7 @@
         </form>
     @endauth
     <div class="row">
-        <div class="col-md primaria-bg" >
+        <div class="col-md primaria-bg" style="margin-top: 30px; padding: 20px; margin-bottom: 60px;border-radius: 15px;">
                 @yield('content')
                 @yield('post-script')
         </div>

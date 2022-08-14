@@ -5,6 +5,7 @@
     @auth()
 
     <ul class="navbar-nav ml-auto" >
+        @if(Auth::user()->cargo_id != 2)
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="textdropdown">Solicitação</span>
@@ -222,6 +223,7 @@
                     Consultar</a>
             </div>
         </li>
+        @endif
 
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
