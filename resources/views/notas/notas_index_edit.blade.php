@@ -29,7 +29,6 @@
             <th class="align-middle" scope="col" style="padding-left: 10px">Número</th>
             <th class="align-middle" scope="col" style="text-align: center">Série</th>
             <th class="align-middle" scope="col" style="text-align: center">Valor</th>
-            <th scope="col" style="text-align: center; width: 3%">Materiais</th>
             <th scope="col" style="text-align: center; width: 3%">Ações</th>
         </tr>
         </thead>
@@ -40,7 +39,6 @@
                 <td class="text-left" style="text-align: center"> {{ $nota->numero }} </td>
                 <td style="text-align: center"> {{ $nota->serie }} </td>
                 <td style="text-align: center"> R$ {{ number_format((float)$nota->valor_nota, 2, ',', '')}}</td>
-                <td style="text-align: center"><button data-toggle="modal" data-target="#notaFiscal{{$nota->id}}" class="btn btn-primary">Detalhes</button> </td>
 
                 <td style="text-align: center">
                     <div class="dropdown">
@@ -49,7 +47,9 @@
                             ⋮
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a type="button" class="dropdown-item" onclick="location.href = '{{ route('edit.nota', ['id' => $nota->id]) }}'">Editar</a>
+
+                            <a type="button" class="dropdown-item" data-toggle="modal" data-target="#notaFiscal{{$nota->id}}">Consultar Materiais</a>
+                            <a type="button" class="dropdown-item" onclick="location.href = '{{ route('edit.nota', ['id' => $nota->id]) }}'">Editar Nota Fiscal</a>
                             <a type="button" class="dropdown-item" onclick="location.href = '{{ route('materiais_edit.nota', ['nota' => $nota->id]) }}'">Editar Materiais</a>
 
                             <a type="button" class="dropdown-item" onclick="if(confirm('Tem certeza que deseja Remover a nota fiscal {{$nota->codigo}}?')) location.href='{{route('remover.nota', $nota->id)}}'">Remover</a>
