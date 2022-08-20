@@ -13,6 +13,6 @@ class Setor extends Model
     }
 
     public function unidade(){
-        return $this->belongsToMany('App\Unidade');
+        return $this->hasMany('App\Unidade');
     }
 }
