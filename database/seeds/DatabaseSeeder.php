@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
         $this->call(CargoSeeder::class);
         $this->call(UsuarioSeeder::class);
         $this->call(DepositoSeeder::class);
+        $this->call(SetorSeeder::class);
         //$this->call(MaterialSeeder::class);
         //$this->call(EstoqueSeeder::class);
         //$this->call(NotificacaoSeeder::class);

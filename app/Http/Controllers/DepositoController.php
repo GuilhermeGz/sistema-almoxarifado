@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Deposito;
 use App\Estoque;
+use App\Setor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -17,16 +18,15 @@ class DepositoController extends Controller
 
     public function consultarDepositoView()
     {
-        $depositos = new Deposito();
-        $depositos = $depositos->all();
+        $setores = Setor::all();
         $estoques = Estoque::all();
 
-        return view('deposito.deposito_consult', compact('depositos', 'estoques'));
+        return view('deposito.deposito_consult', compact('setores', 'estoques'));
     }
 
-    public function getEstoques($deposito_id)
+    public function getEstoques($setor_id)
     {
-        $estoques = DB::select('Select mat.nome, e.quantidade from estoques e, Materials mat where e.deposito_id = ? and mat.id = e.material_id', [$deposito_id]);
+        $estoques = DB::select('Select mat.nome, e.quantidade from estoques e, Materials mat where e.setor_id = ? and mat.id = e.material_id', [$setor_id]);
 
         return response()->json($estoques);
     }

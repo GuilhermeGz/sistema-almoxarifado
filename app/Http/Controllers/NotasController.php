@@ -134,6 +134,7 @@ class NotasController extends Controller
         $nota->natureza_operacao = $request->natureza_operacao;
         $nota->emitente_id = $request->emitente_id;
         $nota->valor_nota = 0;
+        $nota->status = 'Não Concluida';
         $nota->save();
         return redirect(route('materiais_edit.nota', ['nota' => $nota->id]));
 
@@ -149,25 +150,6 @@ class NotasController extends Controller
         return response()->json(['success'=> 'Emitente Cadastrado com Sucesso!', 'id' => $emitente->id, 'cnpj' => $emitente->cnpj, 'razao_social' => $emitente->razao_social]);
 
     }
-
-    public function getNotasList($id)
-    {
-
-        $notasMaterial = MaterialNotas::where('material_id', $id)->get();
-        $notas = [];
-
-        foreach ($notasMaterial as $notaM) {
-            $nota = NotaFiscal::find($notaM->nota_fiscal_id);
-            if (!in_array([$nota->id, $nota->cnpj], $notas) && $notaM->status == false) {
-                $emitente = Emitente::find($nota->emitente_id);
-                array_push($notas, [$nota->id, $nota->numero, $emitente->razao_social, ($notaM->quantidade_total - $notaM->quantidade_atual)]);
-            }
-        }
-
-        return json_encode($notas);
-    }
-
-
 
     public function notaMateriaisEdit(Request $request)
     {
@@ -188,12 +170,10 @@ class NotasController extends Controller
         $notaFiscal = NotaFiscal::find($request->nota_fiscal_id);
 
         $materialNotas->nota_fiscal_id = $request->nota_fiscal_id;
-        $materialNotas->quantidade_total = $request->quantidade_total;
+        $materialNotas->quantidade = $request->quantidade_total;
         $materialNotas->material_id = $request->material_id;
-        $materialNotas->quantidade_atual = 0;
-        $materialNotas->status = false;
         $materialNotas->valor = $request->valor;
-        $notaFiscal->valor_nota += ($request->quantidade_total * $request->valor);
+        $notaFiscal->valor_nota += ($request->quantidade * $request->valor);
         $notaFiscal->update();
         $materialNotas->save();
 

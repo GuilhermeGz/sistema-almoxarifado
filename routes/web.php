@@ -84,7 +84,8 @@ Route::middleware(['auth', 'verified', 'CheckCargoAdminTerceirizado'])->group(fu
     Route::get('consultarDeposito', 'DepositoController@consultarDepositoView')->name('deposito.consultarDeposito');
     Route::resource('material', 'MaterialController')->except(['show']);
     Route::get('solicitacoes_admin', 'SolicitacaoController@listTodasSolicitacoes')->name('solicitacoe.admin');
-    Route::get('get_estoques/{deposito_id}', 'DepositoController@getEstoques')->name('deposito.getEstoque');
+    Route::get('get_estoques/{setor_id}', 'DepositoController@getEstoques')->name('deposito.getEstoque');
+    Route::get('get_materiais/{setor_id}', 'SolicitacaoController@getMateriais')->name('setor.getMateriais');
 });
 
 Route::middleware('auth', 'verified')->group(function () {
@@ -103,7 +104,6 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::get('solicitante_solicitacao/{id}', 'SolicitacaoController@getSolicitanteSolicitacao')->name('solicitante.solicitacao');
     Route::get('itens_solicitacao_admin/{id}', 'SolicitacaoController@getItemSolicitacaoAdmin')->name('itens.solicitacao.admin');
 
-    Route::get('notas_material/{id}', 'NotasController@getNotasList')->name('nota.material');
     Route::post('ajaxAdicionarEmitente', 'NotasController@adicionarEmitente')->name('adicionar_emitente.nota');
 });
 

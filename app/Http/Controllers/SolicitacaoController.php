@@ -382,6 +382,11 @@ class SolicitacaoController extends Controller
         return json_encode($consulta);
     }
 
+    public function getMateriais($setor_id)
+    {
+        return 'oi';
+    }
+
     public function getMateriaisPreview($solicitacoes_id)
     {
         $materiaisIDItem = ItemSolicitacao::select('material_id', 'solicitacao_id')->whereIn('solicitacao_id', $solicitacoes_id)->orderBy('solicitacao_id', 'desc')->get();

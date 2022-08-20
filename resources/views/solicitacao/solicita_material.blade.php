@@ -42,6 +42,15 @@
     <div style="background-color: #D7D7E6">
         <div class="form-row" style="margin-left: 10px">
             <div class="form-group col-md-4">
+                <label for="selectUnidadeBasica" style="color: #151631; font-family: 'Segoe UI'; font-weight: 700">Unidade Básica:</label>
+                <select class="form-control" name="selectUnidadeBasica" id="selectUnidadeBasica" style="width: 100%">
+                    <option></option>
+                    @foreach($unidades as $unidade)
+                        <option data-value="{{$unidade->id}}">{{ $unidade->nome }} </option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group col-md-4">
                 <label for="selectMaterial" style="color: #151631; font-family: 'Segoe UI'; font-weight: 700">Material</label>
                 <select id="selectMaterial" class="selectMaterial" class="form-control" style="width: 95%;">
                     <option></option>
@@ -61,15 +70,6 @@
             <div class="form-group col-md-2">
                 <label for="quantMaterial" style="color: #151631; font-family: 'Segoe UI'; font-weight: 700">Quantidade</label>
                 <input type="text" min="1" class="form-control" id="quantMaterial" name="quantidade" value="{{ old('quantidade') }}">
-            </div>
-            <div class="form-group col-md-4">
-                <label for="selectUnidadeBasica" style="color: #151631; font-family: 'Segoe UI'; font-weight: 700">Unidade Básica:</label>
-                <select class="form-control" name="selectUnidadeBasica" id="selectUnidadeBasica" style="width: 100%">
-                    <option></option>
-                       @foreach($unidades as $unidade)
-                            <option data-value="{{$unidade->id}}">{{ $unidade->nome }} </option>
-                        @endforeach
-                </select>
             </div>
 
             <div class="form-group col-md-2">
@@ -146,6 +146,27 @@
             placeholder: "Selecione a Unidade Básica.",
             language: { noResults: () => "Nenhum resultado encontrado.",},
         });
+    </script>
+@endsection
+
+@section('post-script')
+    <script type="text/javascript">
+        $('#selectUnidadeBasica').change(function () {
+            var setor_id = $(this).val();
+
+            $.get('/get_materiais/' + setor_id, function (estoques) {
+                $('#listaEstoque').empty();
+                if(estoques.length < 1)
+                {
+                    $('#listaEstoque').append(`<tr><td colspan="2" style="text-align: center">Nenhum estoque neste setor</td></tr>`);
+                }
+                $.each(estoques, function (key, value) {
+                    $('#listaEstoque').append(`<tr><td>${value.nome}</td><td style=\"text-align: center\">${value.quantidade}</td></tr>`);
+                });
+            });
+
+        });
+
     </script>
 @endsection
 
