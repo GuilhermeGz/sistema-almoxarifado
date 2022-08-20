@@ -21,65 +21,23 @@
 
     <form method="POST" action="{{ route('movimento.entradaStore') }}">
         @csrf
-        <div class="form-row">
-            <div class="form-group col-md-4">
-                <label for="selectMaterial">Material</label>
-                <select id="selectMaterial" class="selectMaterial @error('material_id') is-invalid @enderror" class="form-control"
-                        style="width: 95%;" autofocus name="material_id" required>
-                    <option></option>
-                    @foreach($materiais as $material)
-                        <option value="{{$material->id}}">{{ $material->nome }}[{{$material->codigo}}] -
-                            Localização: {{strtoupper('('.$material->corredor.'-'.$material->prateleira.'-'.$material->coluna.')')}}</option>
-                    @endforeach
-                </select>
-
-                @error('material_id')
-                <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-            </div>
-            <div class="form-group col-md-4">
-                <label for="inputDeposito">Depósito</label>
-                <select id="inputDepositol" class="form-control @error('deposito_id') is-invalid @enderror" autofocus name="deposito_id" required>
-                    <option></option>
-                    @foreach($depositos as $deposito)
-                        <option value="{{ $deposito->id }}"> {{ $deposito->id }}. {{$deposito->nome}} </option>
-                    @endforeach
-                </select>
-                @error('deposito_id')
-                <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-            </div>
-            <div class="form-group col-md-2">
-                <label for="materialQuantidade">Quantidade</label>
-                <input type="text" class="form-control @error('quantidade') is-invalid @enderror" autofocus id="materialQuantidade"
-                       name="quantidade" value="{{ old('quantidade') }}" min="1" required/>
-                @error('quantidade')
-                <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                @enderror
-            </div>
-            <div class="form-group col-md-2">
-                <label for="materialUnidade">Unidade</label>
-                <input type="text" class="form-control" autofocus id="materialUnidade" disabled value=""/>
-
-                @foreach($materiais as $material)
-                    <input id="unidade_{{ $material->id }}" type="hidden"
-                           value="{{ $material->unidade }}">
-                @endforeach
-            </div>
-
-        </div>
-
         <div class="form-row" style="border-bottom: #cfc5c5 1px solid; padding: 0 0 20px 0; margin-bottom: 20px">
             <div class="col-md-4">
                 <label for="selectNotas">Nota Fiscal</label>
-                <select class="form-control selectMaterial2" id="selectNotas" name="nota_fiscal_id" style="width: 95%;">
+                <select class="form-control selectNota" id="selectNotas" name="nota_fiscal_id" style="width: 95%;">
                     <option></option>
+                    @foreach($notas as $nota)
+                        <option value="{{$nota->id}}">{{$nota->numero}} - {{$nota->emitente->razao_social}}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="selectSetor">Setor</label>
+                <select class="form-control selectSetor" id="selectSetor" name="setor_id" style="width: 95%;">
+                    <option></option>
+                    @foreach($setores as $setor)
+                        <option value="{{$setor->id}}">{{$setor->nome}}</option>
+                    @endforeach
                 </select>
             </div>
         </div>

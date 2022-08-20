@@ -18,6 +18,10 @@ class CreateEstoquesTable extends Migration
             $table->unsignedInteger('quantidade');
             $table->unsignedInteger('material_id')->index();
             $table->foreign('material_id')->references('id')->on('materials');
+
+            $table->unsignedInteger('setor_id')->index();
+            $table->foreign('setor_id')->references('id')->on('setors');
+
             $table->softDeletes();
 
             $table->unsignedInteger('deposito_id')->index();

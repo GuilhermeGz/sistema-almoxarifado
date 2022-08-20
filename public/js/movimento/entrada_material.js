@@ -4,8 +4,12 @@ $(function () {
         language: { noResults: () => "Nenhum resultado encontrado.",},
     });
 
-    $('.selectMaterial2').select2({
-        placeholder: "Selecione o Material Primeiro.",
+    $('.selectNota').select2({
+        placeholder: "Selecione a Nota Fiscal.",
+        language: { noResults: () => "Nenhum resultado encontrado.",},
+    });
+    $('.selectSetor').select2({
+        placeholder: "Selecione o Setor.",
         language: { noResults: () => "Nenhum resultado encontrado.",},
     });
 

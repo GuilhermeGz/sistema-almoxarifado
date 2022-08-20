@@ -23,9 +23,7 @@ class CreateMaterialNotasTable extends Migration
             $table->unsignedInteger('nota_fiscal_id')->index();
             $table->foreign('nota_fiscal_id')->references('id')->on('nota_fiscals');
 
-            $table->string('quantidade_total');
-            $table->string('quantidade_atual');
-            $table->boolean('status');
+            $table->unsignedInteger('quantidade');
             $table->float('valor');
         });
     }

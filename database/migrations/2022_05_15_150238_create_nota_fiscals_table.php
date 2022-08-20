@@ -20,7 +20,8 @@ class CreateNotaFiscalsTable extends Migration
             $table->string('serie');
             $table->date('data_emissao');
             $table->string('natureza_operacao');
-            $table->string('valor_nota');
+            $table->float('valor_nota');
+            $table->string('status');
         });
     }
 

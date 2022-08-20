@@ -12,6 +12,7 @@ use App\NotaFiscal;
 use App\Notificacao;
 use App\Transferencia;
 use App\Usuario;
+use App\Setor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -20,10 +21,10 @@ class MovimentoController extends Controller
 {
     public function createEntrada()
     {
-        $materiais = Material::all();
-        $depositos = Deposito::all();
+        $notas = NotaFiscal::where('status', '!=', 'Concluido')->get();
+        $setores = Setor::all();
 
-        return view('movimento.entrada', ['materiais' => $materiais, 'depositos' => $depositos]);
+        return view('movimento.entrada', compact('notas', 'setores'));
     }
 
     public function createSaida()
