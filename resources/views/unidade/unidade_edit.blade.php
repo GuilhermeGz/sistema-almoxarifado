@@ -50,10 +50,9 @@
 
         <div class="form-group row">
             <div class="col-md-4">
-                <Button class="btn btn-secondary" type="button"
-                        onclick="if(confirm('Tem certeza que deseja Cancelar a alteração do Material?')) location.href = '../' ">
+                <a type="button" class="btn btn-secondary" href="{{route('index.unidade', ['id' => $unidade->setor->id])}}">
                     Cancelar
-                </Button>
+                </a>
                 <button type="submit" class="btn btn-success">Alterar</button>
             </div>
         </div>

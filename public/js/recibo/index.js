@@ -1,5 +1,5 @@
 $(function () {
-    $('#tableUnidadeIndex').DataTable({
+    $('#tableReciboIndex').DataTable({
         searching: true,
         "language": {
             "search": "Pesquisar:",
@@ -13,19 +13,19 @@ $(function () {
             }
         },
         "columnDefs": [{
-            "targets": [6],
+            "targets": [3],
             "orderable": false
         }]
     });
 
-    $('#tableUnidadeIndex').on('page.dt', function () {
+    $('#tableReciboIndex').on('page.dt', function () {
         $('html, body').animate({
             scrollTop: $(".dataTables_wrapper").offset().top
         }, 'fast');
     });
 
-    $('#tableUnidadeIndex').DataTable().columns().iterator('column', function (ctx, idx) {
-        $($('#tableUnidadeIndex').DataTable().column(idx).header()).append('<span class="sort-icon"/>');
+    $('#tableReciboIndex').DataTable().columns().iterator('column', function (ctx, idx) {
+        $($('#tableReciboIndex').DataTable().column(idx).header()).append('<span class="sort-icon"/>');
     });
 
 });

@@ -10,7 +10,7 @@ class SetorController extends Controller
 {
 
     public function index(){
-        $setores = Setor::all()->sortBy("nome");
+        $setores = Setor::all()->sortBy("id");
         return view('setor.index', compact('setores'));
     }
 

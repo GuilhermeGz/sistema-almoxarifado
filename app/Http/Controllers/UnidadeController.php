@@ -18,7 +18,8 @@ class UnidadeController extends Controller
 
     public function listarRecibos($id){
         $recibos = Recibo::where('unidade_id',$id)->get();
-        return view('recibo.index', ['recibos' => $recibos]);
+        $unidade = Unidade::find($id);
+        return view('recibo.index', ['recibos' => $recibos, 'unidade' => $unidade]);
     }
 
     public function criar(Request $request)

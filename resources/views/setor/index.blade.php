@@ -29,10 +29,10 @@
         </div>
     @endif
 
-    <table id="tableNotas" class="table table-hover table-responsive-md">
+    <table id="tableSetorIndex" class="table table-hover table-responsive-md">
         <thead style="background-color: #151631; color: white; border-radius: 15px">
         <tr>
-            <th class="align-middle" scope="col" style="padding-left: 10px;width: 5%">Id</th>
+            <th class="align-middle" scope="col" style="padding-left: 10px;width: 5%">Identificador</th>
             <th class="align-middle" scope="col" style="padding-left: 10px">Nome</th>
             <th class="align-middle" scope="col" style="text-align: center; width: 10%">Ações</th>
         </tr>
@@ -122,37 +122,4 @@
 @endsection
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-
-<script>
-    $(function () {
-        $('#tableNotas').DataTable({
-            searching: true,
-            "language": {
-                "search": "Pesquisar:",
-                "lengthMenu": "Mostrar _MENU_ registros por página",
-                "info": "Exibindo página _PAGE_ de _PAGES_",
-                "infoEmpty": "Nenhum registro disponível",
-                "zeroRecords": "Nenhum registro disponível",
-                "paginate": {
-                    "previous": "Anterior",
-                    "next": "Próximo"
-                }
-            },
-            "columnDefs": [{
-                "targets": [8],
-                "orderable": false
-            }]
-        });
-
-        $('#tableNotas').on('page.dt', function () {
-            $('html, body').animate({
-                scrollTop: $(".dataTables_wrapper").offset().top
-            }, 'fast');
-        });
-
-        $('#tableNotas').DataTable().columns().iterator('column', function (ctx, idx) {
-            $($('#tableNotas').DataTable().column(idx).header()).append('<span class="sort-icon"/>');
-        });
-
-    });
-</script>
+<script type="text/javascript" src="{{asset('js/setor/index.js')}}"></script>

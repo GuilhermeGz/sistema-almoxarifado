@@ -7,7 +7,7 @@
 @section('content')
 
     <div style="border-bottom: #949494 2px solid; padding-bottom: 5px; margin-bottom: 10px">
-        <h2>Lista de Recibos</h2>
+        <h2>Unidade {{$unidade->nome}} - Lista de Recibos</h2>
     </div>
 
     @if(session()->has('fail'))
@@ -22,7 +22,7 @@
         </div>
     @endif
 
-    <table id="tableNotas" class="table table-hover table-responsive-md">
+    <table id="tableReciboIndex" class="table table-hover table-responsive-md">
         <thead style="background-color: #151631; color: white; border-radius: 15px">
         <tr>
             <th class="align-middle" scope="col" style="padding-left: 10px; width: 5%">Identificador</th>
@@ -43,40 +43,8 @@
 
         </tbody>
     </table>
+    <a type="button" href="{{route('index.unidade', ['id' => $unidade->setor->id])}}" class="btn btn-danger m-1" style="width: 150px">Voltar</a>
 @endsection
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-
-<script>
-    $(function () {
-        $('#tableNotas').DataTable({
-            searching: true,
-            "language": {
-                "search": "Pesquisar:",
-                "lengthMenu": "Mostrar _MENU_ registros por página",
-                "info": "Exibindo página _PAGE_ de _PAGES_",
-                "infoEmpty": "Nenhum registro disponível",
-                "zeroRecords": "Nenhum registro disponível",
-                "paginate": {
-                    "previous": "Anterior",
-                    "next": "Próximo"
-                }
-            },
-            "columnDefs": [{
-                "targets": [3],
-                "orderable": false
-            }]
-        });
-
-        $('#tableNotas').on('page.dt', function () {
-            $('html, body').animate({
-                scrollTop: $(".dataTables_wrapper").offset().top
-            }, 'fast');
-        });
-
-        $('#tableNotas').DataTable().columns().iterator('column', function (ctx, idx) {
-            $($('#tableNotas').DataTable().column(idx).header()).append('<span class="sort-icon"/>');
-        });
-
-    });
-</script>
+<script type="text/javascript" src="{{asset('js/recibo/index.js')}}"></script>

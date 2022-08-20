@@ -29,7 +29,7 @@
         </div>
     @endif
 
-    <table id="tableNotas" class="table table-hover table-responsive-md">
+    <table id="tableUnidadeIndex" class="table table-hover table-responsive-md">
         <thead style="background-color: #151631; color: white; border-radius: 15px">
         <tr>
             <th class="align-middle" scope="col" style="padding-left: 10px">Nome</th>
