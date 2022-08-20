@@ -79,7 +79,8 @@ Route::middleware(['auth', 'verified', 'CheckCargoAdminTerceirizado'])->group(fu
     Route::get('consultarDeposito', 'DepositoController@consultarDepositoView')->name('deposito.consultarDeposito');
     Route::resource('material', 'MaterialController')->except(['show']);
     Route::get('solicitacoes_admin', 'SolicitacaoController@listTodasSolicitacoes')->name('solicitacoe.admin');
-    Route::get('get_estoques/{deposito_id}', 'DepositoController@getEstoques')->name('deposito.getEstoque');
+    Route::get('get_estoques/{setor_id}', 'DepositoController@getEstoques')->name('deposito.getEstoque');
+    Route::get('get_materiais/{setor_id}', 'SolicitacaoController@getMateriais')->name('setor.getMateriais');
 });
 
 Route::middleware('auth', 'verified')->group(function () {

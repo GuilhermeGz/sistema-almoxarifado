@@ -10,7 +10,7 @@ $(function () {
             $("#inputRgReceptor").prop('disabled', true);
             $("#inputRgReceptor").val($("#rgReceptor").val())
             $("#inputTipoReceptor").prop('disabled', true);
-            $("#inputTipoReceptor").prop('selectedIndex',0);
+            $("#inputTipoReceptor").prop('selectedIndex', 0);
         } else {
             $("#inputNomeReceptor").prop('disabled', false);
             $("#inputNomeReceptor").val('')
@@ -33,15 +33,15 @@ function construirTable(quantidade, unidade, estoque, materialId) {
         "⋮" +
         "</button>" +
         "<div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuButton\">" +
-        "<a type=\"button\" class=\"dropdown-item\" onclick=\"removerMaterial(this,"+materialId+")\">Remover</a>" +
-        "<a type=\"button\" class=\"dropdown-item\" onclick=\"editarMaterial(this,"+materialId+")\">Editar</a>" +
+        "<a type=\"button\" class=\"dropdown-item\" onclick=\"removerMaterial(this," + materialId + ")\">Remover</a>" +
+        "<a type=\"button\" class=\"dropdown-item\" onclick=\"editarMaterial(this," + materialId + ")\">Editar</a>" +
         "</div>" +
         "</div>" +
         "</td>" +
         "</tr>";
 }
 
-function editarMaterial(ctl,materialId) {
+function editarMaterial(ctl, materialId) {
     document.getElementById('flag').value = materialId;
     $("#detalhesSolicitacao").modal('show');
     _row = $(ctl).parents("tr");
@@ -54,8 +54,8 @@ function confirmarAlteracao() {
     if ($("#selectMaterialEdit option:selected").index() > 0 && $("#InputQuantEdit").val() != '') {
         var escolha = confirm("Tem certeza que deseja fazer as alterações?");
         if (escolha) {
-            document.getElementById("Material"+$("#selectMaterialEdit option:selected").index()).disabled = true;
-            document.getElementById("MaterialEdit"+$("#selectMaterialEdit option:selected").index()).disabled = true;
+            document.getElementById("Material" + $("#selectMaterialEdit option:selected").index()).disabled = true;
+            document.getElementById("MaterialEdit" + $("#selectMaterialEdit option:selected").index()).disabled = true;
             updateRowTable();
             $("#detalhesSolicitacao").modal('hide');
             $("#selectMaterial").val(0).trigger('change');
@@ -66,18 +66,18 @@ function confirmarAlteracao() {
     }
 }
 
-function removerMaterial(ctl,materialId) {
+function removerMaterial(ctl, materialId) {
     var escolha = confirm("Tem certeza que deseja remover o(s) material(is)?");
     if (escolha) {
-        $('#Material'+materialId).prop('disabled', false);
-        $('#MaterialEdit'+materialId).prop('disabled', false);
+        $('#Material' + materialId).prop('disabled', false);
+        $('#MaterialEdit' + materialId).prop('disabled', false);
         deleteRow(ctl);
-        cont -=1;
+        cont -= 1;
         $('#remocaoSuccess').slideDown();
 
-        if(cont == 0){
+        if (cont == 0) {
             $('#selectUnidadeBasica').prop('disabled', false);
-        }else{
+        } else {
             $('#selectUnidadeBasica').disable(true);
         }
 
@@ -91,15 +91,15 @@ function updateRowTable() {
     var materialId;
     materialId = $("#selectMaterialEdit option:selected").val();
     var materialId2 = $("#flag").val();
-    if (materialId2 != materialId){
+    if (materialId2 != materialId) {
         $('#Material' + materialId2).prop('disabled', false);
         $('#MaterialEdit' + materialId2).prop('disabled', false);
     }
     $("#unidade_selected").val($("#unidade_" + materialId).val())
     $(_row).after(
         "<tr data-id=" + $("#selectMaterialEdit option:selected").val() + ">" +
-        "<td data-id=" + $("#selectMaterialEdit option:selected").val() + " class=\"materialRow\">" + $("#selectMaterialEdit option:selected").text() + "</td>"+
-    "<td style=\"text-align: center\" data-id=" + $("#selectUnidadeBasica option:selected").data('value') + " class=\"unidadeRow\">" + $("#selectUnidadeBasica option:selected").text() + "</td>"
+        "<td data-id=" + $("#selectMaterialEdit option:selected").val() + " class=\"materialRow\">" + $("#selectMaterialEdit option:selected").text() + "</td>" +
+        "<td style=\"text-align: center\" data-id=" + $("#selectUnidadeBasica option:selected").data('value') + " class=\"unidadeRow\">" + $("#selectUnidadeBasica option:selected").text() + "</td>"
         + construirTable($("#InputQuantEdit").val(), $("#unidade_selected").val(), $("#estoque_" + materialId).val(), materialId)
     );
     $(_row).remove();
@@ -150,15 +150,15 @@ function setValuesRowInput() {
 function addTable() {
     var materialId;
     materialId = $("#selectMaterial option:selected").data('value');
-    document.getElementById("Material"+materialId).disabled = true;
-    document.getElementById("MaterialEdit"+materialId).disabled = true;
+    document.getElementById("Material" + materialId).disabled = true;
+    document.getElementById("MaterialEdit" + materialId).disabled = true;
 
     $("#unidade_selected").val($("#unidade_" + materialId).val())
     if ($("#selectMaterial option:selected").index() > 0 && $("#quantMaterial").val() != '') {
         $("#tableMaterial tbody").append("<tr data-id=" + $("#selectMaterial option:selected").data('value') + ">" +
             "<td data-id=" + $("#selectMaterial option:selected").data('value') + " class=\"materialRow\">" + $("#selectMaterial option:selected").text() + "</td>" +
             "<td style=\"text-align: center\" data-id=" + $("#selectUnidadeBasica option:selected").data('value') + " class=\"unidadeRow\">" + $("#selectUnidadeBasica option:selected").text() + "</td>" +
-        construirTable($("#quantMaterial").val(), $("#unidade_selected").val(), $("#estoque_" + materialId).val(),materialId));
+            construirTable($("#quantMaterial").val(), $("#unidade_selected").val(), $("#estoque_" + materialId).val(), materialId));
         document.getElementById("selectUnidadeBasica").disabled = true;
     } else {
         $('#error').slideDown();
@@ -171,7 +171,7 @@ function addTable() {
     if ($("#tableMaterial >tbody >tr").length > 0) {
         $("#solicita").attr("disabled", false);
     }
-    cont+=1;
+    cont += 1;
 }
 
 function rgLength() {

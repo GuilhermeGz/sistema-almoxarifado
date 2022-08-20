@@ -17,7 +17,7 @@ class NotaFiscal extends Model
     }
 
     public function emitente(){
-        $this->hasOne('App\Emitente');
+        return $this->belongsTo('App\Emitente');
     }
 
     public static $rules = [

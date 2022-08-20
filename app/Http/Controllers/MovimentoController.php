@@ -66,72 +66,56 @@ class MovimentoController extends Controller
 
     public function entradaStore(Request $request)
     {
-
         $validator = Validator::make($request->all(), Movimento::$rules, Movimento::$messages)->validate();
 
-        $movimentoEntrada = new Movimento();
-        $movimentoEntrada->operacao = $request['operacao'];
-        $movimentoEntrada->descricao = $request['descricao'];
-
-        $estoque = DB::table('estoques')->where([
-            ['deposito_id', '=', $request['deposito_id']],
-            ['material_id', '=', $request['material_id']],
-        ])->get()->first();
-
         $notaFiscal = NotaFiscal::find($request->nota_fiscal_id);
+
         $notasMateriais = MaterialNotas::where('nota_fiscal_id', $notaFiscal->id)->get();
-        $notaMaterial = null;
 
         foreach ($notasMateriais as $notaM){
-            if($notaM->material_id == $request['material_id'])
-            {
-                $notaMaterial = $notaM;
-                break;
+            $movimentoEntrada = new Movimento();
+            $movimentoEntrada->operacao = $request['operacao'];
+            $movimentoEntrada->descricao = $request['descricao'];
+
+            $estoque = Estoque::where([
+                ['setor_id', '=', $request->setor_id],
+                ['material_id', '=', $notaM->material_id],
+            ])->first();
+
+            if ($estoque == null) {
+                $estoque = new Estoque();
+                $estoque->quantidade = $notaM->quantidade;
+                $estoque->material_id = $notaM->material_id;
+                $estoque->deposito_id = 1;
+                $estoque->setor_id = $request->setor_id;
+
+                $this->notificacao_E_Email($estoque);
+                $estoque->save();
+            } else {
+                $estoque->quantidade += $notaM->quantidade;
+
+                $this->notificacao_E_Email($estoque);
+
+                $estoque->update();
             }
-        }
-        $difQuantNotaM = $notaMaterial->quantidade_total - $notaMaterial->quantidade_atual;
-        if($difQuantNotaM >= $request['quantidade'])
-        {
-            $notaMaterial->quantidade_atual += $request['quantidade'];
 
-            if($notaMaterial->quantidade_atual == $notaMaterial->quantidade_total)
-            {
-                $notaMaterial->status = true;
-            }
+            $movimentoEntrada->save();
 
-            $notaMaterial->save();
-        } else
-        {
-            return redirect()->back()->with('fail', 'A quantidade informada do material: '. Material::find($request['material_id'])->nome .', é maior que a quantidade registrada na nota fiscal.')->withInput();
+
+            $itemMovimento = new itemMovimento();
+            $itemMovimento->quantidade = $notaM->quantidade;
+            $itemMovimento->material_id = $notaM->material_id;
+            $itemMovimento->estoque_id = $estoque->id;
+            $itemMovimento->movimento_id = $movimentoEntrada->id;
+            $itemMovimento->nota_fiscal_id = $request->nota_fiscal_id;
+
+            $itemMovimento->save();
         }
 
-        if (null == $estoque) {
-            $estoque = new Estoque();
-            $estoque->quantidade = $request['quantidade'];
-            $estoque->material_id = $request['material_id'];
-            $estoque->deposito_id = $request['deposito_id'];
+        $notaFiscal->status = 'Concluido';
+        $notaFiscal->update();
 
-            $this->notificacao_E_Email($estoque);
-        } else {
-            $estoque = Estoque::findOrFail($estoque->id);
-            $estoque->quantidade += $request['quantidade'];
-
-            $this->notificacao_E_Email($estoque);
-        }
-
-        $movimentoEntrada->save();
-        $estoque->save();
-
-        $itemMovimento = new itemMovimento();
-        $itemMovimento->quantidade = $request['quantidade'];
-        $itemMovimento->material_id = $request['material_id'];
-        $itemMovimento->estoque_id = $estoque->id;
-        $itemMovimento->movimento_id = $movimentoEntrada->id;
-        $itemMovimento->nota_fiscal_id = $request->nota_fiscal_id;
-
-        $itemMovimento->save();
-
-        return redirect()->route('movimento.entradaCreate')->with('success', 'Material adicionado no deposito com sucesso!');
+        return redirect()->route('movimento.entradaCreate')->with('success', 'Materiais da Nota Fiscal Adicionados com Sucesso no Depósito!');
     }
 
     public function saidaStore(Request $request)

@@ -9,6 +9,6 @@ use Faker\Generator as Faker;
 $factory->define(Setor::class, function (Faker $faker) {
 
     return [
-        'nome' => Str::random(10),
+        'nome' => 'Setor',
     ];
 });
