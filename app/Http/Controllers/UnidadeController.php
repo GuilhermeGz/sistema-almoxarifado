@@ -3,15 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Recibo;
+use App\Setor;
 use App\Solicitacao;
 use App\Unidade;
 use Illuminate\Http\Request;
 
 class UnidadeController extends Controller
 {
-    public function cadastrar()
+    public function cadastrar($id)
     {
-        return view('unidade.unidade_create');
+        $setor = Setor::find($id);
+        return view('unidade.unidade_create',compact('setor'));
     }
 
     public function listarRecibos($id){
@@ -26,19 +28,18 @@ class UnidadeController extends Controller
         $unidade->cep = $request->cep;
         $unidade->endereco = $request->endereco;
         $unidade->bairro = $request->bairro;
-        $unidade->nome_coordenador = $request->nome_coordenador;
-        $unidade->numero_coordenador = $request->numero_coordenador;
-        $unidade->nome_enfermeira = $request->nome_enfermeira;
-        $unidade->numero_enfermeira = $request->numero_enfermeira;
+        $unidade->setor_id = $request->setor;
+
         $unidade->save();
 
-        return redirect(route('index.unidade'))->with('success', 'Unidade Cadastrada com Sucesso!');
+        return redirect(route('index.unidade',['id' => $request->setor]))->with('success', 'Unidade Cadastrada com Sucesso!');
     }
 
-    public function index()
+    public function index($id)
     {
-        $unidades = Unidade::all()->sortBy('created_at');
-        return view('unidade.unidade_consult', ['unidades' => $unidades]);
+        $unidades = Unidade::where('setor_id',$id)->get()->sortBy('nome');
+        $setor = Setor::find($id);
+        return view('unidade.unidade_consult', compact('unidades','setor'));
     }
 
     public function editar()
@@ -50,7 +51,6 @@ class UnidadeController extends Controller
     public function edit($id)
     {
         $unidade = Unidade::find($id);
-
         return view('unidade.unidade_edit', ['unidade' => $unidade]);
     }
 
@@ -61,12 +61,8 @@ class UnidadeController extends Controller
         $unidade->cep = $request->cep;
         $unidade->endereco = $request->endereco;
         $unidade->bairro = $request->bairro;
-        $unidade->nome_coordenador = $request->nome_coordenador;
-        $unidade->numero_coordenador = $request->numero_coordenador;
-        $unidade->nome_enfermeira = $request->nome_enfermeira;
-        $unidade->numero_enfermeira = $request->numero_enfermeira;
         $unidade->update();
-        return redirect(route('index_edit.unidade'))->with('success', 'Unidade Alterada com Sucesso!');
+        return redirect(route('index.unidade', ['id' => $unidade->setor->id]))->with('success', 'Unidade Alterada com Sucesso!');
     }
 
     public function remover($id)

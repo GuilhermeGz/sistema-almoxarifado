@@ -39,6 +39,11 @@ Route::middleware(['auth', 'verified', 'CheckCargoAdministrador'])->group(functi
 
     Route::resource('solicita', 'SolicitacaoController');
 
+    Route::get('setores', 'SetorController@index')->name('index.setor');
+    Route::get('setor/remover/{id}', 'SetorController@remover')->name('remover.setor');
+    Route::post('setor/store', 'SetorController@store')->name('store.setor');
+    Route::post('setor/update', 'SetorController@update')->name('update.setor');
+
     Route::get('cadastrar_nota', 'NotasController@cadastrar')->name('cadastrar.nota');
     Route::get('configurar_notas', 'NotasController@configurar')->name('config.nota');
     Route::post('alterar_config_notas', 'NotasController@alterarConfig')->name('alterar_config.nota');
@@ -52,8 +57,8 @@ Route::middleware(['auth', 'verified', 'CheckCargoAdministrador'])->group(functi
     Route::get('nota/consulta', 'NotasController@consultar')->name('consult.nota');
     Route::get('nota/remover/{id}', 'NotasController@remover')->name('remover.nota');
 
-    Route::get('cadastrar_unidade', 'UnidadeController@cadastrar')->name('cadastrar.unidade');
-    Route::get('unidades', 'UnidadeController@index')->name('index.unidade');
+    Route::get('cadastrar_unidade/{id}', 'UnidadeController@cadastrar')->name('cadastrar.unidade');
+    Route::get('unidades/{id}', 'UnidadeController@index')->name('index.unidade');
     Route::get('unidades/edit', 'UnidadeController@editar')->name('index_edit.unidade');
     Route::get('unidade_edit/{id}', 'UnidadeController@edit')->name('edit.unidade');
     Route::get('unidade_remove/{id}', 'UnidadeController@remover')->name('remover.unidade');

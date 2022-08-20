@@ -12,7 +12,7 @@ class Unidade extends Model
     }
 
     public function setor(){
-        return $this->hasOne('App\Setor');
+        return $this->belongsTo('App\Setor');
     }
 
 }
