@@ -12,7 +12,7 @@ class Estoque extends Model
     protected $fillable = ['material_id', 'deposito_id', 'setor_id','quantidade', 'codigo'];
 
     public function setor(){
-        return $this->hasOne('App\Setor');
+        return $this->belongsTo('App\Setor');
     }
 
 }

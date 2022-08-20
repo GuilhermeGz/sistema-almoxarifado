@@ -1,6 +1,6 @@
 @extends('templates.principal')
 
-@section('title') Cadastrar Unidade Basica @endsection
+@section('title') Cadastrar Setor@endsection
 
 @section('content')
     <div style="border-bottom: #949494 2px solid; padding: 5px; margin-bottom: 10px">
@@ -22,8 +22,11 @@
 
             <div class="col-md-6">
                 <label for="nome">Setor<span style="color: red">*</span></label>
-                <select class="form-control" name="setor" id="setor" readonly style="pointer-events: none">
-                    <option value="{{$setor->id}}" selected>{{$setor->nome}}</option>
+                <select class="form-control" name="setor" id="setor">
+                    <option selected hidden>Escolher Setor</option>
+                    @foreach($setores as $setor)
+                        <option value="{{$setor->id}}">{{$setor->nome}}</option>
+                    @endforeach
                 </select>
             </div>
 

@@ -114,7 +114,7 @@
                 </a>
                 <a data-target="#collapseThree" class="menuEffect selectedMenu" class="selectedMenu"
                    style="padding: 10px 10px 10px 35px; color: white; text-decoration: none; display: grid"
-                   href="{{route('index.unidade')}}">
+                   href="">
                     <li>Unidades Basicas</li>
                 </a>
             </div>
@@ -158,7 +158,7 @@
                 </a>
                 <a data-target="#collapseFour" class="menuEffect selectedMenu"
                    style="padding: 10px 10px 10px 35px; color: white; text-decoration: none; display: grid"
-                   href="{{ route('cadastrar.unidade') }}">
+                   href="">
                     <li>Unidade Basica</li>
                 </a>
             </div>
