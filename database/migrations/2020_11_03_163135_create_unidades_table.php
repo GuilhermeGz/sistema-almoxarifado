@@ -26,6 +26,10 @@ class CreateUnidadesTable extends Migration
             $table->string('numero_coordenador');
             $table->string('nome_enfermeira');
             $table->string('numero_enfermeira');
+
+            $table->unsignedInteger('setor_id')->index();
+            $table->foreign('setor_id')->references('id')->on('setors');
+
         });
     }
 
