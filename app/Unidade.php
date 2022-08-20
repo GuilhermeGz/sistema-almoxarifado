@@ -10,4 +10,9 @@ class Unidade extends Model
     {
         return $this->belongsTo('App\Unidade', 'unidade_id');
     }
+
+    public function setor(){
+        return $this->hasOne('App\Setor');
+    }
+
 }
