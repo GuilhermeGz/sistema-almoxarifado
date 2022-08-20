@@ -150,25 +150,6 @@ class NotasController extends Controller
 
     }
 
-    public function getNotasList($id)
-    {
-
-        $notasMaterial = MaterialNotas::where('material_id', $id)->get();
-        $notas = [];
-
-        foreach ($notasMaterial as $notaM) {
-            $nota = NotaFiscal::find($notaM->nota_fiscal_id);
-            if (!in_array([$nota->id, $nota->cnpj], $notas) && $notaM->status == false) {
-                $emitente = Emitente::find($nota->emitente_id);
-                array_push($notas, [$nota->id, $nota->numero, $emitente->razao_social, ($notaM->quantidade_total - $notaM->quantidade_atual)]);
-            }
-        }
-
-        return json_encode($notas);
-    }
-
-
-
     public function notaMateriaisEdit(Request $request)
     {
         $nota = NotaFiscal::find($request->nota);

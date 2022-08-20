@@ -98,7 +98,6 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::get('solicitante_solicitacao/{id}', 'SolicitacaoController@getSolicitanteSolicitacao')->name('solicitante.solicitacao');
     Route::get('itens_solicitacao_admin/{id}', 'SolicitacaoController@getItemSolicitacaoAdmin')->name('itens.solicitacao.admin');
 
-    Route::get('notas_material/{id}', 'NotasController@getNotasList')->name('nota.material');
     Route::post('ajaxAdicionarEmitente', 'NotasController@adicionarEmitente')->name('adicionar_emitente.nota');
 });
 

@@ -27,9 +27,6 @@ class CreateEstoquesTable extends Migration
             $table->unsignedInteger('deposito_id')->index();
             $table->foreign('deposito_id')->references('id')->on('depositos');
 
-            $table->unsignedInteger('setor_id')->index();
-            $table->foreign('setor_id')->references('id')->on('setors');
-
             $table->timestamps();
         });
     }
