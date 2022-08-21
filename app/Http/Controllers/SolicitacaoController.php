@@ -8,6 +8,7 @@ use App\ItemSolicitacao;
 use App\Material;
 use App\Notificacao;
 use App\Recibo;
+use App\Setor;
 use App\Solicitacao;
 use App\Unidade;
 use App\Usuario;
@@ -24,12 +25,11 @@ class SolicitacaoController extends Controller
         $estoques = Estoque::where('deposito_id', 1)->get();
         $materiais = [];
         $unidades = Unidade::all();
-        foreach ($estoques as $estoque)
-        {
+        foreach ($estoques as $estoque) {
             array_push($materiais, Material::find($estoque->material_id));
         }
 
-        return view('solicitacao.solicita_material', ['materiais' => $materiais,'unidades'=>$unidades, 'estoques' => $estoques]);
+        return view('solicitacao.solicita_material', ['materiais' => $materiais, 'unidades' => $unidades, 'estoques' => $estoques]);
     }
 
     public function store(Request $request)
@@ -52,8 +52,7 @@ class SolicitacaoController extends Controller
                 break;
             }
             $estoque = Estoque::where('material_id', '=', $materiais[$i])->first();
-            if($quantidades[$i] > $estoque->quantidade)
-            {
+            if ($quantidades[$i] > $estoque->quantidade) {
                 $material = Material::find($materiais[$i]);
                 return redirect()->back()->withErrors('Você solicitou uma quantidade do material ' . $material->nome
                     . ' que não possui em estoque. Quantidade em Estoque: ' . $estoque->quantidade . ' Quantidade Solicitada: ' . $quantidades[$i]);
@@ -88,13 +87,13 @@ class SolicitacaoController extends Controller
 
         return redirect()->back()->with('success', 'Solicitação feita com sucesso!');
     }
+
     public function listSolicitacoesAprovadas()
     {
         $consulta = DB::select('select status.status, status.created_at, status.solicitacao_id, u.nome
             from historico_statuses status, unidades u, solicitacaos soli
             where status.data_aprovado IS NOT NULL and status.data_finalizado IS NULL and status.solicitacao_id = soli.id
             and soli.unidade_id = u.id order by status.id desc');
-
 
 
         $solicitacoesID = array_column($consulta, 'solicitacao_id');
@@ -147,45 +146,33 @@ class SolicitacaoController extends Controller
         $dia = $recibo->created_at->format('d');
         $ano = $recibo->created_at->format('Y');
 
-        if($recibo->created_at->format('m') == '01')
-        {
+        if ($recibo->created_at->format('m') == '01') {
             $mes = 'Janeiro';
-        } elseif($recibo->created_at->format('m') == '02')
-        {
+        } elseif ($recibo->created_at->format('m') == '02') {
             $mes = 'Fevereiro';
-        } elseif($recibo->created_at->format('m') == '03')
-        {
+        } elseif ($recibo->created_at->format('m') == '03') {
             $mes = 'Março';
-        } elseif($recibo->created_at->format('m') == '04')
-        {
+        } elseif ($recibo->created_at->format('m') == '04') {
             $mes = 'Abril';
-        } elseif($recibo->created_at->format('m') == '05')
-        {
+        } elseif ($recibo->created_at->format('m') == '05') {
             $mes = 'Maio';
-        } elseif($recibo->created_at->format('m') == '06')
-        {
+        } elseif ($recibo->created_at->format('m') == '06') {
             $mes = 'Junho';
-        } elseif($recibo->created_at->format('m') == '07')
-        {
+        } elseif ($recibo->created_at->format('m') == '07') {
             $mes = 'Julho';
-        } elseif($recibo->created_at->format('m') == '08')
-        {
+        } elseif ($recibo->created_at->format('m') == '08') {
             $mes = 'Agosto';
-        } elseif($recibo->created_at->format('m') == '09')
-        {
+        } elseif ($recibo->created_at->format('m') == '09') {
             $mes = 'Setembro';
-        } elseif($recibo->created_at->format('m') == '10')
-        {
+        } elseif ($recibo->created_at->format('m') == '10') {
             $mes = 'Outubro';
-        } elseif($recibo->created_at->format('m') == '11')
-        {
+        } elseif ($recibo->created_at->format('m') == '11') {
             $mes = 'Novembro';
-        } elseif($recibo->created_at->format('m') == '12')
-        {
+        } elseif ($recibo->created_at->format('m') == '12') {
             $mes = 'Dezembro';
         }
 
-        $pdf = PDF::loadView('solicitacao.recibo', compact('itens','dia','mes','ano'));
+        $pdf = PDF::loadView('solicitacao.recibo', compact('itens', 'dia', 'mes', 'ano'));
         $nomePDF = 'Relatório_Materiais_Mais_Movimentados_Solicitação_Semana.pdf';
         return $pdf->setPaper('a4')->stream($nomePDF);
     }
@@ -196,7 +183,7 @@ class SolicitacaoController extends Controller
 
         $flag = 0;
         $errorMessage = [];
-        foreach ($historicos as $historico){
+        foreach ($historicos as $historico) {
             $itens = ItemSolicitacao::where('solicitacao_id', '=', $historico->solicitacao_id)->where('quantidade_aprovada', '!=', null)->get();
             $materiaisID = array_column($itens->toArray(), 'material_id');
             $materiaisNome = Material::select('nome')->whereIn('id', $materiaisID)->get();
@@ -206,13 +193,13 @@ class SolicitacaoController extends Controller
 
             $checkQuant = true;
 
-            foreach($itens as $item){
+            foreach ($itens as $item) {
                 $estoqueItem = Estoque::where('material_id', $item->material_id)->where('deposito_id', 1)->first();
                 $materialNome = Material::where('id', $item->material_id)->first();
 
-                if(($estoqueItem->quantidade - $item->quantidade_aprovada) < 0){
+                if (($estoqueItem->quantidade - $item->quantidade_aprovada) < 0) {
                     $checkQuant = false;
-                    $message = $materialNome->nome.' quantidade disponível('.$estoqueItem->quantidade.')'. ' - quantidade aprovada('.$item->quantidade_aprovada.')';
+                    $message = $materialNome->nome . ' quantidade disponível(' . $estoqueItem->quantidade . ')' . ' - quantidade aprovada(' . $item->quantidade_aprovada . ')';
                     array_push($errorMessage, $message);
                 }
             }
@@ -228,11 +215,11 @@ class SolicitacaoController extends Controller
                     $material = $materiais->find($materiaisID[$i]);
                     $estoque = DB::table('estoques')->where('material_id', '=', $materiaisID[$i])->first();
                     if (($estoque->quantidade - $quantAprovadas[$i]) <= $material->quantidade_minima) {
-                        foreach ($usuarios as $usuario){
+                        foreach ($usuarios as $usuario) {
                             if ($usuario->cargo_id == 2) {
                                 \App\Jobs\emailMaterialEsgotando::dispatch($usuario, $material);
 
-                                $mensagem = $material->nome.' em estado critico.';
+                                $mensagem = $material->nome . ' em estado critico.';
                                 $notificacao = new Notificacao();
                                 $notificacao->mensagem = $mensagem;
                                 $notificacao->usuario_id = $usuario->id;
@@ -248,9 +235,8 @@ class SolicitacaoController extends Controller
                 //Criação do recibo
                 $lista = '';
                 $solicitacao = Solicitacao::find($historico->solicitacao_id);
-                $itens = ItemSolicitacao::where('solicitacao_id',$historico->solicitacao_id)->get();
-                foreach ($itens as $item)
-                {
+                $itens = ItemSolicitacao::where('solicitacao_id', $historico->solicitacao_id)->get();
+                foreach ($itens as $item) {
                     $material = Material::find($item->material_id);
                     $lista = $lista . $item->quantidade_aprovada . ' UNID ' . $material->nome . '#';
 
@@ -267,10 +253,10 @@ class SolicitacaoController extends Controller
                 );
             }
         }
-        if($flag ==0){
+        if ($flag == 0) {
             return redirect()->back()->with('error', $errorMessage);
         }
-        return redirect()->back()->with(['success'=> 'Material(is) entregue(s) com sucesso!']);
+        return redirect()->back()->with(['success' => 'Material(is) entregue(s) com sucesso!']);
     }
 
     public function entregarMateriais($id)
@@ -285,13 +271,13 @@ class SolicitacaoController extends Controller
         $checkQuant = true;
         $errorMessage = [];
 
-        foreach($itens as $item){
+        foreach ($itens as $item) {
             $estoqueItem = Estoque::where('material_id', $item->material_id)->where('deposito_id', 1)->first();
             $materialNome = Material::where('id', $item->material_id)->first();
 
-            if(($estoqueItem->quantidade - $item->quantidade_aprovada) < 0){
+            if (($estoqueItem->quantidade - $item->quantidade_aprovada) < 0) {
                 $checkQuant = false;
-                $message = $materialNome->nome.' quantidade disponível('.$estoqueItem->quantidade.')'. ' - quantidade aprovada('.$item->quantidade_aprovada.')';
+                $message = $materialNome->nome . ' quantidade disponível(' . $estoqueItem->quantidade . ')' . ' - quantidade aprovada(' . $item->quantidade_aprovada . ')';
                 array_push($errorMessage, $message);
             }
         }
@@ -306,11 +292,11 @@ class SolicitacaoController extends Controller
                 $material = $materiais->find($materiaisID[$i]);
                 $estoque = DB::table('estoques')->where('material_id', '=', $materiaisID[$i])->first();
                 if (($estoque->quantidade - $quantAprovadas[$i]) <= $material->quantidade_minima) {
-                    foreach ($usuarios as $usuario){
+                    foreach ($usuarios as $usuario) {
                         if ($usuario->cargo_id == 2) {
                             \App\Jobs\emailMaterialEsgotando::dispatch($usuario, $material);
 
-                            $mensagem = $material->nome.' em estado critico.';
+                            $mensagem = $material->nome . ' em estado critico.';
                             $notificacao = new Notificacao();
                             $notificacao->mensagem = $mensagem;
                             $notificacao->usuario_id = $usuario->id;
@@ -326,9 +312,8 @@ class SolicitacaoController extends Controller
             //Criação do recibo
             $lista = '';
             $solicitacao = Solicitacao::find($id);
-            $itens = ItemSolicitacao::where('solicitacao_id',$id)->get();
-            foreach ($itens as $item)
-            {
+            $itens = ItemSolicitacao::where('solicitacao_id', $id)->get();
+            foreach ($itens as $item) {
                 $material = Material::find($item->material_id);
                 $lista = $lista . $item->quantidade_aprovada . ' UNID ' . $material->nome . '#';
 
@@ -377,14 +362,21 @@ class SolicitacaoController extends Controller
 
     public function getSolicitanteSolicitacao($id)
     {
-        $consulta = DB::select('select uni.nome from solicitacaos soli, unidades uni where soli.id = ? and uni.id = soli.unidade_id' , [$id]);
+        $consulta = DB::select('select uni.nome from solicitacaos soli, unidades uni where soli.id = ? and uni.id = soli.unidade_id', [$id]);
 
         return json_encode($consulta);
     }
 
-    public function getMateriais($setor_id)
+    public function getMateriais($unidade_id)
     {
-        return 'oi';
+        $unidade = Unidade::find($unidade_id);
+
+        $materiais = DB::table('materials')
+            ->join('estoques', 'materials.id', '=', 'estoques.material_id')
+            ->where('setor_id','=', $unidade->setor_id)->get();
+
+
+        return response()->json($materiais);
     }
 
     public function getMateriaisPreview($solicitacoes_id)
@@ -394,7 +386,7 @@ class SolicitacaoController extends Controller
 
         $materiais = DB::select('select item.material_id, item.solicitacao_id, mat.nome
             from item_solicitacaos item, materials mat
-            where item.solicitacao_id in ('.implode(',', $solicitacoes_id).') and item.material_id = mat.id');
+            where item.solicitacao_id in (' . implode(',', $solicitacoes_id) . ') and item.material_id = mat.id');
 
         $materiaisPreview = [];
         $auxCountMaterial = 0;
@@ -406,7 +398,7 @@ class SolicitacaoController extends Controller
                 }
                 if ($itensSolicitacaoID[$i] == $materiais[$b]->solicitacao_id) {
                     if ($auxCountMaterial > 0) {
-                        $materiaisPreview[$i] .= ', '.$materiais[$b]->nome;
+                        $materiaisPreview[$i] .= ', ' . $materiais[$b]->nome;
                     } else {
                         array_push($materiaisPreview, $materiais[$b]->nome);
                     }
