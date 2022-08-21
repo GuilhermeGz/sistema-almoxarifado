@@ -144,6 +144,25 @@
     </div>
 
     <div class="form-group">
+        <h2 class="h4"> Ordem de Fornecimento </h2>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-4">
+            <label for="codigo">Código</label>
+            <input type="text" class="form-control" id="codigo" value="{{$ordem->codigo}}" disabled/>
+        </div>
+        <div class="col-md-4">
+            <label for="num_contrato">Número do Contrato</label>
+            <input type="text" class="form-control" id="num_contrato" value="{{$ordem->num_contrato}}" disabled/>
+        </div>
+        <div class="col-md-4">
+            <label for="pregao">Pregão</label>
+            <input type="text" class="form-control" id="pregao" value="{{$ordem->pregao}}" disabled/>
+        </div>
+    </div>
+
+
+    <div class="form-group">
         <h2 class="h4"> Dados Nota Fiscal </h2>
     </div>
 

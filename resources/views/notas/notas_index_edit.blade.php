@@ -7,8 +7,15 @@
 
 @section('content')
 
-    <div style="border-bottom: #949494 2px solid; padding-bottom: 5px; margin-bottom: 10px">
-        <h2>NOTAS FISCAIS CADASTRADAS</h2>
+    <div class="row" style="border-bottom: #949494 2px solid; padding-bottom: 5px; margin-bottom: 10px">
+        <div class="col-md-10">
+            <h2>Ordem de Fornec. {{$ordem->codigo}}- Notas Fiscais Cadastradas</h2>
+        </div>
+        <div class="col-md-2">
+            <h2 class="text-right" title="Cadastrar Nota Fiscal">
+                <a type="button" href="{{route('cadastrar.nota',['id' => $ordem->id])}}" style="color: #23CF5C!important;"><i class="fa-solid fa-circle-plus"></i></a>
+            </h2>
+        </div>
     </div>
 
     @if(session()->has('fail'))
@@ -62,6 +69,8 @@
         @endempty
         </tbody>
     </table>
+    <a type="button" href="{{ route('index.ordemFornecimento') }}" class="btn btn-danger m-1" style="width: 150px">Voltar</a>
+
     @foreach($notas as $nota)
         <div class="modal fade bd-example-modal-lg" id="notaFiscal{{$nota->id}}" tabindex="-1" role="dialog"
              aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -118,4 +127,4 @@
 @endsection
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script type="text/javascript" src="{{asset('js/deposito/index.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/nota/index.js')}}"></script>

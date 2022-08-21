@@ -9,15 +9,13 @@
 
     <form method="POST" action="{{ route('criar.nota') }}" enctype="multipart/form-data">
         @csrf
+        <input type="hidden" name="ordem_id" value="{{$ordem->id}}">
 
         @include('notas.nota_conteudo')
 
         <div class="form-group row">
             <div class="col-md-2">
-                <Button class="btn btn-secondary" type="button"
-                        onclick="if(confirm('Tem certeza que deseja Cancelar o cadastro do Material?')) location.href = '../' ">
-                    Cancelar
-                </Button>
+                <a href="{{route('index.nota', ['id' => $ordem->id])}}" class="btn btn-secondary" type="button">Cancelar</a>
                 <button type="submit" class="btn btn-success">Salvar</button>
             </div>
         </div>
@@ -49,7 +47,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="cnpj">CNPJ<span style="color: red">*</span></label>
-                                <input class="form-control @error('cnpj') is-invalid @enderror"" id="cnpj_emitente" name="cnpj" value="" placeholder="Digite o CNPJ do emitente">
+                                <input class="form-control @error('cnpj') is-invalid @enderror" id="cnpj_emitente" name="cnpj" value="" placeholder="Digite o CNPJ do emitente">
                                 @error('cnpj')
                                 <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -91,7 +89,8 @@
                         data: {'razao_social': razao_social, 'cnpj': cnpj, 'inscricao_estadual': inscricao_estadual},
                         success: function (data) {
                             alert(data.success);
-                            $('#emitente').append("<option value='" + data.id + "'>" + data.razao_social +' - ' + data.cnpj + "</option>")
+                            $('#emitente').append("<option value='" + data.id + "'>" + data.razao_social +' - ' + data.cnpj + "</option>");
+                            $('#emitenteModal').modal('toggle');
                         },
                         error: function ()
                         {

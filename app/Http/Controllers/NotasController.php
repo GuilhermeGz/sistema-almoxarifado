@@ -7,6 +7,7 @@ use App\Emitente;
 use App\Material;
 use App\MaterialNotas;
 use App\NotaFiscal;
+use App\OrdemFornecimento;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -15,15 +16,19 @@ use PhpParser\Node\Stmt\Echo_;
 class NotasController extends Controller
 {
 
-    public function indexEdit(){
-        return view('notas.notas_index_edit', ['notas' => NotaFiscal::all()]);
+    public function index($id){
+        $notas = NotaFiscal::where('ordem_fornecimento_id', $id)->get();
+        $ordem = OrdemFornecimento::find($id);
+        return view('notas.notas_index_edit', compact('notas','ordem'));
     }
 
     public function edit($id)
     {
         $config = config_nota_fiscal::all()->first();
         $emitentes = Emitente::all();
-        return view('notas.notas_edit', ['nota' => NotaFiscal::findOrFail($id),'config' => $config,'emitentes' => $emitentes]);
+        $nota = NotaFiscal::find($id);
+        $ordem = OrdemFornecimento::find($nota->ordem_fornecimento->id);
+        return view('notas.notas_edit', ['nota' => $nota,'config' => $config,'emitentes' => $emitentes, 'ordem' => $ordem]);
     }
 
     public function update(Request $request)
@@ -35,7 +40,7 @@ class NotasController extends Controller
         $nota->natureza_operacao = $request->natureza_operacao;
         $nota->emitente_id = $request->emitente_id;
         $nota->update();
-        return redirect('/nota')->with('success', 'Nota Atualizada Com Sucesso!');
+        return redirect(route('index.nota', ['id' => $nota->ordem_fornecimento->id]))->with('success', 'Nota Atualizada Com Sucesso!');
     }
 
     public function consultar(){
@@ -96,11 +101,12 @@ class NotasController extends Controller
     }
 
 
-    public function cadastrar()
+    public function cadastrar($id)
     {
         $config = config_nota_fiscal::all()->first();
         $emitentes = Emitente::all();
-        return view('notas.notas_create', ['config' => $config, 'emitentes'=>$emitentes]);
+        $ordem = OrdemFornecimento::find($id);
+        return view('notas.notas_create', ['config' => $config, 'emitentes'=>$emitentes, 'ordem'=>$ordem]);
 
     }
 
@@ -135,6 +141,7 @@ class NotasController extends Controller
         $nota->emitente_id = $request->emitente_id;
         $nota->valor_nota = 0;
         $nota->status = 'Não Concluida';
+        $nota->ordem_fornecimento_id = $request->ordem_id;
         $nota->save();
         return redirect(route('materiais_edit.nota', ['nota' => $nota->id]));
 
@@ -142,7 +149,7 @@ class NotasController extends Controller
 
     public function adicionarEmitente(Request $request)
     {
-                $emitente = new Emitente();
+        $emitente = new Emitente();
         $emitente->inscricao_estadual = $request->inscricao_estadual;
         $emitente->cnpj = $request->cnpj;
         $emitente->razao_social = $request->razao_social;

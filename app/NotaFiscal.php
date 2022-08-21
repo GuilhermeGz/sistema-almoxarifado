@@ -20,6 +20,10 @@ class NotaFiscal extends Model
         return $this->belongsTo('App\Emitente');
     }
 
+    public function ordem_fornecimento(){
+        return $this->belongsTo('App\OrdemFornecimento');
+    }
+
     public static $rules = [
 
         'numero' => 'unique:nota_fiscals',

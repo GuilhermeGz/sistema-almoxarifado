@@ -22,6 +22,12 @@ class CreateNotaFiscalsTable extends Migration
             $table->string('natureza_operacao');
             $table->float('valor_nota');
             $table->string('status');
+
+            $table->unsignedInteger('emitente_id')->index();
+            $table->foreign('emitente_id')->references('id')->on('emitentes');
+
+            $table->unsignedInteger('ordem_fornecimento_id')->index();
+            $table->foreign('ordem_fornecimento_id')->references('id')->on('ordem_fornecimentos');
         });
     }
 

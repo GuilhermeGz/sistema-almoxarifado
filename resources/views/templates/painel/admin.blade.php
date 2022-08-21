@@ -153,7 +153,7 @@
                 </a>
                 <a data-target="#collapseFour" class="menuEffect selectedMenu"
                    style="padding: 10px 10px 10px 35px; color: white; text-decoration: none; display: grid"
-                   href="{{ route('cadastrar.nota') }}">
+                   href="">
                     <li>Notas Fiscais</li>
                 </a>
                 <a data-target="#collapseFour" class="menuEffect selectedMenu"
@@ -195,7 +195,7 @@
                 </a>
                 <a data-target="#collapseFive" class="menuEffect selectedMenu"
                    style="padding: 10px 10px 10px 35px; color: white; text-decoration: none; display: grid"
-                   href="{{route('index.nota')}}">
+                   href="">
                     <li>Editar Nota Fiscal</li>
                 </a>
 

@@ -68,7 +68,7 @@
 
     <div class="row">
         <div class="form-group col-md-2">
-            <a type="button" class="btn btn-danger" style="width: 100%" href="{{route('index.nota')}}">Voltar</a>
+            <a type="button" class="btn btn-danger" style="width: 100%" href="{{route('index.nota', ['id' => $nota->ordem_fornecimento->id])}}">Voltar</a>
         </div>
         <!-- Large modal -->
         <div class="form-group col-md-2">

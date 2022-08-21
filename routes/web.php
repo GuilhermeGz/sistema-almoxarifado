@@ -44,15 +44,25 @@ Route::middleware(['auth', 'verified', 'CheckCargoAdministrador'])->group(functi
     Route::post('setor/store', 'SetorController@store')->name('store.setor');
     Route::post('setor/update', 'SetorController@update')->name('update.setor');
 
-    Route::get('cadastrar_nota', 'NotasController@cadastrar')->name('cadastrar.nota');
+    Route::get('ordemFornecimento/index', 'OrdemFornecimentoController@index')->name('index.ordemFornecimento');
+    Route::get('ordemFornecimento/cadastrar', 'OrdemFornecimentoController@cadastrar')->name('cadastrar.ordemFornecimento');
+    Route::get('ordemFornecimento/editar/{id}', 'OrdemFornecimentoController@editar')->name('editar.ordemFornecimento');
+    Route::post('ordemFornecimento/store', 'OrdemFornecimentoController@store')->name('store.ordemFornecimento');
+    Route::post('ordemFornecimento/update', 'OrdemFornecimentoController@update')->name('update.ordemFornecimento');
+    Route::get('ordemFornecimento/remover/{id}', 'OrdemFornecimentoController@remover')->name('remover.ordemFornecimento');
+
+
+    Route::get('nota/{id}', 'NotasController@index')->name('index.nota');
+    Route::get('cadastrar_nota/{id}', 'NotasController@cadastrar')->name('cadastrar.nota');
+    Route::post('criar_nota', 'NotasController@create')->name('criar.nota');
+    Route::get('nota/edit/{id}', 'NotasController@edit')->name('edit.nota');
+
     Route::get('configurar_notas', 'NotasController@configurar')->name('config.nota');
     Route::post('alterar_config_notas', 'NotasController@alterarConfig')->name('alterar_config.nota');
     Route::get('remover_material_nota/{id}', 'NotasController@removerNotaMaterial')->name('remover_material.nota');
     Route::post('adicionar_material_nota', 'NotasController@adicionarMaterial')->name('adicionar_material.nota');
     Route::get('nota_materiais_edit', 'NotasController@notaMateriaisEdit')->name('materiais_edit.nota');
-    Route::post('criar_nota', 'NotasController@create')->name('criar.nota');
-    Route::get('nota', 'NotasController@indexEdit')->name('index.nota');
-    Route::get('nota/edit/{id}', 'NotasController@edit')->name('edit.nota');
+
     Route::post('nota/update', 'NotasController@update')->name('update.nota');
     Route::get('nota/consulta', 'NotasController@consultar')->name('consult.nota');
     Route::get('nota/remover/{id}', 'NotasController@remover')->name('remover.nota');
