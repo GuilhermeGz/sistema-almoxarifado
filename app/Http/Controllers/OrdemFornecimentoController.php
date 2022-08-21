@@ -44,6 +44,10 @@ class OrdemFornecimentoController extends Controller
 
     public function remover($id){
         $ordem = OrdemFornecimento::find($id);
+        if(count($ordem->notas_fiscais) != 0){
+            return redirect()->back()->with('fail', 'Não é possivel remover, a ordem de fornecimento possui notas fiscas cadastradas.');
+        }
+
         $ordem->delete();
         return redirect(route('index.ordemFornecimento'))->with('success', 'Ordem de Fornecimento Deletada com Sucesso!');
     }
