@@ -16,6 +16,7 @@ class CreateOrdemFornecimentosTable extends Migration
         Schema::create('ordem_fornecimentos', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->string('num_contrato');
             $table->string('codigo');
