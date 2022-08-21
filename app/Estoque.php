@@ -15,4 +15,9 @@ class Estoque extends Model
         return $this->belongsTo('App\Setor');
     }
 
+    public function material()
+    {
+        return $this->belongsTo('App\Material');
+    }
+
 }

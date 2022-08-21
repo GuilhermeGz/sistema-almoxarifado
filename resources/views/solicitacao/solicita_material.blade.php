@@ -55,9 +55,6 @@
                 <select id="selectMaterial" class="selectMaterial" class="form-control" style="width: 95%;">
                     <option></option>
                     <option data-value="" disabled>Material[Codigo - Estoque]</option>
-                    @foreach($materiais as $material)
-                        <option data-value="{{$material->id}}" id="Material{{$material->id}}">{{ $material->nome }}[{{$material->codigo}} - {{$material->estoque->quantidade}}] </option>
-                    @endforeach
                 </select>
             </div>
             @foreach($materiais as $material)
@@ -119,9 +116,6 @@
                                 <label for="selectMaterialEdit" style="color: #151631; font-family: 'Segoe UI'; font-weight: 700;">Material</label>
                                 <select id="selectMaterialEdit" style="width: 110%;" class="selectMaterial" class="form-control" name="selectMaterialEdit">
                                     <option></option>
-                                    @foreach($materiais as $material)
-                                        <option value="{{$material->id}}" id="MaterialEdit{{$material->id}}">{{ $material->nome }}[{{$material->codigo}} - {{$material->estoque->quantidade}}]</option>
-                                    @endforeach
                                 </select>
                             </div>
 
@@ -152,16 +146,12 @@
 @section('post-script')
     <script type="text/javascript">
         $('#selectUnidadeBasica').change(function () {
-            var setor_id = $(this).val();
+            var unidade_id = $("#selectUnidadeBasica option:selected").data('value');
 
-            $.get('/get_materiais/' + setor_id, function (estoques) {
-                $('#listaEstoque').empty();
-                if(estoques.length < 1)
-                {
-                    $('#listaEstoque').append(`<tr><td colspan="2" style="text-align: center">Nenhum estoque neste setor</td></tr>`);
-                }
+            $.get('/get_materiais/' + unidade_id, function (estoques) {
                 $.each(estoques, function (key, value) {
-                    $('#listaEstoque').append(`<tr><td>${value.nome}</td><td style=\"text-align: center\">${value.quantidade}</td></tr>`);
+                    $('#selectMaterial').append(`<option data-value="${value.id}" id="Material${value.id}">${value.nome}[${value.codigo} - ${value.quantidade}]</option>`)
+                    $('#selectMaterialEdit').append(`<option value="${value.id}" id="MaterialEdit${value.id}">${value.nome}[${value.codigo} - ${value.quantidade}]</option>`)
                 });
             });
 
