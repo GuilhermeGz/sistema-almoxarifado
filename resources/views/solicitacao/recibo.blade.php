@@ -81,7 +81,7 @@
         </tr>
         <tr>
             <td align="center" colspan="3">
-                <span><b>ATENÇÃO BÁSICA</b></span>
+                <span><b style="text-transform: uppercase;">{{$solicitante}}</b></span>
             </td>
         </tr>
         <tr>
