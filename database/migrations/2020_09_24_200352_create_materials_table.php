@@ -20,9 +20,6 @@ class CreateMaterialsTable extends Migration
             $table->text('descricao');
             $table->integer('quantidade_minima');
             $table->string('imagem')->nullable();
-            $table->string('corredor');
-            $table->string('prateleira');
-            $table->string('coluna');
             $table->string('unidade');
             $table->softDeletes();
             $table->timestamps();
