@@ -59,6 +59,7 @@
 
                     </div>
                     <div class="modal-footer">
+                        <button class="btn btn-danger" id="emitente_cancelar" data-dismiss="modal">Cancelar</button>
                         <button type="submit" class="btn btn-success" id="submit-emitente">Adicionar Emitente</button>
                     </div>
                 </form>
@@ -101,6 +102,13 @@
                 }
             });
         });
+
+        $("#emitente_cancelar").click(function() {
+            $("#razao_social").val("");
+            $("#inscricao_estadual").val("");
+            $("#cnpj_emitente").val("");
+        });
+
     </script>
 
 @endsection
