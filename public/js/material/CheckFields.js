@@ -1,10 +1,4 @@
 $(function () {
-    $("#nomeMaterial").mask("#", {
-        maxlength: true,
-        translation: {
-            '#': { pattern: /^[A-Za-záâãéêíóôõúçÁÂÃÉÊÍÓÔÕÚÇ\s]+$/, recursive: true }
-        }
-    });
 
     $("#codigoMaterial").mask("#", {
         maxlength: true,
