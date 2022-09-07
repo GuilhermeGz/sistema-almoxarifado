@@ -64,58 +64,7 @@
                 </select>
             </div>
         </div>
-        <div class="form-group form-row"
-             style="border-top: #cfc5c5 1px solid; border-bottom: #cfc5c5 1px solid; padding: 0 0 20px 0; margin-bottom: 20px; padding-top: 20px">
-            <div class="col-md-4">
-                <label for="corredor">Selecione o Corredor</label>
-                <select class="form-control text-center" name="corredor" id="corredor">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                </select>
-            </div>
-            <div class="col-md-4">
-                <label for="prateleira">Selecione a Prateleira</label>
-                <select class="form-control text-center" name="prateleira" id="prateleira">
-                    <option value="a">A</option>
-                    <option value="b">B</option>
-                    <option value="c">C</option>
-                    <option value="d">D</option>
-                    <option value="e">E</option>
-                    <option value="f">F</option>
-                    <option value="g">G</option>
-                    <option value="h">H</option>
-                    <option value="i">I</option>
-                    <option value="j">J</option>
-                    <option value="k">K</option>
-                    <option value="l">L</option>
-                    <option value="m">M</option>
-                    <option value="n">N</option>
-                    <option value="o">O</option>
-                    <option value="p">P</option>
-                    <option value="q">Q</option>
-                    <option value="r">R</option>
-                    <option value="s">S</option>
-                </select>
-            </div>
 
-            <div class="col-md-4">
-                <label for="coluna">Selecione a Coluna</label>
-                <select class="form-control text-center" name="coluna" id="coluna">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                </select>
-            </div>
-        </div>
         <div class="form-group col-md-12" class="form-row"
              style="border-bottom: #cfc5c5 1px solid; padding: 0 0 20px 0; margin-bottom: 20px">
             <label for="materialDescricao">Descrição</label>

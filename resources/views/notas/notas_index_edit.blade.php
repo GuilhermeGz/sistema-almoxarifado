@@ -9,7 +9,7 @@
 
     <div class="row" style="border-bottom: #949494 2px solid; padding-bottom: 5px; margin-bottom: 10px">
         <div class="col-md-10">
-            <h2>Ordem de Fornec. {{$ordem->codigo}}- Notas Fiscais Cadastradas</h2>
+            <h2 style="margin-bottom: 0px">Notas Fiscais da Ordem de Fornecimento {{$ordem->codigo}}</h2>
         </div>
         <div class="col-md-2">
             <h2 class="text-right" title="Cadastrar Nota Fiscal">
@@ -36,28 +36,28 @@
             <th class="align-middle" scope="col" style="padding-left: 10px">Número</th>
             <th class="align-middle" scope="col" style="text-align: center">Série</th>
             <th class="align-middle" scope="col" style="text-align: center">Valor</th>
+            <th class="align-middle" scope="col" style="text-align: center">Emitente</th>
             <th scope="col" style="text-align: center; width: 3%">Ações</th>
         </tr>
         </thead>
         <tbody>
 
         @forelse($notas as $nota)
-            <tr>
+            <tr data-toggle="modal" data-target="#notaFiscal{{$nota->id}}">
                 <td class="text-left" style="text-align: center"> {{ $nota->numero }} </td>
                 <td style="text-align: center"> {{ $nota->serie }} </td>
                 <td style="text-align: center"> R$ {{ number_format((float)$nota->valor_nota, 2, ',', '')}}</td>
+                <td style="text-align: center"> {{ $nota->emitente->razao_social}} </td>
 
-                <td style="text-align: center">
+                <td style="text-align: center" >
                     <div class="dropdown">
                         <button class="btn btn-secondary dropdown" type="button" id="dropdownMenuButton"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             ⋮
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-
-                            <a type="button" class="dropdown-item" data-toggle="modal" data-target="#notaFiscal{{$nota->id}}">Consultar Materiais</a>
                             <a type="button" class="dropdown-item" onclick="location.href = '{{ route('edit.nota', ['id' => $nota->id]) }}'">Editar Nota Fiscal</a>
-                            <a type="button" class="dropdown-item" onclick="location.href = '{{ route('materiais_edit.nota', ['nota' => $nota->id]) }}'">Editar Materiais</a>
+                            <a type="button" class="dropdown-item" onclick="location.href = '{{ route('materiais_edit.nota', ['nota' => $nota->id]) }}'">Editar da Materiais</a>
 
                             <a type="button" class="dropdown-item" onclick="if(confirm('Tem certeza que deseja Remover a nota fiscal {{$nota->codigo}}?')) location.href='{{route('remover.nota', $nota->id)}}'">Remover</a>
                         </div>
@@ -90,8 +90,7 @@
                                     <thead>
                                     <tr>
                                         <th scope="col">Material</th>
-                                        <th scope="col">Quantidade Recebidos</th>
-                                        <th scope="col">Quantidade Total</th>
+                                        <th scope="col">Quantidade</th>
                                         <th scope="col">Valor do Item</th>
                                         <th scope="col">Status</th>
                                     </tr>
@@ -103,8 +102,7 @@
                                             <td>
                                                 {{\App\Material::find($material->material_id)->nome}}
                                             </td>
-                                            <td>{{$material->quantidade_atual}}</td>
-                                            <td>{{$material->quantidade_total}}</td>
+                                            <td>{{$material->quantidade}}</td>
                                             <td>R$ {{$material->valor}} </td>
                                             <td>@if($material->status == false)
                                                     <strong class="alert-danger">

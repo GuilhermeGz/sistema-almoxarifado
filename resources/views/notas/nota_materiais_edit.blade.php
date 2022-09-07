@@ -35,8 +35,7 @@
             <thead>
             <tr>
                 <th scope="col">Material</th>
-                <th scope="col">Quantidade Entregue</th>
-                <th scope="col">Quantidade Total</th>
+                <th scope="col">Quantidade</th>
                 <th scope="col">Valor do Item</th>
                 <th scope="col">Status</th>
                 <th scope="col">Ação</th>
@@ -49,8 +48,7 @@
                     <td>
                         {{\App\Material::find($material->material_id)->nome}}
                     </td>
-                    <td>{{$material->quantidade_atual}}</td>
-                    <td>{{$material->quantidade_total}}</td>
+                    <td>{{$material->quantidade}}</td>
                     <td>R$ {{$material->valor}}</td>
                     <td>@if($material->status == false)
                             <strong class="alert-danger">
