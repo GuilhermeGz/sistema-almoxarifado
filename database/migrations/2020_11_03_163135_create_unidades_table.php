@@ -25,6 +25,9 @@ class CreateUnidadesTable extends Migration
             $table->unsignedInteger('setor_id')->index();
             $table->foreign('setor_id')->references('id')->on('setors');
 
+            $table->unsignedInteger('usuario_id')->index();
+            $table->foreign('usuario_id')->references('id')->on('usuarios');
+
         });
     }
 
