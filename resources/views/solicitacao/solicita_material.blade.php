@@ -57,12 +57,16 @@
                     <option data-value="" disabled>Material[Codigo - Estoque]</option>
                 </select>
             </div>
+
+            <div id="estoquesId">
+
+            </div>
             @foreach($materiais as $material)
                 <input type="hidden" id="unidade_{{$material->id}}" value="{{$material->unidade}}">
-            @endforeach
-
-            @foreach($estoques as $estoque)
-                <input type="hidden" id="estoque_{{$estoque->material_id}}" value="{{$estoque->quantidade}}">
+                @foreach($unidades as $unidade)
+                    <input type="hidden" id="estoque_{{$material->id.$unidade->id}}"
+                           value="{{$estoque = \App\Estoque::where('material_id', $material->id)->where('setor_id', $unidade->setor->id)->first()->quantidade}}">
+                @endforeach
             @endforeach
             <div class="form-group col-md-2">
                 <label for="quantMaterial" style="color: #151631; font-family: 'Segoe UI'; font-weight: 700">Quantidade</label>
@@ -138,7 +142,7 @@
         var cont = 0;
         $('#selectUnidadeBasica').select2({
             placeholder: "Selecione a Unidade Básica.",
-            language: { noResults: () => "Nenhum resultado encontrado.",},
+            language: {noResults: () => "Nenhum resultado encontrado.",},
         });
     </script>
 @endsection
@@ -150,8 +154,9 @@
 
             $.get('/get_materiais/' + unidade_id, function (estoques) {
                 $.each(estoques, function (key, value) {
-                    $('#selectMaterial').append(`<option data-value="${value.id}" id="Material${value.id}">${value.nome}[${value.codigo} - ${value.quantidade}]</option>`)
-                    $('#selectMaterialEdit').append(`<option value="${value.id}" id="MaterialEdit${value.id}">${value.nome}[${value.codigo} - ${value.quantidade}]</option>`)
+                    $('#selectMaterial').append(`<option data-value="${value.material_id}" id="Material${value.material_id}">${value.nome}[${value.codigo} - ${value.quantidade}]</option>`);
+                    $('#selectMaterialEdit').append(`<option value="${value.material_id}" id="MaterialEdit${value.material_id}">${value.nome}[${value.codigo} - ${value.quantidade}]</option>`);
+                    $('#estoquesId').append(`<input type="hidden" id="estoque_${value.material_id}${unidade_id}" value="${value.quantidade}">`);
                 });
             });
 

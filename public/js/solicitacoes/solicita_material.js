@@ -147,18 +147,21 @@ function setValuesRowInput() {
     $('#dataTableUnidade').val([unidades]);
 }
 
+//construirTable(quantidade, unidade, estoque, materialId)
 function addTable() {
     var materialId;
     materialId = $("#selectMaterial option:selected").data('value');
     document.getElementById("Material" + materialId).disabled = true;
-    document.getElementById("MaterialEdit" + materialId).disabled = true;
+    //document.getElementById("MaterialEdit" + materialId).disabled = true;
 
     $("#unidade_selected").val($("#unidade_" + materialId).val())
+    var unidadeId = $("#selectUnidadeBasica option:selected").data('value');
+    alert(materialId);
     if ($("#selectMaterial option:selected").index() > 0 && $("#quantMaterial").val() != '') {
         $("#tableMaterial tbody").append("<tr data-id=" + $("#selectMaterial option:selected").data('value') + ">" +
             "<td data-id=" + $("#selectMaterial option:selected").data('value') + " class=\"materialRow\">" + $("#selectMaterial option:selected").text() + "</td>" +
             "<td style=\"text-align: center\" data-id=" + $("#selectUnidadeBasica option:selected").data('value') + " class=\"unidadeRow\">" + $("#selectUnidadeBasica option:selected").text() + "</td>" +
-            construirTable($("#quantMaterial").val(), $("#unidade_selected").val(), $("#estoque_" + materialId).val(), materialId));
+            construirTable($("#quantMaterial").val(), $("#unidade_selected").val(), $("#estoque_" + materialId + '' + unidadeId).val(), materialId));
         document.getElementById("selectUnidadeBasica").disabled = true;
     } else {
         $('#error').slideDown();

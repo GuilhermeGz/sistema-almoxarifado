@@ -23,11 +23,8 @@ class SolicitacaoController extends Controller
     public function show()
     {
         $estoques = Estoque::where('deposito_id', 1)->get();
-        $materiais = [];
+        $materiais = Material::all();
         $unidades = Unidade::all();
-        foreach ($estoques as $estoque) {
-            array_push($materiais, Material::find($estoque->material_id));
-        }
 
         return view('solicitacao.solicita_material', ['materiais' => $materiais, 'unidades' => $unidades, 'estoques' => $estoques]);
     }
