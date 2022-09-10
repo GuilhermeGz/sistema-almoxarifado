@@ -137,7 +137,7 @@ class SolicitacaoController extends Controller
     public function gerarRecibo($id)
     {
         $recibo = Recibo::find($id);
-        $string = '09 UNID Canetas#09 UNID Lapis';
+        $solicitante = $recibo->unidade->nome;
         $itens = explode('#', $recibo->itens);
 
         $dia = $recibo->created_at->format('d');
@@ -169,7 +169,7 @@ class SolicitacaoController extends Controller
             $mes = 'Dezembro';
         }
 
-        $pdf = PDF::loadView('solicitacao.recibo', compact('itens', 'dia', 'mes', 'ano'));
+        $pdf = PDF::loadView('solicitacao.recibo', compact('itens', 'dia', 'mes', 'ano','solicitante'));
         $nomePDF = 'Relatório_Materiais_Mais_Movimentados_Solicitação_Semana.pdf';
         return $pdf->setPaper('a4')->stream($nomePDF);
     }
