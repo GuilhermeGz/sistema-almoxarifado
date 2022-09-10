@@ -156,7 +156,6 @@ function addTable() {
 
     $("#unidade_selected").val($("#unidade_" + materialId).val())
     var unidadeId = $("#selectUnidadeBasica option:selected").data('value');
-    alert(materialId);
     if ($("#selectMaterial option:selected").index() > 0 && $("#quantMaterial").val() != '') {
         $("#tableMaterial tbody").append("<tr data-id=" + $("#selectMaterial option:selected").data('value') + ">" +
             "<td data-id=" + $("#selectMaterial option:selected").data('value') + " class=\"materialRow\">" + $("#selectMaterial option:selected").text() + "</td>" +
