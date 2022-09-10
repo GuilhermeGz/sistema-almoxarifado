@@ -10,5 +10,6 @@ $factory->define(Estoque::class, function (Faker $faker) {
         'material_id' => 1,
         'deposito_id' => 1,
         'quantidade' => rand(50, 100),
+        'setor_id' => 1,
     ];
 });
