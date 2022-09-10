@@ -3,7 +3,13 @@
         <img src="{{asset('imagens/logo.png')}}" width="170px" style="float: left">
     </a>
     @auth()
-        @include('templates.navbar_admin')
+        @if(Auth::user()->cargo_id == 1)
+            @include('templates.navbar_admin')
+        @elseif(Auth::user()->cargo_id == 2)
+            @include('templates.navbar_diretoria')
+        @elseif(Auth::user()->cargo_id == 3)
+            @include('templates.navbar_solicitante')
+        @endif
     @endauth
 </nav>
 
