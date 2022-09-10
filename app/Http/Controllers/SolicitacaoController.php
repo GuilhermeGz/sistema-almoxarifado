@@ -105,6 +105,23 @@ class SolicitacaoController extends Controller
         ]);
     }
 
+    public function listSolicitacoesRequerente()
+    {
+        $solicitacoes = Solicitacao::where('usuario_id', '=', Auth::user()->id)->get();
+        $historicoStatus = HistoricoStatus::whereIn('solicitacao_id', array_column($solicitacoes->toArray(), 'id'))->orderBy('id', 'desc')->get();
+
+        $solicitacoesID = array_column($historicoStatus->toArray(), 'solicitacao_id');
+        $materiaisPreview = [];
+
+        if (!empty($solicitacoesID)) {
+            $materiaisPreview = $this->getMateriaisPreview($solicitacoesID, 'solicitacao_id');
+        }
+
+        return view('solicitacao.minha_solicitacao_requerente', [
+            'status' => $historicoStatus, 'materiaisPreview' => $materiaisPreview,
+        ]);
+    }
+
     public function listTodasSolicitacoes()
     {
         $consulta = DB::select('select status.status, status.created_at, status.solicitacao_id, u.nome
@@ -374,6 +391,42 @@ class SolicitacaoController extends Controller
 
 
         return response()->json($materiais);
+    }
+
+    public function cancelarSolicitacaoReq($id)
+    {
+        $usuarioID = Solicitacao::select('usuario_id')->where('id', '=', $id)->get();
+
+        if (Auth::user()->id != $usuarioID[0]->usuario_id) {
+            return redirect()->back();
+        }
+
+        $solicitacao = HistoricoStatus::select('data_finalizado')->where('solicitacao_id', $id)->get();
+
+        if (is_null($solicitacao[0]->data_finalizado)) {
+            DB::update(
+                'update historico_statuses set status = ?, data_finalizado = now() where solicitacao_id = ?',
+                ['Cancelado', $id]
+            );
+
+            return redirect()->back()->with('success', 'A solicitação foi cancelada.');
+        }
+
+        return redirect()->back()->with('error', 'A solicitação não pode ser cancelada pois já foi finalizada.');
+    }
+
+    public function getItemSolicitacaoRequerente($id)
+    {
+        $usuarioID = Solicitacao::select('usuario_id')->where('id', '=', $id)->get();
+
+        if (Auth::user()->id != $usuarioID[0]->usuario_id) {
+            return json_encode('');
+        }
+
+        $consulta = DB::select('select item.quantidade_solicitada, item.quantidade_aprovada, mat.nome, mat.descricao
+            from item_solicitacaos item, materials mat where item.solicitacao_id = ? and mat.id = item.material_id', [$id]);
+
+        return json_encode($consulta);
     }
 
     public function getMateriaisPreview($solicitacoes_id)

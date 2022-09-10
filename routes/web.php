@@ -14,6 +14,15 @@ Route::get('contato', function () {
 })->name('contato');
 
 Route::middleware(['auth', 'verified', 'CheckCargoAdministrador'])->group(function () {
+    Route::get('entrega_materiais', 'SolicitacaoController@listSolicitacoesAprovadas')->name('entrega.materiais');
+    Route::POST('entrega_materiais', 'SolicitacaoController@checkEntregarMateriais')->name('entrega.materiais');
+    Route::get('entregar_todos_materiais', 'SolicitacaoController@entregarTodosMateriais')->name('entrega.todos.materiais');
+    Route::get('consultarDeposito', 'DepositoController@consultarDepositoView')->name('deposito.consultarDeposito');
+    Route::resource('material', 'MaterialController')->except(['show']);
+    Route::get('solicitacoes_admin', 'SolicitacaoController@listTodasSolicitacoes')->name('solicitacoe.admin');
+    Route::get('get_estoques/{setor_id}', 'DepositoController@getEstoques')->name('deposito.getEstoque');
+    Route::get('get_materiais/{unidade_id}', 'SolicitacaoController@getMateriais')->name('setor.getMateriais');
+
     Route::resource('notificacao', 'NotificacaoController');
     Route::get('notificacao/{notificacao_id}', 'NotificacaoController@show')->name('notificacao.show');
     Route::get('notificacoes', 'NotificacaoController@index')->name('notificacao.index');
@@ -75,27 +84,24 @@ Route::middleware(['auth', 'verified', 'CheckCargoAdministrador'])->group(functi
     Route::post('criar_unidade', 'UnidadeController@criar')->name('criar.unidade');
     Route::post('alterar_unidade', 'UnidadeController@alterar')->name('alterar.unidade');
 
-    Route::get('solicitar_material', 'SolicitacaoController@show')->name('solicitar.material');
     Route::post('adicionar_material', 'SolicitacaoController@store')->name('add.material');
 
     Route::get('recibo', 'SolicitacaoController@gerarRecibo')->name('solicitar.recibo');
 });
 
+Route::middleware(['auth', 'verified', 'CheckCargoRequerente'])->group(function () {
+    Route::get('minhas_solicitacoes', 'SolicitacaoController@listSolicitacoesRequerente')->name('minhas.solicitacoes');
+    Route::get('itens_solicitacao/{id}', 'SolicitacaoController@getItemSolicitacaoRequerente')->name('itens.solicitacao');
+    Route::get('cancelar_solicitacao/{id}', 'SolicitacaoController@cancelarSolicitacaoReq')->name('cancelar.solicitacao');
+});
 
 Route::middleware(['auth', 'verified', 'CheckCargoAdminDiretoria'])->group(function () {
     Route::get('relatorio.materiais', 'RelatorioController@relatorio_escolha')->name('relatorio.materiais');
     Route::POST('relatorio.materiais', 'RelatorioController@gerarRelatorioMateriais')->name('relatorio.materiais');
 });
 
-Route::middleware(['auth', 'verified', 'CheckCargoAdminTerceirizado'])->group(function () {
-    Route::get('entrega_materiais', 'SolicitacaoController@listSolicitacoesAprovadas')->name('entrega.materiais');
-    Route::POST('entrega_materiais', 'SolicitacaoController@checkEntregarMateriais')->name('entrega.materiais');
-    Route::get('entregar_todos_materiais', 'SolicitacaoController@entregarTodosMateriais')->name('entrega.todos.materiais');
-    Route::get('consultarDeposito', 'DepositoController@consultarDepositoView')->name('deposito.consultarDeposito');
-    Route::resource('material', 'MaterialController')->except(['show']);
-    Route::get('solicitacoes_admin', 'SolicitacaoController@listTodasSolicitacoes')->name('solicitacoe.admin');
-    Route::get('get_estoques/{setor_id}', 'DepositoController@getEstoques')->name('deposito.getEstoque');
-    Route::get('get_materiais/{unidade_id}', 'SolicitacaoController@getMateriais')->name('setor.getMateriais');
+Route::middleware(['auth', 'verified', 'CheckCargoAdminRequerente'])->group(function () {
+    Route::get('solicitar_material', 'SolicitacaoController@show')->name('solicitar.material');
 });
 
 Route::middleware('auth', 'verified')->group(function () {
