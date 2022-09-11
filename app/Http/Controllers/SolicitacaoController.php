@@ -73,7 +73,6 @@ class SolicitacaoController extends Controller
         $usuario = Usuario::find(Auth::user()->id);
 
         $solicitacao = new Solicitacao();
-        $solicitacao->usuario_id = $usuario->id;
         $solicitacao->unidade_id = $unidades[0];
         $solicitacao->observacao_requerente = $request->observacao_requerente;
 
@@ -82,11 +81,11 @@ class SolicitacaoController extends Controller
         $historicoStatus = new HistoricoStatus();
         if($usuario->cargo_id == 1) {
             $historicoStatus->status = 'Aprovado';
+            $historicoStatus->data_aprovado = now();
         } else {
             $historicoStatus->status = 'Aguardando Analise';
         }
         $historicoStatus->solicitacao_id = $solicitacao->id;
-        $historicoStatus->data_aprovado = now();
         $historicoStatus->save();
 
         for ($i = 0; $i < count($materiais); ++$i) {
