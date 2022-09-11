@@ -84,6 +84,11 @@ Route::middleware(['auth', 'verified', 'CheckCargoAdministrador'])->group(functi
     Route::post('alterar_unidade', 'UnidadeController@alterar')->name('alterar.unidade');
 
     Route::get('recibo', 'SolicitacaoController@gerarRecibo')->name('solicitar.recibo');
+
+    Route::get('analise_solicitacoes', 'SolicitacaoController@listSolicitacoesAnalise')->name('analise.solicitacoes');
+    Route::POST('analise_solicitacoes', 'SolicitacaoController@checkAnaliseSolicitacao')->name('analise.solicitacao');
+
+
 });
 
 Route::middleware(['auth', 'verified', 'CheckCargoRequerente'])->group(function () {
@@ -118,8 +123,10 @@ Route::middleware('auth', 'verified')->group(function () {
 
     Route::get('solicitante_solicitacao/{id}', 'SolicitacaoController@getSolicitanteSolicitacao')->name('solicitante.solicitacao');
     Route::get('itens_solicitacao_admin/{id}', 'SolicitacaoController@getItemSolicitacaoAdmin')->name('itens.solicitacao.admin');
+    Route::get('itens_troca_admin/{material_id}/{solicitacao_id}', 'SolicitacaoController@getItemTrocaAdmin')->name('itens.troca.admin');
 
     Route::post('ajaxAdicionarEmitente', 'NotasController@adicionarEmitente')->name('adicionar_emitente.nota');
+    Route::post('realizarTrocaMaterial', 'SolicitacaoController@realizarTroca')->name('trocar.itens');
 });
 
 Auth::routes(['verify' => true]);

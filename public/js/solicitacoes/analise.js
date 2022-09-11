@@ -5,18 +5,6 @@ function showItens(id) {
 
     $('#numSolicitacao').text(id);
 
-    $.ajax({
-        url: '/observacao_solicitacao/' + id,
-        type: 'GET',
-        dataType: 'json',
-        success: function (data) {
-            $('#textObservacaoRequerente').text(data[0]['observacao_requerente']);
-            $('#textObservacaoAdmin').text(data[0]['observacao_admin']);
-            $('#inputNomeReceptor').val(data[0]['receptor']);
-            $('#inputRgReceptor').val(data[0]['receptor_rg']);
-            $('#inputTipoReceptor').val(data[0]['receptor_tipo']);
-        }
-    });
 
     $.ajax({
         url: '/itens_solicitacao_admin/' + id,
@@ -33,6 +21,7 @@ function showItens(id) {
                 ret += "<td style=\"text-align: center\">" + data[item]['quantidade'] + "</td>";
                 ret += "<td style=\"text-align: center\">" + '<input class="quantMateriais" min=\"1\" style=\"width: 85%\" type=\"text\" id=\"inputQuantAprovada\"';
                 ret += 'name=\"quantAprovada[]\" value=\"' + (data[item]['quantidade_aprovada'] == null ? '' : data[item]['quantidade_aprovada']) + '\">' + "</td>";
+                ret += "<td style=\"text-align: center\">" + "<a onclick=\"showTrocaMaterial("+ data[item]['material_id'] +","+data[item]['solicitacao_id']+", '"+ data[item]['nome'] +"')\"  type=\"button\" class=\"btn btn-primary\">Trocar</a>" + "</td>";
                 ret += "</tr>";
             }
 
@@ -42,6 +31,47 @@ function showItens(id) {
             $("#modalBody").show();
             $('#negaSolicitacao').show();
             $('#aprovaSolicitacao').show();
+        }
+    });
+}
+
+function showTrocaMaterial(material_id, solicitacao_id, material_nome) {
+
+    $("#trocaConteudo").html("");
+    $.ajax({
+        url: '/itens_troca_admin/' + material_id + '/' + solicitacao_id,
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            var ret = "";
+
+            ret += "<div class=\"col-md-4\"/>";
+            ret += "<label for=\"itemAtual\"><strong>Material escolhido:</strong></label>";
+            ret += "<input type=\"hidden\" class=\"form-control\" id=\"itemAtual\" name=\"itemAtual\" value=\""+material_id+"\">";
+            ret += "<input type=\"hidden\" class=\"form-control\" id=\"solicitacao_id\" name=\"solicitacao_id\" value=\""+solicitacao_id+"\">";
+            ret += "<input class=\"form-control\" value=\""+material_nome+"\" readonly>";
+            ret += "</div>";
+
+            ret += "<div class=\"col-md-4\"/>";
+            ret += "<label for=\"selectTrocaItem\"><strong>Materiais em estoque:</strong></label>";
+            ret += "<select class=\"form-select form-control\" id=\"itemSelecionado\" name=\"itemSelecionado\" '>";
+            for (var item in data){
+                ret += "<option value=\""+data[item]['material_id']+"\">"+data[item]['nome']+" - "+data[item]['quantidade']+"</option>";
+            }
+            ret += "</select>";
+            ret += "</div>";
+
+            ret += "<div class=\"col-md-4\"/>";
+            ret += "<label for=\"quant_material\"><strong>Quantidade:</strong></label>";
+            ret += "<input type=\'number\' class=\"form-control\" id=\"quant_material\" name=\"quant_material\" value=\"\">";
+            ret += "</div>";
+
+            $("#trocaConteudo").append(ret);
+            $("#detalhesSolicitacao").modal('hide');
+            setTimeout(() => {
+                $("#infoTroca ").modal();
+            }, 500);
+
         }
     });
 }
