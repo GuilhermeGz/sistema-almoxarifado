@@ -22,14 +22,21 @@ class SolicitacaoController extends Controller
 {
     public function show()
     {
-        $estoques = Estoque::where('deposito_id', 1)->get();
-        $materiais = [];
-        $unidades = Unidade::all();
-        foreach ($estoques as $estoque) {
-            array_push($materiais, Material::find($estoque->material_id));
+        if (Auth::user()->cargo_id == 1) {
+            $estoques = Estoque::where('deposito_id', 1)->get();
+            $materiais = Material::all();
+            $unidades = Unidade::all();
+
+
+        } elseif (Auth::user()->cargo_id == 3) {
+            $unidades = Unidade::where('usuario_id', Auth::user()->id)->first();
+            $materiais = Material::all();
+            $estoques = Estoque::where('setor_id', $unidades->setor_id);
         }
 
         return view('solicitacao.solicita_material', ['materiais' => $materiais, 'unidades' => $unidades, 'estoques' => $estoques]);
+
+
     }
 
     public function store(Request $request)
@@ -63,17 +70,22 @@ class SolicitacaoController extends Controller
             return redirect()->back()->withErrors('Informe valores válidos para o(s) material(is) e sua(s) quantidade(s)');
         }
 
-        $solicitacao = new Solicitacao();
-        $solicitacao->usuario_id = Auth::user()->id;
-        $solicitacao->unidade_id = $unidades[0];
         $usuario = Usuario::find(Auth::user()->id);
+
+        $solicitacao = new Solicitacao();
+        $solicitacao->unidade_id = $unidades[0];
+        $solicitacao->observacao_requerente = $request->observacao_requerente;
 
         $solicitacao->save();
 
         $historicoStatus = new HistoricoStatus();
-        $historicoStatus->status = 'Aprovado';
+        if($usuario->cargo_id == 1) {
+            $historicoStatus->status = 'Aprovado';
+            $historicoStatus->data_aprovado = now();
+        } else {
+            $historicoStatus->status = 'Aguardando Analise';
+        }
         $historicoStatus->solicitacao_id = $solicitacao->id;
-        $historicoStatus->data_aprovado = now();
         $historicoStatus->save();
 
         for ($i = 0; $i < count($materiais); ++$i) {
@@ -105,6 +117,23 @@ class SolicitacaoController extends Controller
 
         return view('solicitacao.entrega_materiais', [
             'dados' => $consulta, 'materiaisPreview' => $materiaisPreview,
+        ]);
+    }
+
+    public function listSolicitacoesRequerente()
+    {
+        $solicitacoes = Solicitacao::where('usuario_id', '=', Auth::user()->id)->get();
+        $historicoStatus = HistoricoStatus::whereIn('solicitacao_id', array_column($solicitacoes->toArray(), 'id'))->orderBy('id', 'desc')->get();
+
+        $solicitacoesID = array_column($historicoStatus->toArray(), 'solicitacao_id');
+        $materiaisPreview = [];
+
+        if (!empty($solicitacoesID)) {
+            $materiaisPreview = $this->getMateriaisPreview($solicitacoesID, 'solicitacao_id');
+        }
+
+        return view('solicitacao.minha_solicitacao_requerente', [
+            'status' => $historicoStatus, 'materiaisPreview' => $materiaisPreview,
         ]);
     }
 
@@ -172,7 +201,7 @@ class SolicitacaoController extends Controller
             $mes = 'Dezembro';
         }
 
-        $pdf = PDF::loadView('solicitacao.recibo', compact('itens', 'dia', 'mes', 'ano','solicitante'));
+        $pdf = PDF::loadView('solicitacao.recibo', compact('itens', 'dia', 'mes', 'ano', 'solicitante'));
         $nomePDF = 'Relatório_Materiais_Mais_Movimentados_Solicitação_Semana.pdf';
         return $pdf->setPaper('a4')->stream($nomePDF);
     }
@@ -391,10 +420,46 @@ class SolicitacaoController extends Controller
 
         $materiais = DB::table('materials')
             ->join('estoques', 'materials.id', '=', 'estoques.material_id')
-            ->where('setor_id','=', $unidade->setor_id)->get();
+            ->where('setor_id', '=', $unidade->setor_id)->get();
 
 
         return response()->json($materiais);
+    }
+
+    public function cancelarSolicitacaoReq($id)
+    {
+        $usuarioID = Solicitacao::select('usuario_id')->where('id', '=', $id)->get();
+
+        if (Auth::user()->id != $usuarioID[0]->usuario_id) {
+            return redirect()->back();
+        }
+
+        $solicitacao = HistoricoStatus::select('data_finalizado')->where('solicitacao_id', $id)->get();
+
+        if (is_null($solicitacao[0]->data_finalizado)) {
+            DB::update(
+                'update historico_statuses set status = ?, data_finalizado = now() where solicitacao_id = ?',
+                ['Cancelado', $id]
+            );
+
+            return redirect()->back()->with('success', 'A solicitação foi cancelada.');
+        }
+
+        return redirect()->back()->with('error', 'A solicitação não pode ser cancelada pois já foi finalizada.');
+    }
+
+    public function getItemSolicitacaoRequerente($id)
+    {
+        $usuarioID = Solicitacao::select('usuario_id')->where('id', '=', $id)->get();
+
+        if (Auth::user()->id != $usuarioID[0]->usuario_id) {
+            return json_encode('');
+        }
+
+        $consulta = DB::select('select item.quantidade_solicitada, item.quantidade_aprovada, mat.nome, mat.descricao
+            from item_solicitacaos item, materials mat where item.solicitacao_id = ? and mat.id = item.material_id', [$id]);
+
+        return json_encode($consulta);
     }
 
     public function getMateriaisPreview($solicitacoes_id)

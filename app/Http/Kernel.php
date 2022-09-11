@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\CheckCargoRequerente;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -66,6 +67,7 @@ class Kernel extends HttpKernel
         'CheckCargoAdministrador' => \App\Http\Middleware\CheckCargoAdministrador::class,
         'CheckCargoDiretoria' => \App\Http\Middleware\CheckCargoDiretoria::class,
         'CheckCargoAdminDiretoria' => \App\Http\Middleware\CheckCargoAdminDiretoria::class,
-        'CheckCargoAdminTerceirizado' => \App\Http\Middleware\CheckCargoAdminTerceirizado::class,
+        'CheckCargoAdminRequerente' => \App\Http\Middleware\CheckCargoAdminRequerente::class,
+        'CheckCargoRequerente' => CheckCargoRequerente::class,
     ];
 }

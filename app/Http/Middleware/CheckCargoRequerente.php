@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 
-class CheckCargoAdminTerceirizado
+class CheckCargoRequerente
 {
     /**
      * Handle an incoming request.
@@ -16,7 +16,7 @@ class CheckCargoAdminTerceirizado
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::user()->cargo_id == 1 || Auth::user()->cargo_id == 3) {
+        if (Auth::user()->cargo_id == 3) {
             return $next($request);
         } else {
             return redirect()->back();

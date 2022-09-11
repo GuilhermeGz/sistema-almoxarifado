@@ -13,6 +13,7 @@ $factory->define(Material::class, function (Faker $faker) {
         'codigo' => rand(000000, 999999),
         'descricao' => $faker->text,
         'quantidade_minima' => rand(0, 50),
-        'imagem' => 'default.png'
+        'imagem' => 'default.png',
+        'unidade' => 'unidade'
     ];
 });

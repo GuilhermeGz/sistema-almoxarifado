@@ -34,7 +34,7 @@
         <div class="form-group row">
             <div class="col-md-4">
                 <label for="cep">CEP<span style="color: red">*</span></label>
-                <input class="form-control" type="text" id="cep" name="cep"  onblur="pesquisacep(this.value)" placeholder="Digite o cep da unidade" value="{{$unidade->cep}}" required>
+                <input class="form-control" type="text" id="cep" name="cep" onblur="pesquisacep(this.value)" placeholder="Digite o cep da unidade" value="{{$unidade->cep}}" required>
             </div>
 
             <div class="col-md-4">
@@ -47,6 +47,18 @@
                 <input class="form-control" type="text" id="bairro" name="bairro" placeholder="Digite o bairro da unidade" value="{{$unidade->bairro}}" required>
             </div>
         </div>
+
+        <div class="form-group">
+            <h2 class="h4"> Dados do Responsável/Login</h2>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-md-4">
+                <a class="btn btn-primary w-100"
+                   href="{{ route('usuario.edit', ['usuario' => $unidade->usuario_id]) }}">Editar Usuário Responsável</a>
+            </div>
+        </div>
+
 
         <div class="form-group row">
             <div class="col-md-4">

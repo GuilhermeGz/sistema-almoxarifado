@@ -43,26 +43,39 @@
         <div class="form-row" style="margin-left: 10px">
             <div class="form-group col-md-4">
                 <label for="selectUnidadeBasica" style="color: #151631; font-family: 'Segoe UI'; font-weight: 700">Unidade Básica:</label>
-                <select class="form-control" name="selectUnidadeBasica" id="selectUnidadeBasica" style="width: 100%">
+                <select class="form-control" name="selectUnidadeBasica" id="selectUnidadeBasica" style="width: 100%" @if(Auth::user()->cargo_id != 1) disabled @endif>
                     <option></option>
-                    @foreach($unidades as $unidade)
-                        <option data-value="{{$unidade->id}}">{{ $unidade->nome }} </option>
-                    @endforeach
+                    @if(Auth::user()->cargo_id == 1)
+                        @foreach($unidades as $unidade)
+                            <option data-value="{{$unidade->id}}">{{ $unidade->nome }} </option>
+                        @endforeach
+                    @else
+                        <option data-value="{{$unidades->id}}" selected>{{ $unidades->nome }} </option>
+                    @endif
                 </select>
             </div>
             <div class="form-group col-md-4">
                 <label for="selectMaterial" style="color: #151631; font-family: 'Segoe UI'; font-weight: 700">Material</label>
                 <select id="selectMaterial" class="selectMaterial" class="form-control" style="width: 95%;">
                     <option></option>
-                    <option data-value="" disabled>Material[Codigo - Estoque]</option>
+                    <option data-value="" disabled>Material[Codigo]</option>
                 </select>
+            </div>
+
+            <div id="estoquesId">
+
             </div>
             @foreach($materiais as $material)
                 <input type="hidden" id="unidade_{{$material->id}}" value="{{$material->unidade}}">
-            @endforeach
-
-            @foreach($estoques as $estoque)
-                <input type="hidden" id="estoque_{{$estoque->material_id}}" value="{{$estoque->quantidade}}">
+                @if(Auth::user()->cargo_id == 1)
+                    @foreach($unidades as $unidade)
+                        <input type="hidden" id="estoque_{{$material->id.$unidade->id}}"
+                               value="{{$estoque = \App\Estoque::where('material_id', $material->id)->where('setor_id', $unidade->setor->id)->first()->quantidade}}">
+                    @endforeach
+                @else
+                    <input type="hidden" id="estoque_{{$material->id.$unidades->id}}"
+                           value="{{$estoque = \App\Estoque::where('material_id', $material->id)->where('setor_id', $unidades->setor->id)->first()->quantidade}}">
+                @endif
             @endforeach
             <div class="form-group col-md-2">
                 <label for="quantMaterial" style="color: #151631; font-family: 'Segoe UI'; font-weight: 700">Quantidade</label>
@@ -90,6 +103,11 @@
             </thead>
             <tbody></tbody>
         </table>
+
+        <div class="form-group col-md-12" class="form-row" style="border-bottom: #cfc5c5 1px solid; padding: 0 0 20px 0;">
+            <label for="inputObservacao"><strong>Observações:</strong></label>
+            <textarea class="form-control" name="observacao_requerente" id="inputObservacao" cols="30" rows="3">{{ old('observacao') }}</textarea>
+        </div>
 
         <input type="hidden" id="dataTableMaterial" name="dataTableMaterial" value="">
         <input type="hidden" id="dataTableQuantidade" name="dataTableQuantidade" value="">
@@ -138,26 +156,45 @@
         var cont = 0;
         $('#selectUnidadeBasica').select2({
             placeholder: "Selecione a Unidade Básica.",
-            language: { noResults: () => "Nenhum resultado encontrado.",},
+            language: {noResults: () => "Nenhum resultado encontrado.",},
         });
     </script>
 @endsection
 
 @section('post-script')
-    <script type="text/javascript">
-        $('#selectUnidadeBasica').change(function () {
-            var unidade_id = $("#selectUnidadeBasica option:selected").data('value');
+    @if(Auth::user()->cargo_id == 1)
+        <script type="text/javascript">
 
-            $.get('/get_materiais/' + unidade_id, function (estoques) {
-                $.each(estoques, function (key, value) {
-                    $('#selectMaterial').append(`<option data-value="${value.id}" id="Material${value.id}">${value.nome}[${value.codigo} - ${value.quantidade}]</option>`)
-                    $('#selectMaterialEdit').append(`<option value="${value.id}" id="MaterialEdit${value.id}">${value.nome}[${value.codigo} - ${value.quantidade}]</option>`)
+            $('#selectUnidadeBasica').change(function () {
+                var unidade_id = $("#selectUnidadeBasica option:selected").data('value');
+
+                $.get('/get_materiais/' + unidade_id, function (estoques) {
+                    $.each(estoques, function (key, value) {
+                        $('#selectMaterial').append(`<option data-value="${value.material_id}" id="Material${value.material_id}">${value.nome}[${value.codigo} - ${value.quantidade}]</option>`);
+                        $('#selectMaterialEdit').append(`<option value="${value.material_id}" id="MaterialEdit${value.material_id}">${value.nome}[${value.codigo} - ${value.quantidade}]</option>`);
+                        $('#estoquesId').append(`<input type="hidden" id="estoque_${value.material_id}${unidade_id}" value="${value.quantidade}">`);
+                    });
+                });
+
+            });
+        </script>
+    @else
+        <script type="text/javascript">
+
+            $(function () {
+                var unidade_id = $("#selectUnidadeBasica option:selected").data('value');
+
+                $.get('/get_materiais/' + unidade_id, function (estoques) {
+                    $.each(estoques, function (key, value) {
+                        $('#selectMaterial').append(`<option data-value="${value.material_id}" id="Material${value.material_id}">${value.nome}[${value.codigo}]</option>`);
+                        $('#selectMaterialEdit').append(`<option value="${value.material_id}" id="MaterialEdit${value.material_id}">${value.nome}[${value.codigo}]</option>`);
+                        $('#estoquesId').append(`<input type="hidden" id="estoque_${value.material_id}${unidade_id}" value="${value.quantidade}">`);
+                    });
                 });
             });
 
-        });
-
-    </script>
+        </script>
+    @endif
 @endsection
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
