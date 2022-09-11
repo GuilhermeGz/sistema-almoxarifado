@@ -43,7 +43,7 @@
         <div class="form-row" style="margin-left: 10px">
             <div class="form-group col-md-4">
                 <label for="selectUnidadeBasica" style="color: #151631; font-family: 'Segoe UI'; font-weight: 700">Unidade Básica:</label>
-                <select class="form-control" name="selectUnidadeBasica" id="selectUnidadeBasica" style="width: 100%">
+                <select class="form-control" name="selectUnidadeBasica" id="selectUnidadeBasica" style="width: 100%" @if(Auth::user()->cargo_id != 1) disabled @endif>
                     <option></option>
                     @if(Auth::user()->cargo_id == 1)
                         @foreach($unidades as $unidade)
