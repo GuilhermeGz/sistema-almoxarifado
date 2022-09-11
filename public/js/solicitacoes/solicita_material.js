@@ -153,7 +153,7 @@ function addTable() {
     var materialId;
     materialId = $("#selectMaterial option:selected").data('value');
     document.getElementById("Material" + materialId).disabled = true;
-    //document.getElementById("MaterialEdit" + materialId).disabled = true;
+    document.getElementById("MaterialEdit" + materialId).disabled = true;
 
     $("#unidade_selected").val($("#unidade_" + materialId).val())
     var unidadeId = $("#selectUnidadeBasica option:selected").data('value');

@@ -182,7 +182,7 @@
                 $.get('/get_materiais/' + unidade_id, function (estoques) {
                     $.each(estoques, function (key, value) {
                         $('#selectMaterial').append(`<option data-value="${value.material_id}" id="Material${value.material_id}">${value.nome}[${value.codigo}]</option>`);
-                        $('#selectMaterialEdit').append(`<option value="${value.material_id}" id="MaterialEdit${value.material_id}">${value.nome}[${value.codigo}}]</option>`);
+                        $('#selectMaterialEdit').append(`<option value="${value.material_id}" id="MaterialEdit${value.material_id}">${value.nome}[${value.codigo}]</option>`);
                         $('#estoquesId').append(`<input type="hidden" id="estoque_${value.material_id}${unidade_id}" value="${value.quantidade}">`);
                     });
                 });
