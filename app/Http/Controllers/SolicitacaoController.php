@@ -431,9 +431,11 @@ class SolicitacaoController extends Controller
 
     public function cancelarSolicitacaoReq($id)
     {
-        $usuarioID = Solicitacao::select('usuario_id')->where('id', '=', $id)->get();
+        $solicitacao = Solicitacao::find($id);
+        $unidade = Unidade::find($solicitacao->unidade_id);
+        $usuario_id = $unidade->usuario_id;
 
-        if (Auth::user()->id != $usuarioID[0]->usuario_id) {
+        if (Auth::user()->id != $usuario_id) {
             return redirect()->back();
         }
 
