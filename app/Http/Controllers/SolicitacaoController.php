@@ -499,16 +499,17 @@ class SolicitacaoController extends Controller
             }
             $auxCountMaterial = 0;
         }
-
         return $materiaisPreview;
     }
 
     public function listSolicitacoesAnalise()
     {
         $consulta = DB::select('select status.status, status.created_at, status.solicitacao_id, u.nome
-            from historico_statuses status, usuarios u, solicitacaos soli
+            from historico_statuses status, unidades u, solicitacaos soli
             where status.data_aprovado IS NULL and status.data_finalizado IS NULL and status.solicitacao_id = soli.id
-            and u.cargo_id != 2 order by status.id desc');
+            and u.id = soli.unidade_id order by status.id desc');
+
+        //dd($consulta);
 
         $solicitacoesID = array_column($consulta, 'solicitacao_id');
         $materiaisPreview = [];

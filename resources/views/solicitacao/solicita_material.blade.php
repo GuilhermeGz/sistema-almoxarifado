@@ -73,8 +73,10 @@
                                value="{{$estoque = \App\Estoque::where('material_id', $material->id)->where('setor_id', $unidade->setor->id)->first()->quantidade}}">
                     @endforeach
                 @else
-                    <input type="hidden" id="estoque_{{$material->id.$unidades->id}}"
-                           value="{{$estoque = \App\Estoque::where('material_id', $material->id)->where('setor_id', $unidades->setor->id)->first()->quantidade}}">
+                    @if(isset(\App\Estoque::where('material_id', $material->id)->where('setor_id', $unidades->setor->id)->first()->quantidade))
+                        <input type="hidden" id="estoque_{{$material->id.$unidades->id}}"
+                               value="{{$estoque = \App\Estoque::where('material_id', $material->id)->where('setor_id', $unidades->setor->id)->first()->quantidade}}">
+                    @endif
                 @endif
             @endforeach
             <div class="form-group col-md-2">
