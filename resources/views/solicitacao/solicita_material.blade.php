@@ -98,18 +98,21 @@
                 <th scope="col">Material</th>
                 <th scope="col" style="text-align: center">Unidade Básica</th>
                 <th scope="col" style="text-align: center">Quantidade</th>
-                <th scope="col" style="text-align: center">Estoque</th>
+                @if(Auth::user()->cargo_id == 1)
+                    <th scope="col" style="text-align: center">Estoque</th>
+                @endif
                 <th scope="col" style="text-align: center">Unidade</th>
                 <th scope="col" style="text-align: center">Ações</th>
             </tr>
             </thead>
             <tbody></tbody>
         </table>
-
-        <div class="form-group col-md-12" class="form-row" style="border-bottom: #cfc5c5 1px solid; padding: 0 0 20px 0;">
-            <label for="inputObservacao"><strong>Observações:</strong></label>
-            <textarea class="form-control" name="observacao_requerente" id="inputObservacao" cols="30" rows="3">{{ old('observacao') }}</textarea>
-        </div>
+        @if(Auth::user()->cargo_id == 3)
+            <div class="form-group col-md-12" class="form-row" style="border-bottom: #cfc5c5 1px solid; padding: 0 0 20px 0;">
+                <label for="inputObservacao"><strong>Observações:</strong></label>
+                <textarea class="form-control" name="observacao_requerente" id="inputObservacao" cols="30" rows="3">{{ old('observacao') }}</textarea>
+            </div>
+        @endif
 
         <input type="hidden" id="dataTableMaterial" name="dataTableMaterial" value="">
         <input type="hidden" id="dataTableQuantidade" name="dataTableQuantidade" value="">
@@ -182,7 +185,6 @@
         </script>
     @else
         <script type="text/javascript">
-
             $(function () {
                 var unidade_id = $("#selectUnidadeBasica option:selected").data('value');
 
@@ -194,11 +196,14 @@
                     });
                 });
             });
-
         </script>
     @endif
 @endsection
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
-<script type="text/javascript" src="{{asset('js/solicitacoes/solicita_material.js')}}"></script>
+@if(Auth::user()->cargo_id == 1)
+    <script type="text/javascript" src="{{asset('js/solicitacoes/solicita_material.js')}}"></script>
+@else
+    <script type="text/javascript" src="{{asset('js/solicitacoes/solicita_material_requerente.js')}}"></script>
+@endif
