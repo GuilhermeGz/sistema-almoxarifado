@@ -83,8 +83,6 @@ Route::middleware(['auth', 'verified', 'CheckCargoAdministrador'])->group(functi
     Route::post('criar_unidade', 'UnidadeController@criar')->name('criar.unidade');
     Route::post('alterar_unidade', 'UnidadeController@alterar')->name('alterar.unidade');
 
-    Route::post('adicionar_material', 'SolicitacaoController@store')->name('add.material');
-
     Route::get('recibo', 'SolicitacaoController@gerarRecibo')->name('solicitar.recibo');
 });
 
@@ -102,6 +100,7 @@ Route::middleware(['auth', 'verified', 'CheckCargoAdminDiretoria'])->group(funct
 Route::middleware(['auth', 'verified', 'CheckCargoAdminRequerente'])->group(function () {
     Route::get('solicitar_material', 'SolicitacaoController@show')->name('solicitar.material');
     Route::get('get_materiais/{unidade_id}', 'SolicitacaoController@getMateriais')->name('setor.getMateriais');
+    Route::post('adicionar_material', 'SolicitacaoController@store')->name('add.material');
 });
 
 Route::middleware('auth', 'verified')->group(function () {

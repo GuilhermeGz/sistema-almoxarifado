@@ -70,15 +70,21 @@ class SolicitacaoController extends Controller
             return redirect()->back()->withErrors('Informe valores válidos para o(s) material(is) e sua(s) quantidade(s)');
         }
 
-        $solicitacao = new Solicitacao();
-        $solicitacao->usuario_id = Auth::user()->id;
-        $solicitacao->unidade_id = $unidades[0];
         $usuario = Usuario::find(Auth::user()->id);
+
+        $solicitacao = new Solicitacao();
+        $solicitacao->usuario_id = $usuario->id;
+        $solicitacao->unidade_id = $unidades[0];
+        $solicitacao->observacao_requerente = $request->observacao_requerente;
 
         $solicitacao->save();
 
         $historicoStatus = new HistoricoStatus();
-        $historicoStatus->status = 'Aprovado';
+        if($usuario->cargo_id == 1) {
+            $historicoStatus->status = 'Aprovado';
+        } else {
+            $historicoStatus->status = 'Aguardando Analise';
+        }
         $historicoStatus->solicitacao_id = $solicitacao->id;
         $historicoStatus->data_aprovado = now();
         $historicoStatus->save();

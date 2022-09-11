@@ -104,6 +104,11 @@
             <tbody></tbody>
         </table>
 
+        <div class="form-group col-md-12" class="form-row" style="border-bottom: #cfc5c5 1px solid; padding: 0 0 20px 0;">
+            <label for="inputObservacao"><strong>Observações:</strong></label>
+            <textarea class="form-control" name="observacao_requerente" id="inputObservacao" cols="30" rows="3">{{ old('observacao') }}</textarea>
+        </div>
+
         <input type="hidden" id="dataTableMaterial" name="dataTableMaterial" value="">
         <input type="hidden" id="dataTableQuantidade" name="dataTableQuantidade" value="">
         <input type="hidden" id="dataTableUnidade" name="dataTableUnidade" value="">
