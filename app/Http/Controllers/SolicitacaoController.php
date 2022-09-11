@@ -22,11 +22,21 @@ class SolicitacaoController extends Controller
 {
     public function show()
     {
-        $estoques = Estoque::where('deposito_id', 1)->get();
-        $materiais = Material::all();
-        $unidades = Unidade::all();
+        if (Auth::user()->cargo_id == 1) {
+            $estoques = Estoque::where('deposito_id', 1)->get();
+            $materiais = Material::all();
+            $unidades = Unidade::all();
+
+
+        } elseif (Auth::user()->cargo_id == 3) {
+            $unidades = Unidade::where('usuario_id', Auth::user()->id)->first();
+            $materiais = Material::all();
+            $estoques = Estoque::where('setor_id', $unidades->setor_id);
+        }
 
         return view('solicitacao.solicita_material', ['materiais' => $materiais, 'unidades' => $unidades, 'estoques' => $estoques]);
+
+
     }
 
     public function store(Request $request)
@@ -186,7 +196,7 @@ class SolicitacaoController extends Controller
             $mes = 'Dezembro';
         }
 
-        $pdf = PDF::loadView('solicitacao.recibo', compact('itens', 'dia', 'mes', 'ano','solicitante'));
+        $pdf = PDF::loadView('solicitacao.recibo', compact('itens', 'dia', 'mes', 'ano', 'solicitante'));
         $nomePDF = 'Relatório_Materiais_Mais_Movimentados_Solicitação_Semana.pdf';
         return $pdf->setPaper('a4')->stream($nomePDF);
     }
@@ -387,7 +397,7 @@ class SolicitacaoController extends Controller
 
         $materiais = DB::table('materials')
             ->join('estoques', 'materials.id', '=', 'estoques.material_id')
-            ->where('setor_id','=', $unidade->setor_id)->get();
+            ->where('setor_id', '=', $unidade->setor_id)->get();
 
 
         return response()->json($materiais);

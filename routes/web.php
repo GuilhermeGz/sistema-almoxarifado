@@ -21,7 +21,6 @@ Route::middleware(['auth', 'verified', 'CheckCargoAdministrador'])->group(functi
     Route::resource('material', 'MaterialController')->except(['show']);
     Route::get('solicitacoes_admin', 'SolicitacaoController@listTodasSolicitacoes')->name('solicitacoe.admin');
     Route::get('get_estoques/{setor_id}', 'DepositoController@getEstoques')->name('deposito.getEstoque');
-    Route::get('get_materiais/{unidade_id}', 'SolicitacaoController@getMateriais')->name('setor.getMateriais');
 
     Route::resource('notificacao', 'NotificacaoController');
     Route::get('notificacao/{notificacao_id}', 'NotificacaoController@show')->name('notificacao.show');
@@ -102,6 +101,7 @@ Route::middleware(['auth', 'verified', 'CheckCargoAdminDiretoria'])->group(funct
 
 Route::middleware(['auth', 'verified', 'CheckCargoAdminRequerente'])->group(function () {
     Route::get('solicitar_material', 'SolicitacaoController@show')->name('solicitar.material');
+    Route::get('get_materiais/{unidade_id}', 'SolicitacaoController@getMateriais')->name('setor.getMateriais');
 });
 
 Route::middleware('auth', 'verified')->group(function () {
