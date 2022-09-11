@@ -91,7 +91,9 @@ class SolicitacaoController extends Controller
         for ($i = 0; $i < count($materiais); ++$i) {
             $itemSolicitacao = new ItemSolicitacao();
             $itemSolicitacao->quantidade_solicitada = $quantidades[$i];
-            $itemSolicitacao->quantidade_aprovada = $quantidades[$i];
+            if($usuario->cargo_id == 1) {
+                $itemSolicitacao->quantidade_aprovada = $quantidades[$i];
+            }
             $itemSolicitacao->material_id = $materiais[$i];
             $itemSolicitacao->solicitacao_id = $solicitacao->id;
             $itemSolicitacao->save();
@@ -122,7 +124,8 @@ class SolicitacaoController extends Controller
 
     public function listSolicitacoesRequerente()
     {
-        $solicitacoes = Solicitacao::where('usuario_id', '=', Auth::user()->id)->get();
+        $unidade = Unidade::where('usuario_id', '=', Auth::user()->id)->first();
+        $solicitacoes = Solicitacao::where('unidade_id', '=', $unidade->id)->get();
         $historicoStatus = HistoricoStatus::whereIn('solicitacao_id', array_column($solicitacoes->toArray(), 'id'))->orderBy('id', 'desc')->get();
 
         $solicitacoesID = array_column($historicoStatus->toArray(), 'solicitacao_id');
@@ -432,9 +435,13 @@ class SolicitacaoController extends Controller
 
     public function getItemSolicitacaoRequerente($id)
     {
-        $usuarioID = Solicitacao::select('usuario_id')->where('id', '=', $id)->get();
 
-        if (Auth::user()->id != $usuarioID[0]->usuario_id) {
+        $solicitacao = Solicitacao::find($id);
+        $unidade = Unidade::find($solicitacao->unidade_id);
+        $usuarioID = $unidade->usuario_id;
+
+
+        if (Auth::user()->id != $usuarioID) {
             return json_encode('');
         }
 
