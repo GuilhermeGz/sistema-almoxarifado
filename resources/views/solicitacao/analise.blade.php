@@ -52,9 +52,9 @@
         <tbody>
         @if (count($dados) > 0 && count($materiaisPreview) > 0)
             @for ($i = 0; $i < count($dados); $i++)
-                <tr data-id="{{ $dados[$i]->solicitacao_id }}" style="cursor: pointer">
+                <tr data-id="{{ $dados[$i]->solicitacao_id }}" id="solicitacao_line_{{ $dados[$i]->solicitacao_id }}" style="cursor: pointer">
                     <td class="expandeOption">{{ $dados[$i]->nome }}</td>
-                    <td class="expandeOption">{{ $materiaisPreview[$i] }}...</td>
+                    <td class="expandeOption" id="solicitacaoMaterial{{$dados[$i]->solicitacao_id}}">{{ $materiaisPreview[$i] }}...</td>
                     <td class="expandeOption">
                         <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-clock-history" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 0 1 .589.022l-.074.997zm2.004.45a7.003 7.003 0 0 0-.985-.299l.219-.976c.383.086.76.2 1.126.342l-.36.933zm1.37.71a7.01 7.01 0 0 0-.439-.27l.493-.87a8.025 8.025 0 0 1 .979.654l-.615.789a6.996 6.996 0 0 0-.418-.302zm1.834 1.79a6.99 6.99 0 0 0-.653-.796l.724-.69c.27.285.52.59.747.91l-.818.576zm.744 1.352a7.08 7.08 0 0 0-.214-.468l.893-.45a7.976 7.976 0 0 1 .45 1.088l-.95.313a7.023 7.023 0 0 0-.179-.483zm.53 2.507a6.991 6.991 0 0 0-.1-1.025l.985-.17c.067.386.106.778.116 1.17l-1 .025zm-.131 1.538c.033-.17.06-.339.081-.51l.993.123a7.957 7.957 0 0 1-.23 1.155l-.964-.267c.046-.165.086-.332.12-.501zm-.952 2.379c.184-.29.346-.594.486-.908l.914.405c-.16.36-.345.706-.555 1.038l-.845-.535zm-.964 1.205c.122-.122.239-.248.35-.378l.758.653a8.073 8.073 0 0 1-.401.432l-.707-.707z"/>
@@ -157,8 +157,24 @@
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
-<script type="text/javascript" src="{{asset('js/solicitacoes/analise.js')}}"></script>
+
 <script>
+    function construirSolicitacaoMaterial(){
+        $.ajax({
+            type: 'GET',
+            url: "{{route('itens.solicitacao.analise')}}",
+            dataType: 'json',
+            success: function (data) {
+                var ret = "";
+                if(data['dados'].length > 0 && data['materiaisPreview'].length > 0){
+                    for (var i = 0; i < data['dados'].length; i++) {
+                        $("#solicitacaoMaterial" + data['dados'][i].solicitacao_id).html(""+data['materiaisPreview'][i]+"...");
+                    }
+                }
+            }
+        });
+    }
+
     $(document).ready(function () {
         $.ajaxSetup({
             headers: {
@@ -166,15 +182,14 @@
             }
         });
 
+        // Realização da troca de material
         $('#form_troca').submit(function (e) {
-            alert("entrou");
             e.preventDefault();
 
             var itemAtual = $("#itemAtual").val();
             var itemSelicionado = $("#itemSelecionado").val();
             var solicitacao_id = $("#solicitacao_id").val();
             var quant_material = $("#quant_material").val();
-            console.log("fafaf");
             $.ajax({
                 type: 'POST',
                 url: "{{route('trocar.itens')}}",
@@ -186,13 +201,20 @@
                 },
                 success: function (data) {
                     alert(data.success);
-                    alert('Item trocado');
+                    construirSolicitacaoMaterial();
+                    $("#solicitacaoMaterial"+solicitacao_id).click();
+                    $("#solicitacaoMaterial"+solicitacao_id).click();
                     $('#infoTroca').modal('toggle');
                 },
                 error: function () {
-                    alert('O fff já está sendo usado!');
+                    alert('Erro na troca do material!');
                 }
             });
         });
+        //
+        construirSolicitacaoMaterial();
+
     });
 </script>
+
+<script type="text/javascript" src="{{asset('js/solicitacoes/analise.js')}}"></script>

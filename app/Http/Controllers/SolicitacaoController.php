@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Barryvdh\DomPDF\Facade as PDF;
+use Illuminate\Support\Str;
 
 class SolicitacaoController extends Controller
 {
@@ -174,6 +175,18 @@ class SolicitacaoController extends Controller
         $recibo = Recibo::find($id);
         $solicitante = $recibo->unidade->nome;
         $itens = explode('#', $recibo->itens);
+        $itensEntregues = [];
+        $itensTrocados = [];
+
+        foreach ($itens as $item) {
+            $substituicaoConfirm = Str::contains($item, 'Substituido');
+            if($substituicaoConfirm == True){
+                array_push($itensTrocados, explode(' , Substituido por: ', $item));
+            }else{
+                array_push($itensEntregues, $item);
+            }
+        }
+
 
         $dia = $recibo->created_at->format('d');
         $ano = $recibo->created_at->format('Y');
@@ -204,7 +217,7 @@ class SolicitacaoController extends Controller
             $mes = 'Dezembro';
         }
 
-        $pdf = PDF::loadView('solicitacao.recibo', compact('itens', 'dia', 'mes', 'ano', 'solicitante'));
+        $pdf = PDF::loadView('solicitacao.recibo', compact('itensEntregues','itensTrocados', 'dia', 'mes', 'ano', 'solicitante'));
         $nomePDF = 'Relatório_Materiais_Mais_Movimentados_Solicitação_Semana.pdf';
         return $pdf->setPaper('a4')->stream($nomePDF);
     }
@@ -267,12 +280,30 @@ class SolicitacaoController extends Controller
                 //Criação do recibo
                 $lista = '';
                 $solicitacao = Solicitacao::find($historico->solicitacao_id);
-                $itens = ItemSolicitacao::where('solicitacao_id', $historico->solicitacao_id)->get();
-                foreach ($itens as $item) {
+                $itensSubstituidos = ItemSolicitacao::where('solicitacao_id', $historico->solicitacao_id)->where('item_troca_id', "!=" , null)->get();
+                $itensSubstitutos =  ItemSolicitacao::whereIn('id',$itensSubstituidos->pluck('item_troca_id'))->get();
+                $itensEntregues = ItemSolicitacao::where('solicitacao_id', $historico->solicitacao_id)
+                    ->where('item_troca_id', null)
+                    ->whereNotIn('id',$itensSubstituidos->pluck('item_troca_id'))
+                    ->get();
+
+                foreach ($itensSubstituidos as $item) {
+                    $itemSubstituto = $itensSubstitutos->find($item->item_troca_id);
+                    $material = Material::find($item->material_id);
+                    $materialSubstituto = Material::find($itemSubstituto->material_id);
+
+                    $lista = $lista . $item->quantidade_solicitada . ' UNID ' . $material->nome .
+                        ' , Substituido por: ' .
+                        $itemSubstituto->quantidade_aprovada . ' UNID ' . $materialSubstituto->nome .'#';
+
+                }
+
+                foreach ($itensEntregues as $item) {
                     $material = Material::find($item->material_id);
                     $lista = $lista . $item->quantidade_aprovada . ' UNID ' . $material->nome . '#';
 
                 }
+
                 $recibo = new Recibo();
                 $recibo->unidade_id = $solicitacao->unidade_id;
                 $recibo->itens = $lista;
@@ -381,13 +412,13 @@ class SolicitacaoController extends Controller
         if (session()->exists('itemSolicitacoes')) {
             session()->forget('itemSolicitacoes');
         }
+        $solicitacao = Solicitacao::find($id);
 
         $consulta = DB::select('select item.quantidade_solicitada, item.material_id, mat.nome, mat.descricao, mat.unidade, item.id, item.quantidade_solicitada, est.quantidade, item.solicitacao_id
-            from item_solicitacaos item, materials mat, estoques est where item.solicitacao_id = ? and mat.id = item.material_id and est.material_id = item.material_id and est.deposito_id = 1', [$id]);
+            from item_solicitacaos item, materials mat, estoques est where item.solicitacao_id = ? and mat.id = item.material_id and est.material_id = item.material_id and est.deposito_id = 1 and item.item_troca_id IS NULL', [$id]);
 
         session(['itemSolicitacoes' => $consulta]);
-
-        return json_encode($consulta);
+        return json_encode(array($consulta,$solicitacao));
 
 
     }
@@ -406,7 +437,6 @@ class SolicitacaoController extends Controller
             ->get();
 
         return json_encode($estoque);
-
 
     }
 
@@ -473,12 +503,12 @@ class SolicitacaoController extends Controller
 
     public function getMateriaisPreview($solicitacoes_id)
     {
-        $materiaisIDItem = ItemSolicitacao::select('material_id', 'solicitacao_id')->whereIn('solicitacao_id', $solicitacoes_id)->orderBy('solicitacao_id', 'desc')->get();
+        $materiaisIDItem = ItemSolicitacao::select('material_id', 'solicitacao_id')->whereIn('solicitacao_id', $solicitacoes_id)->where('item_troca_id', null)->orderBy('solicitacao_id', 'desc')->get();
         $itensSolicitacaoID = array_values(array_unique(array_column($materiaisIDItem->toArray(), 'solicitacao_id')));
 
         $materiais = DB::select('select item.material_id, item.solicitacao_id, mat.nome
             from item_solicitacaos item, materials mat
-            where item.solicitacao_id in (' . implode(',', $solicitacoes_id) . ') and item.material_id = mat.id');
+            where item.solicitacao_id in (' . implode(',', $solicitacoes_id) . ') and item.material_id = mat.id and item.item_troca_id IS NULL');
 
         $materiaisPreview = [];
         $auxCountMaterial = 0;
@@ -526,9 +556,10 @@ class SolicitacaoController extends Controller
     public function ajaxListarSolicitacoesAnalise()
     {
         $consulta = DB::select('select status.status, status.created_at, status.solicitacao_id, u.nome
-            from historico_statuses status, usuarios u, solicitacaos soli
+            from historico_statuses status, unidades u, solicitacaos soli
             where status.data_aprovado IS NULL and status.data_finalizado IS NULL and status.solicitacao_id = soli.id
-            and u.cargo_id != 2 order by status.id desc');
+            and u.id = soli.unidade_id order by status.id desc');
+
 
         $solicitacoesID = array_column($consulta, 'solicitacao_id');
         $materiaisPreview = [];
@@ -537,10 +568,9 @@ class SolicitacaoController extends Controller
             $materiaisPreview = $this->getMateriaisPreview($solicitacoesID);
         }
 
+        $output = array('dados' => $consulta, 'materiaisPreview' => $materiaisPreview);
 
-        return view('solicitacao.analise', [
-            'dados' => $consulta, 'materiaisPreview' => $materiaisPreview,
-        ]);
+        return response()->json($output);
     }
 
     public function checkAnaliseSolicitacao(Request $request)
@@ -649,7 +679,8 @@ class SolicitacaoController extends Controller
         $solicitacao = Solicitacao::where('id', $solicitacaoID)->first();
         $usuario = Usuario::where('id', $solicitacao->usuario_id)->first();
 
-        \App\Jobs\emailSolicitacaoAprovada::dispatch($usuario, $solicitacao);
+        // Email de aprovação da solicitação
+        // \App\Jobs\emailSolicitacaoAprovada::dispatch($usuario, $solicitacao);
 
         return redirect()->back()->with('success', 'Solicitação Aprovada com sucesso!');
     }

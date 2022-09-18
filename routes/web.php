@@ -124,6 +124,7 @@ Route::middleware('auth', 'verified')->group(function () {
     Route::get('solicitante_solicitacao/{id}', 'SolicitacaoController@getSolicitanteSolicitacao')->name('solicitante.solicitacao');
     Route::get('itens_solicitacao_admin/{id}', 'SolicitacaoController@getItemSolicitacaoAdmin')->name('itens.solicitacao.admin');
     Route::get('itens_troca_admin/{material_id}/{solicitacao_id}', 'SolicitacaoController@getItemTrocaAdmin')->name('itens.troca.admin');
+    Route::get('itens_solicitacao.analise', 'SolicitacaoController@ajaxListarSolicitacoesAnalise')->name('itens.solicitacao.analise');
 
     Route::post('ajaxAdicionarEmitente', 'NotasController@adicionarEmitente')->name('adicionar_emitente.nota');
     Route::post('realizarTrocaMaterial', 'SolicitacaoController@realizarTroca')->name('trocar.itens');

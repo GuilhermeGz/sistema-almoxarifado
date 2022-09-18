@@ -10,21 +10,24 @@ function showItens(id) {
         url: '/itens_solicitacao_admin/' + id,
         type: 'GET',
         dataType: 'json',
-        success: function (data) {
+        success: function (info) {
             var ret = '';
+            var data = info[0];
             for (var item in data) {
-                ret += "<tr>";
-                ret += "<td>" + data[item]['nome'] + "</td>";
-                ret += "<td>" + data[item]['descricao'] + "</td>";
-                ret += "<td style=\"text-align: center\">" + data[item]['unidade'] + "</td>";
-                ret += "<td style=\"text-align: center\">" + data[item]['quantidade_solicitada'] + "</td>";
-                ret += "<td style=\"text-align: center\">" + data[item]['quantidade'] + "</td>";
-                ret += "<td style=\"text-align: center\">" + '<input class="quantMateriais" min=\"1\" style=\"width: 85%\" type=\"text\" id=\"inputQuantAprovada\"';
-                ret += 'name=\"quantAprovada[]\" value=\"' + (data[item]['quantidade_aprovada'] == null ? '' : data[item]['quantidade_aprovada']) + '\">' + "</td>";
-                ret += "<td style=\"text-align: center\">" + "<a onclick=\"showTrocaMaterial("+ data[item]['material_id'] +","+data[item]['solicitacao_id']+", '"+ data[item]['nome'] +"')\"  type=\"button\" class=\"btn btn-primary\">Trocar</a>" + "</td>";
-                ret += "</tr>";
-            }
+                    ret += "<tr>";
+                    ret += "<td>" + data[item]['nome'] + "</td>";
+                    ret += "<td>" + data[item]['descricao'] + "</td>";
+                    ret += "<td style=\"text-align: center\">" + data[item]['unidade'] + "</td>";
+                    ret += "<td style=\"text-align: center\">" + data[item]['quantidade_solicitada'] + "</td>";
+                    ret += "<td style=\"text-align: center\">" + data[item]['quantidade'] + "</td>";
+                    ret += "<td style=\"text-align: center\">" + '<input class="quantMateriais" min=\"1\" style=\"width: 85%\" type=\"text\" id=\"inputQuantAprovada\"';
+                    ret += 'name=\"quantAprovada[]\" value=\"' + (data[item]['quantidade_aprovada'] == null ? '' : data[item]['quantidade_aprovada']) + '\">' + "</td>";
+                    ret += "<td style=\"text-align: center\">" + "<a onclick=\"showTrocaMaterial(" + data[item]['material_id'] + "," + data[item]['solicitacao_id'] + ", '" + data[item]['nome'] + "')\"  type=\"button\" class=\"btn btn-primary\">Trocar</a>" + "</td>";
+                    ret += "</tr>";
 
+                }
+
+            $('#textObservacaoRequerente').val(info[1]['observacao_requerente']);
             $('#solicitacaoID').val(id);
             $("#tableItens tbody").append(ret);
             $("#overlay").hide();
@@ -44,27 +47,30 @@ function showTrocaMaterial(material_id, solicitacao_id, material_nome) {
         dataType: 'json',
         success: function (data) {
             var ret = "";
+            if (data.length > 0) {
+                ret += "<div class=\"col-md-4\"/>";
+                ret += "<label for=\"itemAtual\"><strong>Material escolhido:</strong></label>";
+                ret += "<input type=\"hidden\" class=\"form-control\" id=\"itemAtual\" name=\"itemAtual\" value=\"" + material_id + "\">";
+                ret += "<input type=\"hidden\" class=\"form-control\" id=\"solicitacao_id\" name=\"solicitacao_id\" value=\"" + solicitacao_id + "\">";
+                ret += "<input class=\"form-control\" value=\"" + material_nome + "\" readonly>";
+                ret += "</div>";
 
-            ret += "<div class=\"col-md-4\"/>";
-            ret += "<label for=\"itemAtual\"><strong>Material escolhido:</strong></label>";
-            ret += "<input type=\"hidden\" class=\"form-control\" id=\"itemAtual\" name=\"itemAtual\" value=\""+material_id+"\">";
-            ret += "<input type=\"hidden\" class=\"form-control\" id=\"solicitacao_id\" name=\"solicitacao_id\" value=\""+solicitacao_id+"\">";
-            ret += "<input class=\"form-control\" value=\""+material_nome+"\" readonly>";
-            ret += "</div>";
+                ret += "<div class=\"col-md-4\"/>";
+                ret += "<label for=\"selectTrocaItem\"><strong>Materiais em estoque:</strong></label>";
+                ret += "<select class=\"form-select form-control\" id=\"itemSelecionado\" name=\"itemSelecionado\" '>";
+                for (var item in data) {
+                    ret += "<option value=\"" + data[item]['material_id'] + "\">" + data[item]['nome'] + " - " + data[item]['quantidade'] + "</option>";
+                }
+                ret += "</select>";
+                ret += "</div>";
 
-            ret += "<div class=\"col-md-4\"/>";
-            ret += "<label for=\"selectTrocaItem\"><strong>Materiais em estoque:</strong></label>";
-            ret += "<select class=\"form-select form-control\" id=\"itemSelecionado\" name=\"itemSelecionado\" '>";
-            for (var item in data){
-                ret += "<option value=\""+data[item]['material_id']+"\">"+data[item]['nome']+" - "+data[item]['quantidade']+"</option>";
+                ret += "<div class=\"col-md-4\"/>";
+                ret += "<label for=\"quant_material\"><strong>Quantidade:</strong></label>";
+                ret += "<input type=\'number\' class=\"form-control\" id=\"quant_material\" name=\"quant_material\" value=\"\">";
+                ret += "</div>";
+            }else{
+                ret += "<h1>Não existe material para a troca</h1>";
             }
-            ret += "</select>";
-            ret += "</div>";
-
-            ret += "<div class=\"col-md-4\"/>";
-            ret += "<label for=\"quant_material\"><strong>Quantidade:</strong></label>";
-            ret += "<input type=\'number\' class=\"form-control\" id=\"quant_material\" name=\"quant_material\" value=\"\">";
-            ret += "</div>";
 
             $("#trocaConteudo").append(ret);
             $("#detalhesSolicitacao").modal('hide');
@@ -165,26 +171,28 @@ $(function () {
                 url: '/itens_solicitacao_admin/' + id,
                 type: 'GET',
                 dataType: 'json',
-                success: function (data) {
-                    var ret = '<table id=\"tableExpanded\" class=\"table table-hover table-responsive-md\"">' +
-                        '<thead>' +
-                        '<tr>' +
-                        '<th scope=\"col\" class=\"align-middle\">Material</th>' +
-                        '<th scope=\"col\" class=\"align-middle\">Descrição</th>' +
-                        '<th scope=\"col\" style=\"text-align: center; width: 10%\">Qtd. Solicitada</th>' +
-                        '</tr>' +
-                        '</thead>' +
-                        '<tbody>';
-                    for (var item in data) {
-                        ret += "<tr data-id=" + id + " onclick=\"showItens( " + id + "  )\" style=\"cursor: pointer;\">";
-                        ret += "<td>" + data[item]['nome'] + "</td>";
-                        ret += "<td>" + data[item]['descricao'] + "</td>";
-                        ret += "<td style=\"text-align: center\">" + data[item]['quantidade_solicitada'] + "</td>";
-                        ret += "</tr>";
-                    }
+                success: function (info) {
+                        var data = info[0];
+                        var ret = '<table id=\"tableExpanded\" class=\"table table-hover table-responsive-md\"">' +
+                            '<thead>' +
+                            '<tr>' +
+                            '<th scope=\"col\" class=\"align-middle\">Material</th>' +
+                            '<th scope=\"col\" class=\"align-middle\">Descrição</th>' +
+                            '<th scope=\"col\" style=\"text-align: center; width: 10%\">Qtd. Solicitada</th>' +
+                            '</tr>' +
+                            '</thead>' +
+                            '<tbody>';
+                        for (var item in data) {
+                            ret += "<tr data-id=" + id + " onclick=\"showItens( " + id + "  )\" style=\"cursor: pointer;\">";
+                            ret += "<td>" + data[item]['nome'] + "</td>";
+                            ret += "<td>" + data[item]['descricao'] + "</td>";
+                            ret += "<td style=\"text-align: center\">" + data[item]['quantidade_solicitada'] + "</td>";
+                            ret += "</tr>";
+                        }
                     row.child(ret).show();
                     tr.addClass('shown');
                 }
+
             });
         }
     });
