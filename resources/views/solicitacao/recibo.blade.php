@@ -100,7 +100,13 @@
 <main>
     <div class="background" style="text-align: center;">
 
-        @foreach($itens as $item)
+        @foreach($itensTrocados as $item)
+            @if($item[0] != '')
+                <h4><s>{{$item[0]}}</s> , Substituído por: {{$item[1]}}</h4>
+            @endif
+        @endforeach
+
+        @foreach($itensEntregues as $item)
             @if($item != '')
                 <h4>{{$item}}.</h4>
             @endif
