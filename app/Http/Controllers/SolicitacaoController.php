@@ -553,6 +553,21 @@ class SolicitacaoController extends Controller
         ]);
     }
 
+    public function getObservacaoSolicitacao($id)
+    {
+        $solicitacao = Solicitacao::find($id);
+        $unidade = Unidade::find($solicitacao->unidade_id);
+        $usuario_id = $unidade->usuario_id;
+
+        if (2 != Auth::user()->cargo_id && Auth::user()->id != $usuario_id) {
+            return json_encode('');
+        }
+
+        $consulta = DB::select('select observacao_requerente, observacao_admin from solicitacaos where id = ?', [$id]);
+
+        return json_encode($consulta);
+    }
+
     public function ajaxListarSolicitacoesAnalise()
     {
         $consulta = DB::select('select status.status, status.created_at, status.solicitacao_id, u.nome

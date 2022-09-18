@@ -22,9 +22,8 @@ $(function () {
 });
 
 var _row = null;
-function construirTable(quantidade, unidade, estoque, materialId) {
+function construirTable(quantidade, unidade, materialId) {
     return "<td class=\"quantidadeRow\" style=\"text-align: center\">" + quantidade + "</td>" +
-        "<td class=\"estoqueRow\" style=\"text-align: center\">" + estoque + "</td>" +
         "<td class=\"unidadeRow\" style=\"text-align: center\">" + unidade + "</td>" +
         "<td style=\"text-align: center\">" +
         "<div class=\"dropdown\">" +
@@ -100,7 +99,7 @@ function updateRowTable() {
         "<tr data-id=" + $("#selectMaterialEdit option:selected").val() + ">" +
         "<td data-id=" + $("#selectMaterialEdit option:selected").val() + " class=\"materialRow\">" + $("#selectMaterialEdit option:selected").text() + "</td>" +
         "<td style=\"text-align: center\" data-id=" + $("#selectUnidadeBasica option:selected").data('value') + " class=\"unidadeRow\">" + $("#selectUnidadeBasica option:selected").text() + "</td>"
-        + construirTable($("#InputQuantEdit").val(), $("#unidade_selected").val(), $("#estoque_" + materialId + '' + unidadeId).val(), materialId)
+        + construirTable($("#InputQuantEdit").val(), $("#unidade_selected").val(), materialId)
     );
     $(_row).remove();
     clearFields();
@@ -147,7 +146,6 @@ function setValuesRowInput() {
     $('#dataTableUnidade').val([unidades]);
 }
 
-//construirTable(quantidade, unidade, estoque, materialId)
 function addTable() {
     var materialId;
     materialId = $("#selectMaterial option:selected").data('value');
@@ -160,7 +158,7 @@ function addTable() {
         $("#tableMaterial tbody").append("<tr data-id=" + $("#selectMaterial option:selected").data('value') + ">" +
             "<td data-id=" + $("#selectMaterial option:selected").data('value') + " class=\"materialRow\">" + $("#selectMaterial option:selected").text() + "</td>" +
             "<td style=\"text-align: center\" data-id=" + $("#selectUnidadeBasica option:selected").data('value') + " class=\"unidadeRow\">" + $("#selectUnidadeBasica option:selected").text() + "</td>" +
-            construirTable($("#quantMaterial").val(), $("#unidade_selected").val(), $("#estoque_" + materialId + '' + unidadeId).val(), materialId));
+            construirTable($("#quantMaterial").val(), $("#unidade_selected").val(), materialId));
         document.getElementById("selectUnidadeBasica").disabled = true;
     } else {
         $('#error').slideDown();
