@@ -22,19 +22,69 @@ class SolicitacaoController extends Controller
 {
     public function show()
     {
-        if (Auth::user()->cargo_id == 1) {
-            $estoques = Estoque::where('deposito_id', 1)->get();
-            $materiais = Material::all();
-            $unidades = Unidade::all();
-
-
-        } elseif (Auth::user()->cargo_id == 3) {
-            $unidades = Unidade::where('usuario_id', Auth::user()->id)->first();
-            $materiais = Material::all();
-            $estoques = Estoque::where('setor_id', $unidades->setor_id);
+        //Verifica as solicitações tanto do admin como do solicitante normal
+        if (Auth::user()->cargo_id == 3) {
+            $unidade = Unidade::where('usuario_id', Auth::user()->id)->first();
+            $solicitacaos = Solicitacao::where('unidade_id', $unidade->id)->get()->toArray();
+        } elseif (Auth::user()->cargo_id == 1) {
+            $solicitacaos = Solicitacao::where('admin_id', Auth::user()->id)->get()->toArray();
+            //Precisamos preencher para que o código funcione
+            $unidade = Unidade::all();
         }
 
-        return view('solicitacao.solicita_material', ['materiais' => $materiais, 'unidades' => $unidades, 'estoques' => $estoques]);
+        $solicitacaos = array_column($solicitacaos, 'id');
+        $historicoStatus = HistoricoStatus::whereIn('solicitacao_id', $solicitacaos)->where('status', 'Não Finalizado')->first();
+
+        //Verifica se já existe uma solicitação não finalizada, se não existir, cria uma
+        if ($historicoStatus != null) {
+            $solicitacao = Solicitacao::find($historicoStatus->solicitacao_id);
+            $itensSolicitacao = ItemSolicitacao::where('solicitacao_id', $solicitacao->id)->get();
+            $unidades = $unidade;
+        } else {
+            $solicitacao = new Solicitacao();
+            if (Auth::user()->cargo_id == 3) {
+                $solicitacao->unidade_id = $unidade->id;
+            } elseif (Auth::user()->cargo_id == 1) {
+                $solicitacao->admin_id = Auth::user()->id;
+            }
+            $solicitacao->save();
+
+            $historicoStatus = new HistoricoStatus();
+            $historicoStatus->solicitacao_id = $solicitacao->id;
+            $historicoStatus->status = 'Não Finalizado';
+            $historicoStatus->save();
+            $unidades = Unidade::all();
+            $itensSolicitacao = null;
+        }
+
+        //Verifica se já existem itens na solicitação para não exibir os materiais que já estão presentes naquela solicitação
+        if (count($itensSolicitacao) != 0) {
+            //Se existir, é por que já foi adicionado um item na solicitação, então a unidade já foi atrelada na solicitação
+            if(Auth::user()->cargo_id == 1) {
+                $unidade = Unidade::find($solicitacao->unidade_id);
+            }
+            $materiais_solicitacao = array_column($itensSolicitacao->toArray(), 'material_id');
+            $materiais = DB::table('materials')
+                ->join('estoques', 'materials.id', '=', 'estoques.material_id')
+                ->whereNotIn('materials.id', $materiais_solicitacao)
+                ->where('setor_id', '=', $unidade->setor_id)
+                ->get();
+
+        } else {
+            //Se não existir itens na solicitação, então não existe uma unidade na solicitação no caso do administrador
+            if(Auth::user()->cargo_id == 1) {
+                //Esse material::all() é desnecessário (por causa do JS que recupera os materiais em tempo real), mas é preciso para rodar o código
+                $materiais = Material::all();
+            } else {
+                //Se não, ele já vai pegar os materiais especificos do setor, já que o solicitante já tem uma unidade atrelada
+                $materiais = DB::table('materials')
+                    ->join('estoques', 'materials.id', '=', 'estoques.material_id')
+                    ->where('setor_id', '=', $unidade->setor_id)
+                    ->get();
+            }
+        }
+
+        return view('solicitacao.solicita_material', compact('materiais', 'unidades', 'solicitacao', 'itensSolicitacao'));
 
 
     }
@@ -79,7 +129,7 @@ class SolicitacaoController extends Controller
         $solicitacao->save();
 
         $historicoStatus = new HistoricoStatus();
-        if($usuario->cargo_id == 1) {
+        if ($usuario->cargo_id == 1) {
             $historicoStatus->status = 'Aprovado';
             $historicoStatus->data_aprovado = now();
         } else {
@@ -91,7 +141,7 @@ class SolicitacaoController extends Controller
         for ($i = 0; $i < count($materiais); ++$i) {
             $itemSolicitacao = new ItemSolicitacao();
             $itemSolicitacao->quantidade_solicitada = $quantidades[$i];
-            if($usuario->cargo_id == 1) {
+            if ($usuario->cargo_id == 1) {
                 $itemSolicitacao->quantidade_aprovada = $quantidades[$i];
             }
             $itemSolicitacao->material_id = $materiais[$i];
@@ -392,17 +442,17 @@ class SolicitacaoController extends Controller
 
     }
 
-    public function getItemTrocaAdmin($material_id,$solicitacao_id)
+    public function getItemTrocaAdmin($material_id, $solicitacao_id)
     {
 
         $solicitacao = Solicitacao::find($solicitacao_id);
         $unidade = Unidade::find($solicitacao->unidade_id);
-        $itensSolicitacao = ItemSolicitacao::where('solicitacao_id',$solicitacao_id)->get();
+        $itensSolicitacao = ItemSolicitacao::where('solicitacao_id', $solicitacao_id)->get();
 
         $estoque = DB::table('estoques')
-            ->join('materials','estoques.material_id','=','materials.id')
-            ->where('setor_id',$unidade->setor_id)
-            ->whereNotIn('material_id',$itensSolicitacao->pluck('material_id'))
+            ->join('materials', 'estoques.material_id', '=', 'materials.id')
+            ->where('setor_id', $unidade->setor_id)
+            ->whereNotIn('material_id', $itensSolicitacao->pluck('material_id'))
             ->get();
 
         return json_encode($estoque);
@@ -633,7 +683,7 @@ class SolicitacaoController extends Controller
                     }
                 } else {
                     ++$checkQuantMinima;
-                    array_push($errorMessage, $itemSolicitacaos[$i]->nome.'(Dispoível:'.$itemSolicitacaos[$i]->quantidade.')');
+                    array_push($errorMessage, $itemSolicitacaos[$i]->nome . '(Dispoível:' . $itemSolicitacaos[$i]->quantidade . ')');
                 }
             }
         }
@@ -670,7 +720,8 @@ class SolicitacaoController extends Controller
     }
 
 
-    public function realizarTroca(Request $request){
+    public function realizarTroca(Request $request)
+    {
 
         $itemSolicitacao = new ItemSolicitacao();
         $itemSolicitacao->solicitacao_id = $request->solicitacao_id;
@@ -679,12 +730,12 @@ class SolicitacaoController extends Controller
         $itemSolicitacao->quantidade_aprovada = $request->quant_material;
         $itemSolicitacao->save();
 
-        $itemSolicitacaoOriginal = ItemSolicitacao::where('material_id',$request->itemAtual)->where('solicitacao_id',$request->solicitacao_id)->first();
+        $itemSolicitacaoOriginal = ItemSolicitacao::where('material_id', $request->itemAtual)->where('solicitacao_id', $request->solicitacao_id)->first();
         $itemSolicitacaoOriginal->item_troca_id = $itemSolicitacao->id;
         $itemSolicitacaoOriginal->quantidade_aprovada = 0;
         $itemSolicitacaoOriginal->update();
 
-        return response()->json(['success'=> 'Material Trocado com sucesso!']);
+        return response()->json(['success' => 'Material Trocado com sucesso!']);
 
     }
 }
