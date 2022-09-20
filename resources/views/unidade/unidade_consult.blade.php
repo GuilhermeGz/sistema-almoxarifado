@@ -49,8 +49,8 @@
                 <td style="text-align: center"> {{ $unidade->cep }} </td>
                 <td style="text-align: center"> {{ $unidade->endereco }}</td>
                 <td style="text-align: center"> {{ $unidade->bairro }}</td>
-                <td style="text-align: center"> Nome </td>
-                <td style="text-align: center"> Número </td>
+                <td style="text-align: center"> {{ $unidade->usuario->nome }} </td>
+                <td style="text-align: center" class="numTel"> {{ $unidade->usuario->numTel }} </td>
                 <td style="text-align: center">
                     <div class="row">
                         <div class="col-md-4">
