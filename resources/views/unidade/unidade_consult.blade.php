@@ -1,14 +1,14 @@
 @extends('templates.principal')
 
 @section('title')
-    Unidades Básicas
+    Unidades
 @endsection
 
 @section('content')
 
     <div class="row" style="border-bottom: #949494 2px solid; padding-bottom: 5px; margin-bottom: 10px">
         <div class="col-md-10">
-            <h2>Setor {{$setor->nome}} - Unidades Básicas</h2>
+            <h2>Setor {{$setor->nome}} - Unidades</h2>
         </div>
         <div class="col-md-2">
             <h2 class="text-right" title="Cadastrar Unidade">
