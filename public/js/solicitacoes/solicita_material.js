@@ -124,27 +124,7 @@ function deleteRow(ctl) {
 }
 
 function setValuesRowInput() {
-    var materiais = [];
-    var quantidades = [];
-    var unidades = [];
-
     var escolha = confirm("Tem certeza que deseja fazer uma solicitação?");
-
-    $("#tableMaterial > tbody > tr").children('.materialRow').each(function () {
-        materiais.push($(this).data('id'));
-    });
-
-    $("#tableMaterial > tbody > tr").children('.quantidadeRow').each(function () {
-        quantidades.push($(this).text());
-    });
-
-    $("#tableMaterial > tbody > tr").children('.unidadeRow').each(function () {
-        unidades.push($(this).data('id'));
-    });
-
-    $('#dataTableMaterial').val([materiais]);
-    $('#dataTableQuantidade').val([quantidades]);
-    $('#dataTableUnidade').val([unidades]);
 }
 
 //construirTable(quantidade, unidade, estoque, materialId)
