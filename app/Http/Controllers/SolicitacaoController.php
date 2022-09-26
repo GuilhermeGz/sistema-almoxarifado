@@ -42,7 +42,12 @@ class SolicitacaoController extends Controller
         //Verifica se já existe uma solicitação não finalizada, se não existir, cria uma
         if ($historicoStatus != null) {
             $solicitacao = Solicitacao::find($historicoStatus->solicitacao_id);
-            $itensSolicitacao = ItemSolicitacao::where('solicitacao_id', $solicitacao->id)->get();
+            $itensSolicitacao = DB::table('item_solicitacaos')
+                ->where('solicitacao_id', $solicitacao->id)
+                ->join('materials', 'item_solicitacaos.material_id', '=', 'materials.id')
+                ->join('estoques', 'item_solicitacaos.material_id', '=', 'estoques.material_id')
+                ->select('item_solicitacaos.id','materials.nome','item_solicitacaos.quantidade_solicitada','item_solicitacaos.material_id','materials.unidade','estoques.quantidade')
+                ->get();
         } else {
             $solicitacao = new Solicitacao();
             if (Auth::user()->cargo_id == 3) {

@@ -102,10 +102,13 @@
         @if(count($itensSolicitacao) > 0)
             @foreach($itensSolicitacao as $item)
                 <tr>
-                    <td>{{$item->material->nome}}</td>
+                    <td>{{$item->nome}}</td>
                     <td class="text-center">{{$unidades->nome}}</td>
                     <td class="text-center">{{$item->quantidade_solicitada}}</td>
-                    <td class="text-center">{{$item->material->unidade}}</td>
+                    @if(Auth::user()->cargo_id == 1)
+                        <td class="text-center">{{$item->quantidade}}</td>
+                    @endif
+                    <td class="text-center">{{$item->unidade}}</td>
                     <td class="text-center">
                         <div class="dropdown">
                             <button class="btn btn-secondary dropdown" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -155,7 +158,7 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-3">
                                         <label for="MaterialEdit" style="color: #151631; font-family: 'Segoe UI'; font-weight: 700;">Material</label>
-                                        <input class="form-control" id="materialEdit" type="text" value="{{$item->material->nome}}" disabled>
+                                        <input class="form-control" id="materialEdit" type="text" value="{{$item->nome}}" disabled>
                                     </div>
 
                                     <div class="form-group col-md-2" style="margin-left: 4%">
